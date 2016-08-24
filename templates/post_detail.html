@@ -1,0 +1,9 @@
+
+<h1>{{ title }}</h1>
+
+<h2><P><a href="/posts">Return</a></p></h2>
+
+
+  <p>{{ instance.subject }}</p>
+  <p>{{ instance.content | linebreaks }}</p>
+  <p><a href="{{ instance.get_absolute_url }}edit">Edit</a></p>
