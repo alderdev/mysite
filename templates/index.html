@@ -1,4 +1,5 @@
-
+{% extends "base.html" %}
+{% block content%}
 <h1>{{ title }}</h1>
 
 <p>Menu<p>
@@ -7,6 +8,9 @@
 
 
 {% for item in object_list %}
-  
+
   <p><a href="{{ item.get_absolute_url }}">{{ item.subject }}</a></p>
 {% endfor %}
+
+
+{% endblock content%}
