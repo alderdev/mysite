@@ -2,11 +2,15 @@
 {% load staticfiles %}
 {% block content%}
 
-
-
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
   <h2><p>{{ instance.subject }}<small>  Last Modify: {{ instance.modify | date:"Y-m-d H:i:s"  }}</small></p></h2>
-  <p><img src='{{ instance.image.url }}' class="img-responsive" /></p>
+
+  <p>
+    {% if instance.image %}
+    <img src='{{ instance.image }}' class="img-responsive" />
+    {% endif %}
+  </p>
+
   <p>{{ instance.content | linebreaks  }}</p>
   <h3>
     <div class="form-inline">
