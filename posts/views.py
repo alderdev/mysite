@@ -14,7 +14,7 @@ def post_list(request):
 
 def post_create(request):
     title="Posts Create"
-    form = PostForm(request.POST or None)
+    form = PostForm(request.POST or None , request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -36,7 +36,7 @@ def post_update(request, id):
     title="Posts Edit"
 
     instance = get_object_or_404(models.Post, id=id)
-    form = PostForm(request.POST or None, instance=instance)
+    form = PostForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()

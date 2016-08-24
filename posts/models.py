@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 class Post(models.Model):
     subject = models.CharField(max_length=60)
     content = models.TextField()
+    image = models.FileField(null=True, blank=True)
     timestemp = models.DateTimeField(auto_now_add=True, auto_now=False)
     modify = models.DateTimeField(auto_now_add=True, auto_now=False)
 
