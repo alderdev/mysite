@@ -69,4 +69,4 @@ class People(models.Model):
 
 
     class Meta:
-        ordering = ['emp_number']
+        ordering = ['-emp_number']

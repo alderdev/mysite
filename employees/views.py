@@ -19,10 +19,11 @@ class EmployeeList(ListView):
 
 class EmployeeDetail(DetailView):
     model = models.People
+    print("hello" )
 
     def get_context_data(self, **kwargs):
         context = super(EmployeeDetail, self).get_context_data(**kwargs)
-        context['employee_list'] = models.People.objects.all()
+        context['people_list'] = models.People.objects.all()
         return context
 
 
