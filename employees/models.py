@@ -1,6 +1,9 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 from smart_selects.db_fields import ChainedForeignKey
 # Create your models here.
+
+
 class Department(models.Model):
     title = models.CharField(max_length=20, blank=False, null=False)
 
@@ -59,6 +62,10 @@ class People(models.Model):
 
     def __str__(self):
         return "%s %s" %(self.first_name, self.last_name)
+
+    def get_absolute_url(self):
+        return reverse( "employees:detail", kwargs={"pk": self.id} )
+
 
 
     class Meta:

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content  %}
+
+<div>
+    <span ><a href="/employees/create" class="btn btn-primary">Create New</a></span>
+</div>
+
+  <div class="pagination">
+      <span>{{ title }}</span>
+      <span class="step-links">
+          {% if queryset.has_previous %}
+              <a href="?page={{ queryset.previous_page_number }}">previous</a>
+          {% endif %}
+
+          <span class="current">
+              Page {{ queryset.number }} of {{ queryset.paginator.num_pages }}.
+          </span>
+
+          {% if queryset.has_next %}
+              <a href="?page={{ queryset.next_page_number }}">next</a>
+          {% endif %}
+      </span>
+  </div>
+
+
+<div>
+
+
+{% for record in object_list %}
+
+<div class="col-sm-6 col-md-4">
+
+    {% if record.image %}
+      <img src="{{ record.image.url }}"  class="img-responsive"/>
+    {% endif %}
+
+  <h3><a href='{{ record.get_absolute_url }}'>{{ record.description | truncatechars:30 }}</a>
+    <small>{{ record.create_at | timesince }}</small>
+</h3>
+
+    <p>{{ record.specification | linebreaks | truncatechars:80 }}</p>
+    {{ record.modify | date:"Y-m-d"}}
+    <a href='{{ record.get_absolute_url }}' class="btn btn-primary" role="button">View</a>
+
+</div>
+{% endfor %}
+
+
+
+
+
+{% endblock content %}
