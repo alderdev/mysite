@@ -1,5 +1,11 @@
 
 
+function confirm_click()
+{
+	return confirm("Are you sure Delete it?");
+}
+
+
 function showCustName(id)
 {/* 帶出客戶編號的ajax */
 	var xmlhttp;

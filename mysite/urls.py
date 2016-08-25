@@ -24,7 +24,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', index),
     url(r'^posts/', include( 'posts.urls', namespace="posts")),
+    url(r'^products/', include( 'products.urls', namespace="products")),
     
+
 ]
 
 if settings.DEBUG:

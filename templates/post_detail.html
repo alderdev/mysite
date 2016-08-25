@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% block content%}
+<script type="text/javascript">
+function confirm_click()
+{
+return confirm("Are you sure Delete it?");
+}
+</script>
 
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
   <h2><p>{{ instance.subject }}<small>  Last Modify: {{ instance.modify | date:"Y-m-d H:i:s"  }}</small></p></h2>
@@ -15,7 +21,7 @@
   <h3>
     <div class="form-inline">
     <a href="/posts" class="btn btn-success" role="button" >Return</a>
-    <a href="{{ instance.get_absolute_url }}delete" class="btn btn-danger" role="button" >Delete</a>
+    <a href="{{ instance.get_absolute_url }}delete" class="btn btn-danger" role="button" onclick="return confirm_click()" >Delete</a>
     <a href="{{ instance.get_absolute_url }}edit" class="btn btn-warning" role="button">Edit</a></p>
   </div>
   </h3>
