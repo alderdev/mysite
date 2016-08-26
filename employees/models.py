@@ -14,18 +14,6 @@ class Department(models.Model):
         ordering = ['id']
 
 
-
-class SmallPart(models.Model):
-    department = models.ForeignKey(Department)
-    code = models.CharField( max_length=4, blank=False, null=False, unique=True )
-    title = models.CharField(max_length=20, blank=False, null=False)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        ordering = ['id']
-
 class Job(models.Model):
     title = models.CharField(max_length=20, blank=False, null=False)
 
@@ -35,15 +23,8 @@ class Job(models.Model):
     class Meta:
         ordering = ['id']
 
-class People(models.Model):
+class Employee(models.Model):
     department = models.ForeignKey(Department)
-    smallpart = ChainedForeignKey(
-        SmallPart,
-        chained_field = "department" ,
-        chained_model_field = "department",
-        show_all = False,
-        auto_choose = True
-    )
     first_name = models.CharField(max_length=30, null=False, blank=False)
     last_name = models.CharField(max_length=30, null=False, blank=False)
     english_name = models.CharField(max_length = 60)
@@ -65,8 +46,6 @@ class People(models.Model):
 
     def get_absolute_url(self):
         return reverse( "employees:detail", kwargs={"pk": self.id} )
-
-
 
     class Meta:
         ordering = ['-emp_number']

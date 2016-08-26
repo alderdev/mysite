@@ -10,16 +10,21 @@ return confirm("Are you sure Delete it?");
 </script>
 
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
-  {% if peoele.image %}
-    <p align="center"><img src="{{ peoele.image.url }}" class="img-responsive"/></p>
+
+  {% if employee.image %}
+    <p align="center"><img src="{{ employee.image.url }}" class="img-responsive"/></p>
   {% endif %}
 
-  <p>Department: {{ peoele.department }}</p>
-  <p>SmallPart: {{ peoele.smallpart }}</p>
-  <p>Description: {{ peoele.first_name }}</p>
-  <p>Specification: {{ peoele.specification | linebreaks  }}</p>
-  <p>Category: {{ peoele.category }}</p>
-  <p>Classify: {{ peoele.cycle_status }}</p>
+  <p>Department: {{ employee.department }}</p>
+  <p>First Name: {{ employee.first_name }}</p>
+  <p>Last Name: {{ employee.last_name }}</p>
+  <p>English Name: {{ employee.english_name }}</p>
+  <p>Job: {{ employee.job }}</p>
+  <p>Ext Number: {{ employee.contact_ext }}</p>
+  <p>Duty Date: {{ employee.dutydate | date:"Y-m-d" }}</p>
+  <p>Description: {{ employee.description | linebreaks  }}</p>
+
+
 
   <h3>
     <div class="form-inline">

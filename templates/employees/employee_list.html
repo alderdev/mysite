@@ -32,14 +32,14 @@
 <div class="col-sm-6 col-md-4">
 
     {% if record.image %}
-      <img src="{{ record.image.url }}"  class="img-responsive"/>
+      <img src="{{ record.image.url }}" class="img-circle" height="240" width="240"/>
     {% endif %}
 
-  <h3><a href='{{ record.get_absolute_url }}'>{{ record.description | truncatechars:30 }}</a>
-    <small>{{ record.create_at | timesince }}</small>
+  <h3><a href='{{ record.get_absolute_url }}'>{{ record.first_name | truncatechars:30 }}{{ record.last_name | truncatechars:30 }}</a>
+    <small>{{ record.job  }}</small>
 </h3>
 
-    <p>{{ record.specification | linebreaks | truncatechars:80 }}</p>
+    <p>{{ record.department | linebreaks | truncatechars:80 }}</p>
     {{ record.modify | date:"Y-m-d"}}
     <a href='{{ record.get_absolute_url }}' class="btn btn-primary" role="button">View</a>
 

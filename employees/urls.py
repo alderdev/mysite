@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.EmployeeList.as_view( template_name = 'employees/employee_list.html'), name="list" ),
+    url(r'^create/$', views.employee_create, name="create" ),
     url(r'^create/$', views.EmployeeCreate.as_view( template_name = 'employees/employee_form.html' ), name="create" ),
     url(r'^(?P<pk>[0-9]+)/detail/$', views.EmployeeDetail.as_view( template_name = 'employees/employee_detail.html'), name="detail" ),
     url(r'^(?P<pk>\d+)/detail/edit/$', views.EmployeeUpdate.as_view( template_name = 'employees/employee_form.html' ), name="edit" ),

@@ -9,7 +9,7 @@ return confirm("Are you sure Delete it?");
 </script>
 
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
-  <h2><p>{{ instance.subject }}<small>  Last Modify: {{ instance.modify | date:"Y-m-d H:i:s"  }}</small></p></h2>
+  <h2 class="title"><p>{{ instance.subject }}<small>  Last Modify: {{ instance.modify | date:"Y-m-d H:i:s"  }}</small></p></h2>
 
   <p>
     {% if instance.image %}

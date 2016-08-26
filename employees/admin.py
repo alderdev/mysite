@@ -5,6 +5,5 @@ from . import models
 
 
 admin.site.register(models.Department)
-admin.site.register(models.SmallPart)
 admin.site.register(models.Job)
-admin.site.register(models.People)
+admin.site.register(models.Employee)
