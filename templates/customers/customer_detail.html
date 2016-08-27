@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content  %}
+
+<script type="text/javascript">
+function confirm_click()
+{
+return confirm("Are you sure Delete it?");
+}
+</script>
+
+<div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
+
+  <p>Customer No. : {{ customer.sap_no }}</p>
+  <p>Title: {{ customer.title }}</p>
+
+  <h3>
+    <div class="form-inline">
+    <a href="/customers" class="btn btn-success" role="button" >Return</a>
+    <a href="{{ instance.get_absolute_url }}delete" class="btn btn-danger" role="button" onclick="return confirm_click()" >Delete</a>
+    <a href="{{ instance.get_absolute_url }}edit" class="btn btn-warning" role="button">Edit</a>
+  </div>
+  </h3>
+
+</div>
+{% endblock content %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content  %}
+
+<div>
+    <span ><a href="/customers/create" class="btn btn-primary">Create New</a></span>
+</div>
+
+  <div class="pagination">
+      <span>{{ title }}</span>
+      <span class="step-links">
+          {% if queryset.has_previous %}
+              <a href="?page={{ queryset.previous_page_number }}">previous</a>
+          {% endif %}
+
+          <span class="current">
+              Page {{ queryset.number }} of {{ queryset.paginator.num_pages }}.
+          </span>
+
+          {% if queryset.has_next %}
+              <a href="?page={{ queryset.next_page_number }}">next</a>
+          {% endif %}
+      </span>
+  </div>
+
+<div>
+
+
+<div>
+<table class="table table-striped" >
+  <tr>
+    <th width="15%">Customer Number</th>
+    <th width="20%">Title</th>
+    <th width="15%">Contect</th>
+    <th width="15%">Phone Number</th>
+    <th >Adddress</th>
+  </tr>
+{% for record in object_list %}
+  <tr>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.sap_no }}</a></td>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.title | truncatechars:30 }}</a></td>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.contact }}</a></td>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.phone }}</a></td>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.address | truncatechars:30 }}</a></td>
+  </tr>
+{% endfor %}
+</table>
+<div>
+
+
+
+
+
+
+
+{% endblock content %}

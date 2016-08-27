@@ -26,6 +26,8 @@ urlpatterns = [
     url(r'^posts/', include( 'posts.urls', namespace="posts")),
     url(r'^products/', include( 'products.urls', namespace="products")),
     url(r'^employees/', include( 'employees.urls', namespace="employees")),
+    url(r'^workorders/', include( 'workorders.urls', namespace="workorders")),
+    url(r'^customers/', include( 'customers.urls', namespace="customers")),
     url(r'^chaining/', include( 'smart_selects.urls' )),
 
 

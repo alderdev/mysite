@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from smart_selects.db_fields import ChainedForeignKey
+from django.utils import timezone
 # Create your models here.
 
 
@@ -31,7 +32,7 @@ class Employee(models.Model):
     job = models.ForeignKey(Job)
     emp_number = models.CharField(max_length = 6, unique=True)
     contact_ext = models.CharField(max_length=4, blank=True, null=True )
-    dutydate = models.DateField()
+    dutydate = models.DateField( default=timezone.now )
     on_duty = models.BooleanField( default=True )
     image = models.ImageField( null=True, blank=True, height_field="height_field", width_field="width_field")
     height_field = models.IntegerField( null=True, blank=True, default=0)
