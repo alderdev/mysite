@@ -4,12 +4,11 @@ from . import views
 
 
 urlpatterns = [
-    #(r'^$', views.EmployeeList.as_view( template_name = 'employees/employee_list.html'), name="list" ),
-    #url(r'^create/$', views.employee_create, name="create" ),
-    #url(r'^create/$', views.EmployeeCreate.as_view( template_name = 'employees/employee_form.html' ), name="create" ),
-    #url(r'^(?P<pk>[0-9]+)/detail/$', views.EmployeeDetail.as_view( template_name = 'employees/employee_detail.html'), name="detail" ),
-    #url(r'^(?P<pk>\d+)/detail/edit/$', views.EmployeeUpdate.as_view( template_name = 'employees/employee_form.html' ), name="edit" ),
-    #url(r'^(?P<pk>\d+)/detail/delete/$', views.ProductDelete(), name="delete" ),
-    #url(r'^(?P<id>\d+)/detail/edit/$', views.product_update, name="edit" ),
-    #url(r'^(?P<id>\d+)/detail/delete/$', views.product_delete, name="delete" ),
+    # Class Base View
+    url(r'^$', views.WorkOrderList.as_view( template_name = 'workorders/workorder_list.html' ), name="list" ),
+    url(r'^create/$', views.WorkOrderCreate.as_view(template_name = 'workorders/workorder_form.html' ),   name="create" ),
+    url(r'^(?P<pk>\d+)/$', views.WorkOrderDetail.as_view( template_name = 'workorders/workorder_detail.html'), name="detail" ),
+    url(r'^(?P<pk>\d+)/edit/$', views.WorkOrderUpdate.as_view( template_name = 'workorders/workorder_form.html' ), name="edit" ),
+    url(r'^(?P<pk>\d+)/delete/$', views.WorkOrderDelete.as_view(), name="delete" ),
+
 ]

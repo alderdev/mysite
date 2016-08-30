@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from datetime import date
 from django.utils import timezone
 from products.models import Product
-#from customers.models import Customer
+from customers.models import Customer
 
 # Create your models here.
 
@@ -40,7 +40,7 @@ class WorkOrder(models.Model):
     recevice_date = models.DateField(default=timezone.now) # 收單日
     material_ctrl = models.ForeignKey(MaterialCtrlOption, blank=True, null=True) #models.CharField(max_length=30, blank=True, null=True) #物料控管
     ships_order = models.CharField(max_length=16, null=True, blank=True) # SAP訂單號碼
-    #customer = models.ForeignKey(Customer) #客戶編號
+    customer = models.ForeignKey(Customer) #客戶編號
     work_order = models.CharField(max_length=16, null=False, blank=False, unique=True) # SAP工單號碼
     product = models.ForeignKey(Product) #  SAP料號
     ord_amount = models.IntegerField(default=1, blank=False, null=False) # 數量
@@ -59,6 +59,6 @@ class WorkOrder(models.Model):
         return self.work_order
 
     def get_absolute_url(self):
-        return reverse( "workdorders:detail", kwargs={"pk": self.id} )
+        return reverse( "workorders:detail", kwargs={"pk": self.id} )
 
         #return "workdorders/detail/%s/" %( str(self.id ) )

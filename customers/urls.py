@@ -7,7 +7,7 @@ urlpatterns = [
     # Class Base View
     url(r'^$', views.CustomerList.as_view( template_name = 'customers/customer_list.html' ), name="list" ),
     url(r'^create/$', views.CustomerCreateView.as_view(template_name = 'customers/customer_form.html' ),   name="create" ),
-    url(r'^(?P<pk>[0-9]+)/$', views.CustomerDetail.as_view( template_name = 'customers/customer_detail.html'), name="detail" ),
+    url(r'^(?P<pk>\d+)/$', views.CustomerDetail.as_view( template_name = 'customers/customer_detail.html'), name="detail" ),
     url(r'^(?P<pk>\d+)/edit/$', views.CustmerUpdate.as_view( template_name = 'customers/customer_form.html' ), name="edit" ),
     url(r'^(?P<pk>\d+)/delete/$', views.CustomerDelete.as_view(), name="delete" ),
 

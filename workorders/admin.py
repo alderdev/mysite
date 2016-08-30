@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import WorkOrder, ZmmsOption, MaterialCtrlOption
+from .models import WorkOrder, ZmmsOption, MaterialCtrlOption, OrderCategory
 
 # Register your models here.
 
@@ -11,6 +11,8 @@ class WorkOrderAdmin(admin.ModelAdmin):
     list_per_page = 10
 
 
+
 admin.site.register(ZmmsOption)
 admin.site.register(MaterialCtrlOption)
+admin.site.register(OrderCategory)
 admin.site.register(WorkOrder, WorkOrderAdmin)
