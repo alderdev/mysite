@@ -13,7 +13,7 @@ class EmployeeForm(forms.ModelForm):
     job = forms.ModelChoiceField( queryset= Job.objects.all() ,widget= forms.Select( attrs={'class':'form-control'} ) )
     emp_number = forms.CharField( widget= forms.TextInput( attrs={'class':'form-control' , 'size':'30' , 'placeholder':'Employee Number'  } ) )
     contact_ext = forms.CharField( widget= forms.TextInput( attrs={'class':'form-control' , 'size':'30' , 'placeholder':'Phone Ext'  } ) )
-    dutydate = forms.DateField( widget= forms.DateInput( attrs={'class':'form-control' } ) )
+    dutydate = forms.DateField( widget= forms.DateInput( attrs={'class':'form-control' , 'placeholder':'yyyy-MM-dd'   } ) )
 
     class Meta:
         model = Employee

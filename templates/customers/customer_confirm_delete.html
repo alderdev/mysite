@@ -8,8 +8,10 @@ function confirm_click()
 return confirm("Are you sure Delete it?");
 }
 </script>
-
-
+<h1 align="center">
+That's Record well be Delete!<br>
+Place Confirm Again!!!!
+</h1>
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
 
   <p>Customer No. : {{ customer.sap_no }}</p>
@@ -20,9 +22,10 @@ return confirm("Are you sure Delete it?");
 
   <h3>
     <div class="form-inline">
-    <a href="/customers" class="btn btn-success" role="button" >Return</a>
-    <a href="{{ instance.get_absolute_url }}delete" class="btn btn-danger" role="button" onclick="return confirm_click()" >Delete</a>
-    <a href="{{ instance.get_absolute_url }}edit" class="btn btn-warning" role="button">Edit</a>
+    <form action="" method="POST">{% csrf_token %}
+      <a href="{{ customer.get_absolute_url }}" class="btn btn-success" role="button" >Cancel</a>
+      <input type="submit" class="btn btn-danger" Value="Delete"  onclick="return confirm_click()" />
+    </form>
   </div>
   </h3>
 
