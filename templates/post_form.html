@@ -1,15 +1,13 @@
 {% extends "base.html" %}
 
-  {% block head_extra %}
-    {{ form.media }} 
-  {% endblock head_extra %}
+
+{% block head_extra %} {{ form.media }} {% endblock head_extra %}
+
 
 {% block content%}
 <h1>{{ title }}</h1>
-
-
 <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
-{{ form.as_p }}
+{{ form }}
 <div class="form-inline">
   <a href="/posts" class="btn btn-success" role="button" >Return</a>
   <input type="submit" class="btn btn-warning" value="Save" />
