@@ -47,7 +47,7 @@ class WorkOrder(models.Model):
     deliverly = models.DateField(blank=True, null=True) #  業務交期
     material_ready_date = models.DateField(blank=True, null=True) #  齊料日
     estimated_finish = models.DateField(blank=True, null=True) # 預計完工日
-    reuqest_user = models.CharField(max_length=16, null=False, blank=False) # 申請人
+    request_user = models.CharField(max_length=16, null=False, blank=False) # 申請人
     material_duty = models.CharField(max_length=16, null=False, blank=False) # 備料人
     manage_memo = models.TextField(blank=True, null=True) # 生管備註
 

@@ -29,21 +29,24 @@
 <div>
 <table class="table table-striped" >
   <tr>
-    <th width="15%">Recevice Date</th>
+    <th width="8%">Last Access</th>
+    <th width="5%">Category</th>
+    <th width="8%">Recevice Date</th>
     <th width="20%">Customer Title</th>
-    <th width="15%">Category</th>
     <th width="15%">Product</th>
-    <th width="15%">Deliverly</th>
-    <th width="15%">Amount</th>
+    <th width="8%">Deliverly</th>
+    <th width="5%">Amount</th>
     <th >Comment</th>
   </tr>
 {% for record in object_list %}
   <tr>
-    <td><a href='{{ record.get_absolute_url }}'>{{ record.recevice_date }}</a></td>
-    <td><a href='{{ record.get_absolute_url }}'>{{ record.customer | truncatechars:30 }}</a></td>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.last_access | timesince }}</a></td>
     <td><a href='{{ record.get_absolute_url }}'>{{ record.category }}</a></td>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.recevice_date | date:"Y-m-d" }}</a></td>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.customer | truncatechars:30 }}</a></td>
+
     <td><a href='{{ record.get_absolute_url }}'>{{ record.product }}</a></td>
-    <td><a href='{{ record.get_absolute_url }}'>{{ record.deliverly }}</a></td>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.deliverly | date:"Y-m-d" }}</a></td>
     <td><a href='{{ record.get_absolute_url }}'>{{ record.ord_amount }}</a></td>
     <td><a href='{{ record.get_absolute_url }}'>{{ record.manage_memo | truncatechars:30 }}</a></td>
   </tr>
@@ -51,7 +54,7 @@
 </table>
 <div>
 
-  
+
 
 
 {% endblock content %}

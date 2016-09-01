@@ -16,6 +16,7 @@ class WorkOrderList(ListView):
 
 class WorkOrderDetail(DetailView):
     model = WorkOrder
+    form_class = WorkOrderUpdateForm
 
 
 class WorkOrderCreate(CreateView):

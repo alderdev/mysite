@@ -12,11 +12,24 @@ return confirm("Are you sure Delete it?");
 
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
 
-  <p>Customer No. : {{ customer.sap_no }}</p>
-  <p>Title: {{ customer.title }}</p>
-  <p>Telephone: {{ customer.phone }}</p>
-  <p>Contact Person: {{ customer.contact }}</p>
-  <p>Address: {{ customer.address }}</p>
+  <p>Order Category : {{ workorder.category }}</p>
+  <p>Recevice Date:  {{ workorder.recevice_date | date:"Y-m-d" }}</p>
+  <p>Material Control: {{ workorder.material_ctrl }}</p>
+  <p>Ship Order No.:  {{ workorder.ships_order }}</p>
+  <p>Customer: {{ workorder.customer }}</p>
+  <p>WorkOrder No. : {{ workorder.work_order }}</p>
+  <p>Product:  {{ workorder.product }}</p>
+  <p>Amount: {{ workorder.ord_amount }}</p>
+  <p>Deliverly. : {{ workorder.deliverly | date:"Y-m-d" }}</p>
+  <p>Material Ready:  {{ workorder.material_ready_date | date:"Y-m-d" }}</p>
+  <p>Estimated Finish: {{ workorder.estimated_finish }}</p>
+  <p>Request User. : {{ workorder.request_user }}</p>
+  <p>Material Duty:  {{ workorder.material_duty }}</p>
+  <p>Comment: {{ workorder.manage_memo }}</p>
+  <p>Modify: {{ workorder.modify | date:"Y-m-d H:i:s" }}</p>
+  <p>Build Date. : {{ workorder.create_at | date:"Y-m-d H:i:s" }}</p>
+  <p>Last Access:  {{ workorder.last_access  | timesince }} ago</p>
+
 
   <h3>
     <div class="form-inline">
@@ -28,3 +41,24 @@ return confirm("Are you sure Delete it?");
 
 </div>
 {% endblock content %}
+
+
+ = models.ForeignKey(OrderCategory, limit_choices_to={'invalid': False} )
+  zmms = models.ForeignKey(ZmmsOption, blank=True, null=True)
+   = models.DateField(default=timezone.now) # 收單日
+   = models.ForeignKey(MaterialCtrlOption, blank=True, null=True) #models.CharField(max_length=30, blank=True, null=True) #物料控管
+   = models.CharField(max_length=16, null=True, blank=True) # SAP訂單號碼
+   = models.ForeignKey(Customer) #客戶編號
+   = models.CharField(max_length=16, null=False, blank=False, unique=True) # SAP工單號碼
+   = models.ForeignKey(Product) #  SAP料號
+   = models.IntegerField(default=1, blank=False, null=False) # 數量
+   = models.DateField(blank=True, null=True) #  業務交期
+   = models.DateField(blank=True, null=True) #  齊料日
+   = models.DateField(blank=True, null=True) # 預計完工日
+   = models.CharField(max_length=16, null=False, blank=False) # 申請人
+   = models.CharField(max_length=16, null=False, blank=False) # 備料人
+   = models.TextField(blank=True, null=True) # 生管備註
+
+  create_at = models.DateTimeField(auto_now_add=True, auto_now =False)
+  modify = models.DateTimeField(auto_now_add=False, auto_now =True)
+  last_access = models.DateTimeField(auto_now_add=False, auto_now =True)
