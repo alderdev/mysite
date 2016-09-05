@@ -29,7 +29,8 @@ class ProductDetail(DetailView):
 class ProductCreate(CreateView):
     title = "Create New Product"
     model = models.Product
-    fields = ['part_number', 'description', 'specification', 'image',  'category', 'cycle_status']
+    form_class = ProductForm
+    #fields = ['part_number', 'description', 'specification', 'image',  'category', 'cycle_status']
     success_url = '/products'
 
 

@@ -6,6 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 from .models import WorkOrder
 from .forms import WorkOrderCreateForm, WorkOrderUpdateForm
+from django.utils import timezone
 
 
 
@@ -17,6 +18,16 @@ class WorkOrderList(ListView):
 class WorkOrderDetail(DetailView):
     model = WorkOrder
     form_class = WorkOrderUpdateForm
+
+
+    def get_object(self):
+        # Call the superclass
+        object = super(WorkOrderDetail, self).get_object()
+        # Record the last accessed date
+        object.last_accessed = timezone.now()
+        object.save()
+        # Return the object
+        return object
 
 
 class WorkOrderCreate(CreateView):
