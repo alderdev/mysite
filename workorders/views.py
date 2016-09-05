@@ -7,10 +7,14 @@ from django.core.urlresolvers import reverse_lazy
 from .models import WorkOrder
 from .forms import WorkOrderCreateForm, WorkOrderUpdateForm
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 
 
 # Create your views here.
+
+
+
 class WorkOrderList(ListView):
     model = WorkOrder
 

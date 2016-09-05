@@ -18,11 +18,17 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from django.contrib import admin
-from .views import index
+from django.contrib.auth.views import login, logout
+
+from .views import index, logout
+from posts import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', index),
+    #url(r'^$', index),
+    url(r'^$', views.post_list, name="list" ),
+    url(r'^accounts/login/$', login),
+    url(r'^accounts/logout/$', logout),
     url(r'^posts/', include( 'posts.urls', namespace="posts")),
     url(r'^products/', include( 'products.urls', namespace="products")),
     url(r'^employees/', include( 'employees.urls', namespace="employees")),

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+
+{% block head_extra %} {{ form.media }} {% endblock head_extra %}
+
+
+{% block content%}
+<h1>{{ title }}</h1>
+
+
+您尚未登入
+<form action="" method="POST">{% csrf_token %}
+
+      {{ form.as_table }}
+      <input type="submit" value="Login" value='{{ next }}' >
+</form>
+{% endblock content%}

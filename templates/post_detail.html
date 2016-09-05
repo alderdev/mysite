@@ -21,9 +21,15 @@ return confirm("Are you sure Delete it?");
   <h3>
     <div class="form-inline">
     <a href="/posts" class="btn btn-success" role="button" >Return</a>
+    {% if perms.posts.can_delete_post %}
     <a href="{{ instance.get_absolute_url }}delete" class="btn btn-danger" role="button" onclick="return confirm_click()" >Delete</a>
-    <a href="{{ instance.get_absolute_url }}edit" class="btn btn-warning" role="button">Edit</a></p>
+    {% endif %}
+    {% if perms.posts.can_change_post %}
+    <a href="{{ instance.get_absolute_url }}edit" class="btn btn-warning" role="button">Edit</a>
+    {% endif %}
+
   </div>
+  </p>
   </h3>
 
 </div>

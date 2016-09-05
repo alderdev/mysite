@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content%}
+{% if perms.posts.can_add_post %}
   <h1>{{ title }}<P><a href="/posts/create" class="btn btn-warning" role="button" >Create New</a></p></h1>
+    {% endif %}
 <div class="row">
 
   {% for item in object_list %}
