@@ -41,7 +41,7 @@ class CycleStatus(models.Model):
 
 class Product(models.Model):
 
-    part_number = models.CharField(max_length=20,null=False, blank=False, unique=True) #SAP料號
+    part_number = models.CharField(primary_key=True, max_length=20,null=False, blank=False) #SAP料號
     description = models.CharField(max_length=100, null=True, blank=True)
     specification = models.TextField(null=True, blank=True)
     image = models.ImageField( null=True, blank=True, height_field="height_field", width_field="width_field")
@@ -60,4 +60,4 @@ class Product(models.Model):
 
 
     def get_absolute_url(self):
-        return reverse( "products:detail", kwargs={"pk": self.id} )
+        return reverse( "products:detail", kwargs={"pk": self.part_number} )

@@ -53,7 +53,7 @@ class ProductDelete(DeleteView):
 
 def product_update(request, id):
 
-    instance = get_object_or_404(models.Product, id=id)
+    instance = get_object_or_404(models.Product, pk=id)
     form = ProductForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -66,7 +66,7 @@ def product_update(request, id):
 
 
 def product_delete(request, id):
-    instance = get_object_or_404(models.Product, id=id)
+    instance = get_object_or_404(models.Product, pk=id)
     instance.delete()
 
     return redirect("products:list")

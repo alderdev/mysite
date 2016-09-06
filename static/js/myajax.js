@@ -1,4 +1,6 @@
-
+function checkproduct(){
+	alert("into check product function!")
+}
 
 function showCustName(id)
 {/* 帶出客戶編號的ajax */

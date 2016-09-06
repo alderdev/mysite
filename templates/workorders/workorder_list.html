@@ -33,8 +33,9 @@
     <th width="5%">Category</th>
     <th width="8%">Recevice Date</th>
     <th width="20%">Customer Title</th>
-    <th width="15%">Product</th>
-    <th width="8%">Deliverly</th>
+    <th width="6%">PartNumber</th>
+    <th width="15%">Description </th>
+    <th width="5%">Deliverly</th>
     <th width="5%">Amount</th>
     <th >Comment</th>
   </tr>
@@ -44,7 +45,7 @@
     <td><a href='{{ record.get_absolute_url }}'>{{ record.category }}</a></td>
     <td><a href='{{ record.get_absolute_url }}'>{{ record.recevice_date | date:"Y-m-d" }}</a></td>
     <td><a href='{{ record.get_absolute_url }}'>{{ record.customer | truncatechars:30 }}</a></td>
-
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.product.part_number }}</a></td>
     <td><a href='{{ record.get_absolute_url }}'>{{ record.product }}</a></td>
     <td><a href='{{ record.get_absolute_url }}'>{{ record.deliverly | date:"Y-m-d" }}</a></td>
     <td><a href='{{ record.get_absolute_url }}'>{{ record.ord_amount }}</a></td>

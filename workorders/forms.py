@@ -20,7 +20,7 @@ class WorkOrderCreateForm(forms.ModelForm):
 
     category = forms.ModelChoiceField( queryset= OrderCategory.objects.all() ,widget= forms.Select( attrs={'class':'form-control'} ) )
     customer = forms.ModelChoiceField( queryset= Customer.objects.all() ,widget= forms.Select( attrs={'class':'form-control'} ) )
-    product = forms.ModelChoiceField( queryset= Product.objects.all() ,widget= forms.Select( attrs={'class':'form-control'} ) )
+    product = forms.ModelChoiceField( queryset= Product.objects.all() ,widget= forms.TextInput( attrs={'class':'form-control', 'onblur':'showProudct(this.id)'} ) )
 
     class Meta:
         model = WorkOrder
