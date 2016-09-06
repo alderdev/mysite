@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from . import models
 from .forms import  PostForm
+from django.core.mail import send_mail
 # Create your views here.
 
 
@@ -18,6 +19,14 @@ def post_create(request):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
+
+        mailsubject= instance.subject #'Django Send Mail Test'
+        mailmessage = instance.content #'Mail Message Content '
+        from_email = 'web.service@alder.com.tw'
+        to_mail = [ request.user.email ]
+
+        send_mail(mailsubject, mailmessage, from_email, to_mail, fail_silently=False)
+        
         return HttpResponseRedirect( instance.get_absolute_url() )
 
 
