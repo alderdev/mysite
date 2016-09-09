@@ -7,7 +7,15 @@ class ProductForm(forms.ModelForm):
     description = forms.CharField( widget= forms.TextInput( attrs={'class':'form-control' , 'size':'30' , 'placeholder':'Description'  } ) )
     specification = forms.CharField( widget= PagedownWidget( attrs={'class':'form-control', 'size':'30', 'rows':'20' , 'placeholder':'Specification' } ) )
 
+    class Meta:
+        model = Product
+        exclude = ('create_at','modify','height_field', 'width_field', 'is_active' )
 
+
+
+class ProductListForm(forms.ModelForm):
+    part_number = forms.CharField( widget= forms.TextInput( attrs={'class':'form-control' , 'size':'30' , 'placeholder':'Part Number'  } ) )
+    #description = forms.CharField( widget= forms.TextInput( attrs={'class':'form-control' , 'size':'30' , 'placeholder':'Description'  } ) )
 
     class Meta:
         model = Product

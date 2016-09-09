@@ -17,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 
 class WorkOrderList(ListView):
     model = WorkOrder
+    paginate_by = 10
 
 
 class WorkOrderDetail(DetailView):

@@ -12,7 +12,8 @@ class WorkOrderCreateForm(forms.ModelForm):
     ships_order = forms.CharField( widget= forms.TextInput( attrs={'class':'form-control' , 'size':'30' , 'placeholder':'Ship Order Number' } )   )
     work_order = forms.CharField( widget= forms.TextInput( attrs={'class':'form-control' , 'size':'30' , 'placeholder':'Work Order Number'  } ) )
     ord_amount = forms.CharField( widget= forms.TextInput( attrs={'class':'form-control' , 'size':'30' , 'placeholder':'Amount'  } ) )
-    deliverly = forms.DateField( widget= forms.SelectDateWidget()  )
+    #deliverly = forms.DateField( widget= forms.SelectDateWidget()  )
+    deliverly = forms.DateField( widget= forms.DateInput( attrs={'class':'form-control' , 'size':'30' , 'placeholder':'yyyy-MM-dd' } ) )
     request_user = forms.CharField( widget= forms.TextInput( attrs={'class':'form-control', 'size':'30' , 'placeholder':'Request User'  } )  )
 
     material_duty = forms.CharField( widget=forms.TextInput( attrs={'class':'form-control', 'size':'30' , 'placeholder':'Material Duty' } ) )
