@@ -2,33 +2,34 @@
 {% load staticfiles %}
 {% block content  %}
 
-<div>
+<div >
     <span ><a href="/customers/create" class="btn btn-primary">Create New</a></span>
 
     <form action="" method="GET">
         <input type="text" name="q" placeholder="Customer  Number or Title"  value="{{ request.GET.q }}"/>
-        <input type="submit" value="Search"/>
+        <input type="submit"  value="Search" class="btn btn-success"/>
     </form>
 </div>
 
   <div class="pagination">
       <span>{{ title }}</span>
       <span class="step-links">
-          {% if queryset.has_previous %}
-              <a href="?page={{ queryset.previous_page_number }}">previous</a>
+          {% if page_obj.has_previous %}
+              <a href="?page={{ page_obj.previous_page_number }}">previous</a>
           {% endif %}
 
           <span class="current">
-              Page {{ queryset.number }} of {{ queryset.paginator.num_pages }}.
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
           </span>
 
-          {% if queryset.has_next %}
-              <a href="?page={{ queryset.next_page_number }}">next</a>
+          {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}">next</a>
           {% endif %}
       </span>
   </div>
 
 <div>
+
 
 
 <div>

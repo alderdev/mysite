@@ -4,7 +4,7 @@
 
 <div>
     <span ><a href="/products/create" class="btn btn-primary">Create New</a></span>
-  
+
 </div>
 
 
@@ -12,17 +12,17 @@
   <div class="pagination">
       <span>{{ title }}</span>
       <span class="step-links">
-          {% if queryset.has_previous %}
-              <a href="?page={{ queryset.previous_page_number }}">previous</a>
-          {% endif %}
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
 
-          <span class="current">
-              Page {{ queryset.number }} of {{ queryset.paginator.num_pages }}.
-          </span>
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
 
-          {% if queryset.has_next %}
-              <a href="?page={{ queryset.next_page_number }}">next</a>
-          {% endif %}
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
       </span>
   </div>
 
