@@ -3,6 +3,14 @@ from .models import Customer
 from pagedown.widgets import PagedownWidget
 
 
+class CustomerSearchForm(forms.ModelForm):
+    title = forms.CharField( widget= forms.TextInput( attrs={'class':'form-control' , 'size':'30' , 'placeholder':'Customer Title'  } ) )
+
+    class Meta:
+        model = Customer
+        exclude = ('create_at','modify','invalid' )
+
+
 class CustomerCreateForm(forms.ModelForm):
 
     sap_no = forms.CharField( widget= forms.TextInput( attrs={'class':'form-control' , 'size':'30' , 'placeholder':'SAP Customer Number'  } ) )

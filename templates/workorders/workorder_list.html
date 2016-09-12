@@ -4,6 +4,12 @@
 
 <div>
     <span ><a href="/workorders/create" class="btn btn-primary">Create New</a></span>
+
+
+        <form action="" method="GET">
+            <input type="text" name="q" placeholder="Customer  Number or Title"  value="{{ request.GET.q }}"/>
+            <input type="submit" value="Search"/>
+        </form>
 </div>
 
   <div class="pagination">

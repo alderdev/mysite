@@ -8,6 +8,7 @@ from .models import WorkOrder
 from .forms import WorkOrderCreateForm, WorkOrderUpdateForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 
 
@@ -18,6 +19,20 @@ from django.contrib.auth.decorators import login_required
 class WorkOrderList(ListView):
     model = WorkOrder
     paginate_by = 10
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            query_list = WorkOrder.objects.filter(
+                Q(customer__title__icontains=query)|
+                Q(product__part_number=query)
+
+            ).distinct()
+
+            return query_list
+
+        return WorkOrder.objects.all()
+
 
 
 class WorkOrderDetail(DetailView):

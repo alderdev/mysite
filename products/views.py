@@ -13,15 +13,8 @@ from .forms import ProductForm, ProductListForm
 
 class ProductList(ListView):
     model = models.Product
-    form_class = ProductListForm
+    #form_class = ProductListForm
     #context_object_name = 'my_favorite_publishers'
-
-    def get_queryset(self):
-        form = self.form_class(self.request.GET)
-        if form.is_valid():
-
-            return models.Product.objects.filter(part_number__icontains=form.cleaned_data['part_number'])
-        return models.Product.objects.all()
 
 
 
