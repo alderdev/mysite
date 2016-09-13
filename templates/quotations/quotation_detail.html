@@ -5,29 +5,29 @@
 
   <h1>{{ title }}</h1>
 <a href="/ship/export_pdf">Export PDF</a>
-<p>作廢註記: {{ record.invalid }}</p>
+<p>作廢註記: {{ quotehead.invalid }}</p>
 <table class="table table-bordered">
   <tr>
     <td>報價單號</td>
-    <td>{{ record.order_number }}</td>
+    <td>{{ quotehead.order_number }}</td>
     <td>報價日期</td>
-    <td>{{ record.ord_date | date:"Y-m-d" }}</td>
+    <td>{{ quotehead.ord_date | date:"Y-m-d" }}</td>
   </tr>
   <tr>
     <td>業務代表</td>
-    <td>{{ record.request_user }}</td>
+    <td>{{ quotehead.request_user }}</td>
     <td>有效日期</td>
-    <td colspan="3">{{ record.effective_date | date:"Y-m-d" }}</td>
+    <td colspan="3">{{ quotehead.effective_date | date:"Y-m-d" }}</td>
   </tr>
   <tr>
     <td>客戶名稱</td>
-    <td>{{ record.customer.title }}</td>
+    <td>{{ quotehead.customer.title }}</td>
     <td>幣別</td>
-    <td>{{ record.currency }}</td>
+    <td>{{ quotehead.currency }}</td>
   </tr>
   <tr>
     <td>註記事項</td>
-    <td colspan="3">{{ record.memo | linebreaks  }}</td>
+    <td colspan="3">{{ quotehead.memo | linebreaks  }}</td>
   </tr>
 
 </table>
@@ -42,7 +42,7 @@
     <th width="6%"><button type="submit" class="btn btn-primary" >Add in</button>
 
     </th>
-    <th width="5%"><input id="id_quotehead" name="quotehead" size="8" type="hidden" value='{{ record.id }}' cssStyle="width:20px" /><input id="id_line_no" name="line_no" size="4" type="text" cssStyle="width:10px" />
+    <th width="5%"><input id="id_quotehead" name="quotehead" size="8" type="hidden" value='{{ quotehead.id }}' cssStyle="width:20px" /><input id="id_line_no" name="line_no" size="4" type="text" cssStyle="width:10px" />
     <th width="8%"><input id="id_product" name="product" size="14" type="text" onblur="showProudct(this.value)" cssStyle="width:30px" /></th>
     <th width="15%"><span id="span_product_desc"></span></th>
     <th width="30%"><span id="span_specification"></span></th>
@@ -60,12 +60,12 @@
     <th width="5%">單價</th>
     <th >註記事項</th>
   </tr>
-  {% for row in record.quotedetail_set.all %}
+  {% for row in quotehead.quotedetail_set.all %}
   <tr>
     <td>{{ row.invalid }}</td>
     <td>{{ row.line_no }}</td>
-    <td>{{ row.product.sap_no }}</td>
-    <td>{{ row.product.product_desc }}</td>
+    <td>{{ row.product.part_number }}</td>
+    <td>{{ row.product.description }}</td>
     <td>{{ row.product.specification }}</td>
     <td align="right">{{ row.unit_price }}</td>
     <td>{{ row.line_memo | linebreaks | truncatechars:30 }}</td>

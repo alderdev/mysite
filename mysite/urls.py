@@ -34,6 +34,9 @@ urlpatterns = [
     url(r'^employees/', include( 'employees.urls', namespace="employees")),
     url(r'^workorders/', include( 'workorders.urls', namespace="workorders")),
     url(r'^customers/', include( 'customers.urls', namespace="customers")),
+    url(r'^quotations/', include( 'quotations.urls', namespace="quotations")),
+
+
     url(r'^chaining/', include( 'smart_selects.urls' )),
 
 
