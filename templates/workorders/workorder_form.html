@@ -1,63 +1,29 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 
 {% block content  %}
-<script>
-function checkproduct(){
-	alert("into check product function!")
-  /* 帶出客戶編號的ajax */
-  	var xmlhttp;
-  	if (id=="")
-  	  {
-  		  document.getElementById("sap_no").innerHTML="產品編號";
-  		  //document.getElementById(id).innerHTML="œÐ¿é€JÄæŠìžê®Æ";
-  		  return;
-  	  }
-  	if (window.XMLHttpRequest)
-  	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+<script type="text/javascript">
+$("id_product").blur(function(){
+	var id = $("id_product").val();	//id的欄位
+	var str = $("#str").val();	//str的欄位
+	var formData = {id: id, str: str};
 
-  			xmlhttp=new XMLHttpRequest();
-  	  }
-  	else
-  	  {// code for IE6, IE5
-  	 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  	  }
-
-  	xmlhttp.onreadystatechange=function()
-  	{
-
-      if (xmlhttp.readyState==4 &&xmlhttp.status==404){
-        window.alert("無效的料號");
-        document.getElementById("product_desc").value = "";
-        document.getElementById("id_product").focus() ;
-        document.getElementById("id_product").selected = true;
-        return;
-      }
-
-  		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-  	   {
-    				var start = xmlhttp.responseText.indexOf("<span>")+6;
-    				var end = xmlhttp.responseText.indexOf("</span>",start);
-    				var x = xmlhttp.responseText.substring(start, end);
-
-    			 	var str = x.split(',');
-            //document.getElementById("id_product").value = str[0];
-    				//document.getElementById("sap_no_product").value = str[1];
-  					document.getElementById("span_product_desc").innerHTML= str[1];
-  					//document.getElementById("product_desc_span").value = str[2];
-  					document.getElementById("span_specification").innerHTML= str[2];
-    				//document.getElementById("specification").value = str[2];
-
-  	    }
-  	};
-
-  	xmlhttp.open("GET","/basic/productdesc/"+id+"/",true);
-  	xmlhttp.send();
-}
+  alert(id);
+	$.ajax
+	({
+	    url : "/products/"+id+"/",
+	    type: "POST",
+	    data : formData,
+	    success: function(data, textStatus, jqXHR)
+	    {
+	    	//	data --> 前頁傳過來的資料
+		      alert(data);
+	    }
+	});
+});
 
 </script>
-
-
 
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
   <form action='' method="POST"  enctype="multipart/form-data" >{% csrf_token %}

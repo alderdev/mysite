@@ -6,8 +6,10 @@ function confirm_click()
 }
 
 
-function showCustName(id)
+function showCustomer(id)
 {/* 帶出客戶編號的ajax */
+	alert("Hello Customer!!!!")
+
 	var xmlhttp;
 	if (id=="")
 	  {
@@ -59,6 +61,9 @@ function showCustName(id)
 
 function showProudct(id)
 {/* 帶出客戶編號的ajax */
+
+	window.alert("Hello Proudct");
+
 	var xmlhttp;
 	if (id=="")
 	  {
@@ -76,11 +81,10 @@ function showProudct(id)
 	 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	  }
 
-	xmlhttp.onreadystatechange=function()
-	{
+	xmlhttp.onreadystatechange=function()	{
 
     if (xmlhttp.readyState==4 &&xmlhttp.status==404){
-      window.alert("無效的料號");
+      window.alert("無效的料號AAAA");
       document.getElementById("product_desc").value = "";
       document.getElementById("id_product").focus() ;
       document.getElementById("id_product").selected = true;
@@ -104,6 +108,6 @@ function showProudct(id)
 	    }
 	};
 
-	xmlhttp.open("GET","/basic/productdesc/"+id+"/",true);
+	xmlhttp.open("GET","/product/productdesc/"+id+"/",true);
 	xmlhttp.send();
 }

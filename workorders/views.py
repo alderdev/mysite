@@ -14,11 +14,9 @@ from django.db.models import Q
 
 # Create your views here.
 
-
-
 class WorkOrderList(ListView):
     model = WorkOrder
-    paginate_by = 10
+    paginate_by = 5
 
     def get_queryset(self):
         query = self.request.GET.get('q')

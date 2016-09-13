@@ -7,17 +7,28 @@ from django.core.urlresolvers import reverse_lazy
 
 from . import models
 from .forms import ProductForm, ProductListForm
+from django.db.models import Q
 
 
 
 
 class ProductList(ListView):
     model = models.Product
+    paginate_by = 10
     #form_class = ProductListForm
     #context_object_name = 'my_favorite_publishers'
 
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            query_list = models.Product.objects.filter(
+                Q(description__icontains=query)|
+                Q(part_number=query)
+            ).distinct()
 
+            return query_list
 
+        return models.Product.objects.all()
 
 
 
