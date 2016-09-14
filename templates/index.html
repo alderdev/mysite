@@ -6,9 +6,32 @@
 <P><a href="/posts">Posts</a></p>
 
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<script>
+  $(document).ready(function(){
+		$("#account").blur(function(){
+      alert('Action')
+			var account = $("#account").val();
+			var formData = {account: id};
+			$.ajax
+			({
+				url : "get_accoount_name",
+				type: "GET",
+				data : formData,
+				success: function(data, textStatus, jqXHR)
+				{
+					$("#name").val(data);		//data --> "棟哥" 或 "找不到"
+				}
+			});
+		})
+  });
+	</script>
+
+	<input type="text" id="account" />
+	<input type="text" id="name" />
 
 {% for item in object_list %}
-
   <p><a href="{{ item.get_absolute_url }}">{{ item.subject }}</a></p>
 {% endfor %}
 

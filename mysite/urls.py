@@ -25,7 +25,7 @@ from posts import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    #url(r'^$', index),
+    url(r'^$', index),
     url(r'^$', views.post_list, name="list" ),
     url(r'^accounts/login/$', login),
     url(r'^accounts/logout/$', logout),

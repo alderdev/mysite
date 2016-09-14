@@ -2,6 +2,33 @@
 
 {% block content %}
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<script>
+  $(document).ready(function(){
+		$("#id_customer").blur(function(){
+      //alert( $("#id_customer").val() )
+
+			var account = $("#id_customer").val();
+			//var formData = {account: id};
+
+			$.ajax
+			({
+				url : "/customers/"+account,
+				type: "GET",
+				//data : formData,
+				success: function(data, textStatus, jqXHR)
+				{
+          alert( $("#span_title").html(data) )
+					//$("#span_title").val(data);		//data --> "棟哥" 或 "找不到"
+				}
+			});
+		})
+  });
+	</script>
+
+
+
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
   <h1>{{ title }}</h1>
 
