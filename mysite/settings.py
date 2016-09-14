@@ -30,12 +30,9 @@ ALLOWED_HOSTS = []
 LOGIN_REDIRECT_URL = '/'
 
 
-
 # Email Server settings
-EMAIL_HOST= '172.27.21.18' 
+EMAIL_HOST= '172.27.21.18'
 EMAIL_PORT= 25
-
-
 
 # Application definition
 
@@ -46,8 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'smart_selects',
-    'pagedown',
+    #'smart_selects',
+    #'pagedown',
     'posts',
     'products',
     'employees',

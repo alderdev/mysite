@@ -35,6 +35,15 @@ class OrderNumberManager(models.Manager):
         return order_number
 
 
+class OrderLineManager(models.Manager):
+
+    #短的月份序號如：16080001
+    def currency_number(self):
+
+        currencyNumber = self.filter( quotehead = self.quotehead ).count()+10
+
+        return currencyNumber
+
 
 #幣別
 class Currency(models.Model):
@@ -48,7 +57,7 @@ class Currency(models.Model):
 # 報價單
 class QuoteHead(models.Model):
     request_user = models.CharField(max_length=60, null=False, blank=False) #開單人
-    order_number = models.IntegerField(null=True, blank=True, unique=True) #報價單號
+    order_number = models.CharField(max_length=12, null=True, blank=True, unique=True) #報價單號
     ord_date = models.DateField(default=timezone.now) #報價日期
     customer = models.ForeignKey(Customer) #客戶編號
     effective_date = models.DateField( default=timezone.now ) # 報價單有效日期

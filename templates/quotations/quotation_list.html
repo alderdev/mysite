@@ -5,7 +5,7 @@
 
   <p><h3>{{ title }}</h3></p>
   <div>
-      <span ><a href="/ship/create" class="btn btn-primary">Create New</a></span>
+      <span ><a href="/quotations/create" class="btn btn-primary">Create New</a></span>
       <span align="right">
           <div class="pagination">
               <span>{{ title }}</span>
@@ -28,8 +28,12 @@
 
     <nav aria-label="...">
       <ul class="pagination">
-        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-        <li class="active"><a href="#">1 <span class="sr-only">{{ queryset.number }}</span></a></li>
+        {% if page_obj.has_previous %}
+          <li class="active"><a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+        {% else %}
+          <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+        {% endif %}
+        <li class="active"><a href="#">1 <span class="sr-only">{{ page_obj.number }}</span></a></li>
         ...
       </ul>
     </nav>

@@ -2,35 +2,15 @@
 
 {% block content %}
 
+<div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
   <h1>{{ title }}</h1>
 
 <form action="" method="POST">{% csrf_token %}
-  <p>
-    <label>Customer Number:</label>
-    <input id="id_order_number" name="order_number" type="hidden" />
-    <input id="id_customer" name="customer" size="20" title="Customer Number" type="text" onblur="showCustName(this.value)" cssStyle="width:60px" />
-    <span id="span_title"></span>
-  </p>
 
-  {{ form.customer}}
-  <p>
-    <label>Sales Name:</label>{{ form.request_user}}
-  </p>
-  <p>
-    <label>Quote Date:</label>{{ form.ord_date }}
-  </p>
-  <p>
-    <label>Effective Date:</label>{{ form.effective_date}}
-  </p>
-  <p>
-    <label>Currency:</label>{{ form.currency}}
-  </p>
-  <p>
-    <label>Comment:</label>{{ form.memo}}
-  </p>
-
-
+{{ form.as_p }}
 
   <button type="submit" class="btn btn-primary" >Save</button>
 </form>
+
+</div>
 {% endblock content %}
