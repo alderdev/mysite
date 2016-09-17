@@ -21,7 +21,7 @@ class WorkOrderCreateForm(forms.ModelForm):
 
     category = forms.ModelChoiceField( queryset= OrderCategory.objects.all() ,widget= forms.Select( attrs={'class':'form-control'} ) )
     customer = forms.ModelChoiceField( queryset= Customer.objects.all() ,
-                                        widget= forms.TextInput( attrs={'class':'form-control' , 'onblur':'showCustomer(this.id)' } ) )
+                                        widget= forms.TextInput( attrs={'class':'form-control' } ) )
     product = forms.ModelChoiceField( queryset= Product.objects.all() ,
                                         widget= forms.TextInput( attrs={'class':'form-control'} ) )
 
@@ -47,8 +47,8 @@ class WorkOrderUpdateForm(forms.ModelForm):
     category = forms.ModelChoiceField( queryset= OrderCategory.objects.all() ,widget= forms.Select( attrs={'class':'form-control'} ) )
     zmms = forms.ModelChoiceField( queryset= ZmmsOption.objects.all() ,widget= forms.Select( attrs={'class':'form-control'} )  )
     material_ctrl = forms.ModelChoiceField( queryset= MaterialCtrlOption.objects.all() ,widget= forms.Select( attrs={'class':'form-control'} )  )
-    customer = forms.ModelChoiceField( queryset= Customer.objects.all() ,widget= forms.TextInput( attrs={'class':'form-control' , 'onblur':'showCustomer(this.id)' } ) )
-    product = forms.ModelChoiceField( queryset= Product.objects.all() ,widget= forms.TextInput( attrs={'class':'form-control' , 'onblur':'showProudct(this.id)'  } ) )
+    customer = forms.ModelChoiceField( queryset= Customer.objects.all() ,widget= forms.TextInput( attrs={'class':'form-control'  } ) )
+    product = forms.ModelChoiceField( queryset= Product.objects.all() ,widget= forms.TextInput( attrs={'class':'form-control'  } ) )
 
     class Meta:
         model = WorkOrder

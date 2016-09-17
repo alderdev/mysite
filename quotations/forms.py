@@ -11,7 +11,7 @@ class QuoteHeadCreateForm(forms.ModelForm):
 
     #request_user = forms.CharField( widget= forms.TextInput( attrs={'class':'form-control' , 'size':'30' , 'placeholder':'Last Name'  } ) ) #開單人
     customer = forms.ModelChoiceField( queryset= Customer.objects.all() ,
-                                        widget= forms.TextInput( attrs={'class':'form-control' , 'onfocus':'select()', 'onblur':'showCustomer(this.id)' } ) ) #客戶編號
+                                        widget= forms.TextInput( attrs={'class':'form-control' , 'onfocus':'select()' } ) ) #客戶編號
 
     ord_date = forms.DateField(initial=timezone.now ,
                                widget= forms.DateInput(
