@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+{% if customer %}
+<html>
+<p id='title'>{{ customer.title }}</p>
+<p id='phone'>{{ customer.phone }}</p>
+<p id='contact'>{{ customer.contact }}</p>
+<p id='address'>{{ customer.address }}</p>
+</html>
+{% else %}
+No Data
+{% endif %}

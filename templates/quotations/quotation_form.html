@@ -7,21 +7,27 @@
 	<script>
   $(document).ready(function(){
 		$("#id_customer").blur(function(){
-      //alert( $("#id_customer").val() )
-
 			var account = $("#id_customer").val();
+      $("#title_customer").text("");
 			//var formData = {account: id};
 
 			$.ajax
 			({
-				url : "/customers/"+account,
+				url : "/customers/ajax/"+account,
 				type: "GET",
 				//data : formData,
 				success: function(data, textStatus, jqXHR)
 				{
-          alert( $("#span_title").html(data) )
-					//$("#span_title").val(data);		//data --> "棟哥" 或 "找不到"
-				}
+            var start = data.indexOf("<p id='title'>", 0);
+            var end = data.indexOf("</p>", start);
+            var str = data.substring(start+14, end);
+            $("<div id='title_customer'>" + str + "</div>").insertAfter("#id_customer");
+					
+				},
+        error: function(jqXHR, exception)
+        {
+          alert( "Invalid Customer"  );
+        }
 			});
 		})
   });
@@ -34,7 +40,7 @@
 
 <form action="" method="POST">{% csrf_token %}
 
-{{ form.as_p }}
+  {{ form.as_p }}
 
   <button type="submit" class="btn btn-primary" >Save</button>
 </form>

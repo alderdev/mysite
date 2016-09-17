@@ -3,31 +3,71 @@
 
 
 {% block content  %}
-<script type="text/javascript">
-$("id_product").blur(function(){
-	var id = $("id_product").val();	//id的欄位
-	var str = $("#str").val();	//str的欄位
-	var formData = {id: id, str: str};
 
-  alert(id);
-	$.ajax
-	({
-	    url : "/products/"+id+"/",
-	    type: "POST",
-	    data : formData,
-	    success: function(data, textStatus, jqXHR)
-	    {
-	    	//	data --> 前頁傳過來的資料
-		      alert(data);
-	    }
-	});
-});
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-</script>
+	<script>
+  $(document).ready(function(){
+		$("#id_customer").blur(function(){
+			var account = $("#id_customer").val();
+			$("#title_customer").text("");
+			//var formData = {account: id};
+
+			$.ajax
+			({
+				url : "/customers/ajax/"+account,
+				type: "GET",
+				//data : formData,
+				success: function(data, textStatus, jqXHR)
+				{
+						var start = data.indexOf("<p id='title'>", 0);
+						var end = data.indexOf("</p>", start);
+						var str = data.substring(start+14, end);
+						$("<div id='title_customer'>" + str + "</div>").insertAfter("#id_customer");
+
+				},
+				error: function(jqXHR, exception)
+				{
+					alert( "Invalid Customer"  );
+				}
+			});
+		})
+
+
+
+		$("#id_product").blur(function(){
+			var account = $("#id_product").val();
+      $("#description").text("");
+			//var formData = {account: id};
+
+			$.ajax
+			({
+				url : "/products/ajax/"+account,
+				type: "GET",
+				//data : formData,
+				success: function(data, textStatus, jqXHR)
+				{
+
+            var start = data.indexOf("<p id='description'>", 0);
+            var end = data.indexOf("</p>", start);
+            var str = data.substring(start+20, end);
+            $("<div id='description'>" + str + "</div>").insertAfter("#id_product");
+
+				},
+        error: function(jqXHR, exception)
+        {
+          alert( "Invalid Product"  );
+        }
+			});
+		})
+  });
+	</script>
+
+
 
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
   <form action='' method="POST"  enctype="multipart/form-data" >{% csrf_token %}
-    {{ form.as_table }}
+    {{ form.as_p }}
   <input type="submit" class="btn btn-primary" value="Submit"/>
   </form>
 </div>

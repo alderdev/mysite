@@ -54,7 +54,7 @@ function showCustomer(id)
 	    }
 	};
 
-	xmlhttp.open("GET","/ship/showcustomer/"+id+"/",true);
+	xmlhttp.open("GET","/customers/"+id+"/",true);
 	xmlhttp.send();
 }
 
@@ -108,6 +108,6 @@ function showProudct(id)
 	    }
 	};
 
-	xmlhttp.open("GET","/product/productdesc/"+id+"/",true);
+	xmlhttp.open("GET","/products/"+id+"/",true);
 	xmlhttp.send();
 }

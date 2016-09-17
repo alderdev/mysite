@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+{% if product %}
+<html>
+<p id='part_number'>{{ product.part_number }}</p>
+<p id='description'>{{ product.description }}</p>
+<p id='specification'>{{ product.specification }}</p>
+</html>
+{% else %}
+No Data
+{% endif %}

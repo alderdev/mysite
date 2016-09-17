@@ -85,9 +85,11 @@ function showProudct(id)
 
 		if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	   {
+
   				var start = xmlhttp.responseText.indexOf("<span>")+6;
   				var end = xmlhttp.responseText.indexOf("</span>",start);
   				var x = xmlhttp.responseText.substring(start, end);
+					alert(xmlhttp.responseText)
 
   			 	var str = x.split(',');
           //document.getElementById("id_product").value = str[0];
@@ -100,6 +102,6 @@ function showProudct(id)
 	    }
 	};
 
-	xmlhttp.open("GET","/basic/productdesc/"+id+"/",true);
+	xmlhttp.open("GET","/products/"+id+"/",true);
 	xmlhttp.send();
 }
