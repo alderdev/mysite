@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content  %}
+
+<div >
+    <span ><a href="/exam/create" class="btn btn-primary">Create New</a></span>
+
+    <form action="" method="GET">
+        <input type="text" name="q" placeholder="Customer  Number or Title"  value="{{ request.GET.q }}"/>
+        <input type="submit"  value="Search" class="btn btn-success"/>
+    </form>
+</div>
+
+  <div class="pagination">
+      <span>{{ title }}</span>
+      <span class="step-links">
+          {% if page_obj.has_previous %}
+              <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+          {% endif %}
+
+          <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
+
+          {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}">next</a>
+          {% endif %}
+      </span>
+  </div>
+
+<div>
+
+
+
+<div>
+<table class="table table-striped" >
+  <tr>
+    <th width="15%">Customer Number</th>
+    <th width="20%">Name</th>
+    <th width="20%">Title</th>
+    <th width="15%">BirthDate</th>
+
+  </tr>
+{% for record in object_list %}
+  <tr>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.id }}</a></td>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.name }}</a></td>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.title | truncatechars:30 }}</a></td>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.birth_date }}</a></td>
+
+  </tr>
+{% endfor %}
+</table>
+<div>
+
+
+
+
+
+
+
+{% endblock content %}

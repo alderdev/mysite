@@ -25,7 +25,7 @@ from posts import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', index),
+    #url(r'^$', index),
     url(r'^$', views.post_list, name="list" ),
     url(r'^accounts/login/$', login),
     url(r'^accounts/logout/$', logout),
@@ -36,8 +36,10 @@ urlpatterns = [
     url(r'^customers/', include( 'customers.urls', namespace="customers")),
     url(r'^quotations/', include( 'quotations.urls', namespace="quotations")),
 
+    url(r'^exam/', include( 'exam.urls', namespace="exam")),
 
-    url(r'^chaining/', include( 'smart_selects.urls' )),
+
+    #url(r'^chaining/', include( 'smart_selects.urls' )),
 
 
 ]

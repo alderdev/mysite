@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'workorders',
     'customers',
     'quotations',
+    'exam',
 
 ]
 
