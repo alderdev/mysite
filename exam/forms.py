@@ -1,6 +1,6 @@
 from django import forms
 from .models import Author, Book
-from django.forms.models import inlineformset_factory
+from django.forms import inlineformset_factory
 
 
 class AuthorForm(forms.ModelForm):
@@ -9,7 +9,9 @@ class AuthorForm(forms.ModelForm):
         model = Author
         fields = ['name', 'title', 'birth_date']
 
-    #BookFormSet = inlineformset_factory(Author, Book, fields=('title',))
+#BookFormSet = inlineformset_factory(Author, Book, fields=('title',))
+#BookFormSet = inlineformset_factory(Author, Book, fields=('title',))
+
 
 class BookForm(forms.ModelForm):
     class Meta:

@@ -23,4 +23,4 @@ class Author(models.Model):
 
 class Book(models.Model):
     name = models.CharField(max_length=100)
-    authors = models.ManyToManyField(Author)
+    authors = models.ForeignKey(Author)
