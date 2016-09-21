@@ -15,6 +15,6 @@ urlpatterns = [
 
 
 
-    url(r'^ajax/(?P<pk>[0-9]+)/$', views.ProductDetail.as_view( template_name = 'products/jquery_product.html'), name="detail" ),
+    url(r'^ajax/(?P<pk>[0-9]+)/$', views.ProductDetail.as_view( template_name = 'products/jquery_product.html'), name="ajax-detail" ),
 
 ]

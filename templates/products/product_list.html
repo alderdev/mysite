@@ -38,7 +38,7 @@
 <div class="col-sm-6 col-md-4">
 
     {% if record.image %}
-      <img src="{{ record.image.url }}"  class="img-responsive"/>
+      <img src="{{ record.image.url }}" class="img-rectangle" height="360" width="360"/>
     {% endif %}
 
   <h3><a href='{{ record.get_absolute_url }}'>{{ record.description | truncatechars:30 }}</a>
