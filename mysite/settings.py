@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #'smart_selects',
-    #'pagedown',
+    'pagedown',
     'posts',
     'products',
     'employees',

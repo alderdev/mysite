@@ -52,6 +52,7 @@ class QuotationList(ListView):
 
 class QuotationDetail(DetailView):
     model = QuoteHead
+    form_class = QuoteDetailAddinForm
 
 
 

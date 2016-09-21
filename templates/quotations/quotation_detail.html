@@ -10,7 +10,6 @@
 			var account = $("#id_product").val();
       $("#description").text("");
 			//var formData = {account: id};
-
 			$.ajax
 			({
 				url : "/products/ajax/"+account,
@@ -32,6 +31,45 @@
   });
 	</script>
 
+  <script type="text/javascript">
+  function checkOnSubmit(){
+
+    var validateflag = true;
+    //檢查存檔是不是有欄位沒填
+
+    var line_no = document.getElementById("id_line_no").value;
+    var unit_price = document.getElementById("id_unit_price").value;
+    
+    if( line_no ==''){
+      window.alert("Invalid Line Number");
+      validateflag = false ;
+      return false;
+    }
+    if( unit_price ==''){
+      window.alert("Invalid Price");
+      validateflag = false ;
+      return false;
+    }
+
+    var product = document.getElementById("description").innerHTML;
+
+    if( product ==''){
+      window.alert("Invalid Product");
+      validateflag = false ;
+      return false;
+    }
+
+    if(validateflag){
+      document.getElementById("myform").action = "/quotations/detailadd/";
+      window.alert("Submit");
+
+      //myform.submit();
+    }else{
+      return false;
+    }
+    return false;
+  }
+  </script>
 
 
 
@@ -66,7 +104,7 @@
 
 <table class="table table-striped">
 
-  <form action="/quotations/detailadd/" method="POST">{% csrf_token %}
+  <form id ='myform' action="" method="POST" onsubmit="return checkOnSubmit()">{% csrf_token %}
   <tr>
     <th width="6%"><button type="submit" class="btn btn-primary" >Add in</button>
     </th>
