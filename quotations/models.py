@@ -69,6 +69,8 @@ class QuoteHead(models.Model):
     modify = models.DateTimeField(auto_now_add=False, auto_now =True)
 
     objects = OrderNumberManager()
+    def __str__(self):
+        return self.order_number
 
 
     def get_absolute_url(self):
@@ -87,6 +89,9 @@ class QuoteDetail(models.Model):
 
     create_at = models.DateTimeField(auto_now_add=True, auto_now =False)
     modify = models.DateTimeField(auto_now_add=False, auto_now =True)
+
+    def __str__(self):
+        return self.product.part_number
 
 
     def get_absolute_url(self):

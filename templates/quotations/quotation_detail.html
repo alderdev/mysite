@@ -39,7 +39,7 @@
 
     var line_no = document.getElementById("id_line_no").value;
     var unit_price = document.getElementById("id_unit_price").value;
-    
+
     if( line_no ==''){
       window.alert("Invalid Line Number");
       validateflag = false ;
@@ -116,7 +116,7 @@
     <th width="15%"><span id="span_description"></span></th>
     <th width="6%"><span id="span_img"></span></th>
     <th width="30%"><span id="span_specification"></span></th>
-    <th width="5%"><input id="id_unit_price" name="unit_price" size="8" step="any" type="number"/>
+    <th width="5%"><input id="id_unit_price" name="unit_price" size="4" step="any" type="number"/>
     <th ><input id="line_memo" name="line_memo" size="40"  maxlength="50" type="text" cssStyle="width:160px" />
   </tr>
 </form>
@@ -142,7 +142,7 @@
           {% endif %}
     </td>
 
-    <td>{{ row.product.specification }}</td>
+    <td>{{ row.product.specification | linebreaks }}</td>
     <td align="right">{{ row.unit_price }}</td>
     <td>{{ row.line_memo | linebreaks | truncatechars:30 }}</td>
   </tr>

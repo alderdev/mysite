@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'customers',
     'quotations',
     'exam',
+    'prod_model',
 
 ]
 

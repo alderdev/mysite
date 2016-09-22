@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^quotations/', include( 'quotations.urls', namespace="quotations")),
 
     url(r'^exam/', include( 'exam.urls', namespace="exam")),
+    url(r'^prod_model/', include( 'prod_model.urls', namespace="prod_model")),
 
 
     #url(r'^chaining/', include( 'smart_selects.urls' )),

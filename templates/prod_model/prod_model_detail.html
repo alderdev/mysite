@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content  %}
+
+<script type="text/javascript">
+function confirm_click()
+{
+return confirm("Are you sure Delete it?");
+}
+</script>
+
+<div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
+  <div class='media'>
+    <div class="media-left media-middle">
+      {% if prodmodel.image %}
+        <p align="center"><img src="{{ prodmodel.image.url }}" class="img-responsive"/></p>
+      {% endif %}
+    </div>
+    <div class="media-body">
+      <p><h3>{{ prodmodel.modelname }}</h3></p>
+      <p>Product Description: {{ prodmodel.prodname }}</p>
+      <p>Family: {{ prodmodel.family }}</p>
+      <p>Option 1: {{ prodmodel.option1 }}</p>
+      <p>Beam Angle: {{ prodmodel.beam_angle }}</p>
+      <p>CCT: {{ prodmodel.cct }}</p>
+      <p>CRI: {{ prodmodel.cri }}</p>
+      <p>Watt: {{ prodmodel.watt }}</p>
+      <p>Lm: {{ prodmodel.lm }}</p>
+      <p>Active: {{ prodmodel.is_active }}</p>
+      <h3>
+        <div class="form-inline">
+        <a href="/prod_model" class="btn btn-success" role="button" >Return</a>
+        <a href="{{ instance.get_absolute_url }}delete" class="btn btn-danger" role="button" onclick="return confirm_click()" >Delete</a>
+        <a href="{{ instance.get_absolute_url }}edit" class="btn btn-warning" role="button">Edit</a>
+      </div>
+      </h3>
+    </div>
+
+
+
+  </div>
+</div>
+{% endblock content %}
