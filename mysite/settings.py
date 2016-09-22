@@ -34,6 +34,8 @@ LOGIN_REDIRECT_URL = '/'
 EMAIL_HOST= '172.27.21.18'
 EMAIL_PORT= 25
 
+CART_SESSION_ID = 'cart'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -53,6 +55,7 @@ INSTALLED_APPS = [
     'quotations',
     'exam',
     'prod_model',
+    'cart',
 
 ]
 

@@ -17,6 +17,7 @@ from django.db.models import Q
 class WorkOrderList(ListView):
     model = WorkOrder
     paginate_by = 5
+    ordering = 'deliverly'
 
     def get_queryset(self):
         query = self.request.GET.get('q')
@@ -24,7 +25,6 @@ class WorkOrderList(ListView):
             query_list = WorkOrder.objects.filter(
                 Q(customer__title__icontains=query)|
                 Q(product__part_number=query)
-
             ).distinct()
 
             return query_list

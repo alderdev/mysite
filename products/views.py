@@ -15,10 +15,14 @@ from django.db.models import Q
 class ProductList(ListView):
     model = models.Product
     paginate_by = 10
+    ordering = ['part_number']
+
+
     #form_class = ProductListForm
     #context_object_name = 'my_favorite_publishers'
 
     def get_queryset(self):
+
         query = self.request.GET.get('q')
         if query:
             query_list = models.Product.objects.filter(
@@ -36,6 +40,7 @@ class ProductDetail(DetailView):
     model = models.Product
 
     def get_context_data(self, **kwargs):
+
         context = super(ProductDetail, self).get_context_data(**kwargs)
         context['product_list'] = models.Product.objects.all()
         return context

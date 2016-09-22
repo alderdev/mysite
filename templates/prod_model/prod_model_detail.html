@@ -27,6 +27,12 @@ return confirm("Are you sure Delete it?");
       <p>Watt: {{ prodmodel.watt }}</p>
       <p>Lm: {{ prodmodel.lm }}</p>
       <p>Active: {{ prodmodel.is_active }}</p>
+      {% url "cart:cart_add , product.id" %}
+      <form action="" method="post">
+
+        {% csrf_token %}
+        <input type="submit" value="Add to cart">
+      </form>
       <h3>
         <div class="form-inline">
         <a href="/prod_model" class="btn btn-success" role="button" >Return</a>
