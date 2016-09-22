@@ -55,6 +55,9 @@ class WorkOrder(models.Model):
     modify = models.DateTimeField(auto_now_add=False, auto_now =True)
     last_access = models.DateTimeField(auto_now_add=False, auto_now =True)
 
+    class Meta:
+        ordering = ['-last_access']
+
     def __str__(self):
         return self.work_order
 

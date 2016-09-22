@@ -11,7 +11,7 @@ from .models import ProdModel
 
 class ProdModelList(ListView):
     model = ProdModel
-    paginate_by = 10
+    paginate_by = 3
 
 
     def get_queryset(self):
@@ -26,7 +26,7 @@ class ProdModelList(ListView):
             return query_list
 
         return ProdModel.objects.all()
-        
+
 
 class ProdModelDetail(DetailView):
     model = ProdModel

@@ -4,38 +4,30 @@
 
 <div>
     <form action="" method="GET">
+      <input type="text" name="q" placeholder="Customer  Number or Title"  value="{{ request.GET.q }}"/>
+      <input type="submit"  value="Search" class="btn btn-success"/>
+      <span ><a href="/products/create" class="btn btn-primary">Create New</a></span>
       <span align="right">
           <div class="pagination">
-              <span>{{ title }}</span>
-              <span class="step-links">
-                  {% if page_obj.has_previous %}
-                      <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-                  {% endif %}
+             <ul class="pager">
+                <span>{{ title }}</span>
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <li><a href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+                    {% endif %}
 
-                  <span class="current">
-                      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                  </span>
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
 
-                  {% if page_obj.has_next %}
-                      <a href="?page={{ page_obj.next_page_number }}">next</a>
-                  {% endif %}
-              </span>
-              <nav aria-label="...">
-                <ul class="pagination">
-                  {% if page_obj.has_previous %}
-                    <li class="active"><a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-                  {% else %}
-                    <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-                  {% endif %}
-                  <li class="active"><a href="#">1 <span class="sr-only">{{ page_obj.number }}</span></a></li>
-                  ...
-                </ul>
-              </nav>
+                    {% if page_obj.has_next %}
+                        <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
+                    {% endif %}
+                </span>
+              </ul>
           </div>
       </span>
-        <input type="text" name="q" placeholder="Customer  Number or Title"  value="{{ request.GET.q }}"/>
-        <input type="submit"  value="Search" class="btn btn-success"/>
-        <span ><a href="/products/create" class="btn btn-primary">Create New</a></span>
+
     </form>
 </div>
 
@@ -46,7 +38,7 @@
     <th width="5%">Family</th>
     <th width="5%">Image</th>
     <th width="20%">Product Name</th>
-    <th >Model</th>
+    <th width="30%">Model</th>
     <th width="5%">Option 1</th>
     <th width="5%">Beam Angle</th>
     <th width="4%">CCT</th>

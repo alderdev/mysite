@@ -16,7 +16,7 @@ from django.db.models import Q
 
 class WorkOrderList(ListView):
     model = WorkOrder
-    paginate_by = 5
+    paginate_by = 10
     ordering = 'deliverly'
 
     def get_queryset(self):
