@@ -61,9 +61,8 @@
 
     if(validateflag){
       document.getElementById("myform").action = "/quotations/detailadd/";
-      window.alert("Submit");
-
-      //myform.submit();
+      //window.alert("Submit");
+      myform.submit();
     }else{
       return false;
     }
@@ -134,7 +133,7 @@
   {% for row in quotehead.quotedetail_set.all %}
   <tr>
     <td>{{ row.invalid }}</td>
-    <td>{{ row.line_no }}</td>
+    <td><a href='{{ row.get_absolute_url }}'>{{ row.line_no }}</a></td>
     <td>{{ row.product.part_number }}</td>
     <td>{{ row.product.description }}</td>
     <td>  {% if row.product.image %}

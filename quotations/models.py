@@ -34,15 +34,15 @@ class OrderNumberManager(models.Manager):
         order_number = nextNumber + int(order_date.replace('-','')[2:])*10000
         return order_number
 
-
+#自動幫明細行編號
 class OrderLineManager(models.Manager):
 
-    #短的月份序號如：16080001
-    def currency_number(self):
+    def current_number(self):
+        print( dir(self) )
 
-        currencyNumber = self.filter( quotehead = self.quotehead ).count()+10
+        currentNumber = self.filter( quotehead = self.quotehead ).count()+10
 
-        return currencyNumber
+        return currentNumber
 
 
 #幣別
@@ -81,11 +81,12 @@ class QuoteHead(models.Model):
 # 報價單明細
 class QuoteDetail(models.Model):
     quotehead = models.ForeignKey(QuoteHead) #報價單編號
-    line_no = models.IntegerField() #行號
+    line_no = models.IntegerField(null=True, blank=True) #行號
     product = models.ForeignKey(Product) # 料號
     unit_price = models.FloatField() # 單價
     line_memo = models.CharField(max_length=50, blank=True, null=True) # 行備註
     invalid = models.BooleanField(default=False) #作廢
+    objects = OrderLineManager()
 
     create_at = models.DateTimeField(auto_now_add=True, auto_now =False)
     modify = models.DateTimeField(auto_now_add=False, auto_now =True)
@@ -95,4 +96,5 @@ class QuoteDetail(models.Model):
 
 
     def get_absolute_url(self):
-        return reverse( "quotations:detail", kwargs={"pk": self.id} )
+
+        return reverse( "quotations:detail", kwargs={"pk": self.quotehead.id} )
