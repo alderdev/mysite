@@ -51,13 +51,21 @@
       return false;
     }
 
-    var product = document.getElementById("description").innerHTML;
+    var prod_number = document.getElementById("id_product").value;
 
-    if( product ==''){
-      window.alert("Invalid Product");
-      validateflag = false ;
-      return false;
+    if( prod_number != '' ){
+      var product = document.getElementById("description").innerHTML;
+      if( product ==''){
+        window.alert("Invalid Product");
+        validateflag = false ;
+        return false;
+      }
+    }else{
+        window.alert("Product is require!");
+        validateflag = false ;
+        return false;
     }
+
 
     if(validateflag){
       document.getElementById("myform").action = "/quotations/detailadd/";
