@@ -100,5 +100,4 @@ class QuoteDetail(models.Model):
 
 
     def get_absolute_url(self):
-
         return reverse( "quotations:detail", kwargs={"pk": self.quotehead.id} )

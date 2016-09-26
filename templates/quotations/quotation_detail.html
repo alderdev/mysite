@@ -97,7 +97,6 @@
 
     if(validateflag){
       document.getElementById("myform").action = "/quotations/detailadd/";
-      //window.alert("Submit");
       myform.submit();
     }else{
       return false;
@@ -147,11 +146,10 @@
     </th>
     <th width="3%">
       <input id="id_quotehead" name="quotehead" size="8" type="hidden" value='{{ quotehead.id }}' cssStyle="width:20px" />
-
     </th>
     <th width="8%"><input id="id_product" name="product" size="14" type="text"  cssStyle="width:30px" /></th>
     <th width="15%"><span id="span_description"></span></th>
-    <th width="6%"><span id="span_img"></span></th>
+    <th width="8%"><span id="span_img"></span></th>
     <th width="30%"><span id="span_specification"></span></th>
     <th width="5%"><input id="id_unit_price" name="unit_price" size="4" step="any" type="number"/>
     <th ><input id="line_memo" name="line_memo" size="40"  maxlength="50" type="text" cssStyle="width:160px" />
@@ -162,11 +160,11 @@
 
   <tr>
     <th width="6%"><button type="submit" class="btn btn-danger" >Delete Item</button></th>
-  
+
     <th width="4%">行號</th>
     <th width="8%">料號</th>
     <th width="15%">品名</th>
-    <th width="4%">產品圖示</th>
+    <th width="6%">產品圖示</th>
     <th width="30%">規格</th>
     <th width="5%">單價</th>
     <th >註記事項</th>

@@ -29,7 +29,6 @@ class QuoteHeadCreateForm(forms.ModelForm):
     currency = forms.ModelChoiceField( queryset= Currency.objects.all() ,widget= forms.Select( attrs={'class':'form-control'} ) )
     comment = forms.CharField( widget=forms.Textarea( attrs={'class':'form-control', 'size':'30', 'rows':'20'} ), required=False  )
 
-
     class Meta:
         model = QuoteHead
         exclude = ( 'create_at','modify','invalid', 'order_number', 'request_user' )
@@ -38,22 +37,7 @@ class QuoteHeadCreateForm(forms.ModelForm):
 
 class QuoteDetailAddinForm(forms.ModelForm):
     quotehead = forms.ModelChoiceField( queryset= QuoteHead.objects.all()  )
-    line_no = forms.IntegerField() #報價日期
-    product = forms.ModelChoiceField( queryset= Product.objects.all() ,widget= forms.TextInput( attrs={'class':'form-control'} ) )
-    unit_price = forms.FloatField() #報價日期
-    line_memo = forms.CharField( widget=forms.Textarea( attrs={'class':'form-control', 'size':'30', 'rows':'20'} ), required=False  )
-
-
-    class Meta:
-        model = QuoteDetail
-        exclude = ( 'create_at','modify','invalid' )
-
-
-
-
-class QuoteLineDeleteForm(forms.Form):
-    quotehead = forms.ModelChoiceField( queryset= QuoteHead.objects.all()  )
-    line_no = forms.IntegerField() #報價日期
+    line_no = forms.IntegerField(required=False )
     product = forms.ModelChoiceField( queryset= Product.objects.all() ,widget= forms.TextInput( attrs={'class':'form-control'} ) )
     unit_price = forms.FloatField() #報價日期
     line_memo = forms.CharField( widget=forms.Textarea( attrs={'class':'form-control', 'size':'30', 'rows':'20'} ), required=False  )

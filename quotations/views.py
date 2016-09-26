@@ -55,9 +55,7 @@ class QuoteDetailCreate( CreateView):
 
 def quote_delete_line(request):
 
-    print( request.POST['quotehead_id'] )
-
-
+    #print( request.POST['quotehead_id'] )
     if request.POST or None:
         rq = request.POST.getlist('rows')
         instance = QuoteDetail.objects.filter(id__in= rq )
@@ -69,14 +67,14 @@ def quote_delete_line(request):
 
 
 
-
 def quote_create_line(request):
-
     form = QuoteDetailAddinForm(request.POST or None )
+    print(form)
     if form.is_valid():
 
+
         instance = form.save(commit=False)
-        #print(instance.quotehead_id)
+
         instance.line_no = QuoteDetail.objects.current_number(instance.quotehead_id)
         instance.save()
         return HttpResponseRedirect("../%s" %str(instance.quotehead.id))
