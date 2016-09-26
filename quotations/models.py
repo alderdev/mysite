@@ -37,12 +37,16 @@ class OrderNumberManager(models.Manager):
 #自動幫明細行編號
 class OrderLineManager(models.Manager):
 
-    def current_number(self):
-        print( dir(self) )
+    def current_number(self,quotehead_id ):
+        last_number = 0
 
-        currentNumber = self.filter( quotehead = self.quotehead ).count()+10
+        if self.filter( quotehead = quotehead_id ).count() > 0:
+            current = self.filter( quotehead = quotehead_id ).last()
+            last_number = current.line_no
 
-        return currentNumber
+        next_number = last_number + 10
+        #print("Next Number: %s" %(str(next_number)) )
+        return next_number
 
 
 #幣別

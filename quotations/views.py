@@ -45,6 +45,7 @@ class QuoteDetailCreate( CreateView):
 
     def form_valid(self, form):
         #自動取得單據流水號
+        #print("QuoteDetailCreate.form_valid  Running")
         form.instance.order_number = QuoteHead.objects.month_sequence()
         form.instance.request_user = self.request.user
 
@@ -59,7 +60,8 @@ def quote_create_line(request):
     if form.is_valid():
 
         instance = form.save(commit=False)
-        print(QuoteDetail.objects.current_number())
+        #print(instance.quotehead_id)
+        instance.line_no = QuoteDetail.objects.current_number(instance.quotehead_id)
         instance.save()
         #messages.success(request, "Successfully Create Line")
         #print( instance.quotehead.id )
