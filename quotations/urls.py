@@ -13,7 +13,9 @@ urlpatterns = [
 
 
 
+
     url(r'^detailadd/$', views.quote_create_line  ),
+    url(r'^deleteitem/$', views.quote_delete_line ),
 
 
     #url(r'^detailadd/$', views.QuoteDetailCreate.as_view( template_name = 'quotations/quotation_detail.html'), name="detailadd" ),

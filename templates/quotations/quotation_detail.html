@@ -32,19 +32,47 @@
 	</script>
 
   <script type="text/javascript">
+  function deleteOnSubmit( str ){
+
+    var items = document.getElementsByName("rows");
+    var schecked = 0;
+    for( x=0; x < items.length; x++ ){
+
+      if(items[x].checked== true){
+          schecked += 1;
+        }
+    }
+
+    if(schecked==0){
+
+        window.alert("沒有選擇要刪除的項目喔");
+        return false;
+
+    }else{
+
+      var iChoose = confirm("是否確定刪除勾選的資料？");
+
+      if(!iChoose){
+        return false;
+      }else{
+        document.getElementById("delform").action = "/quotations/deleteitem/";
+        delform.submit();
+
+
+      }
+    }
+    return true;
+  }
+
+
+
+
   function checkOnSubmit(){
 
     var validateflag = true;
     //檢查存檔是不是有欄位沒填
-
-    var line_no = document.getElementById("id_line_no").value;
     var unit_price = document.getElementById("id_unit_price").value;
 
-    if( line_no ==''){
-      window.alert("Invalid Line Number");
-      validateflag = false ;
-      return false;
-    }
     if( unit_price ==''){
       window.alert("Invalid Price");
       validateflag = false ;
@@ -77,6 +105,8 @@
     return false;
   }
   </script>
+
+
 
 
 
@@ -117,7 +147,7 @@
     </th>
     <th width="3%">
       <input id="id_quotehead" name="quotehead" size="8" type="hidden" value='{{ quotehead.id }}' cssStyle="width:20px" />
-      <input id="id_line_no" name="line_no" size="4" type="text" cssStyle="width:10px" />
+
     </th>
     <th width="8%"><input id="id_product" name="product" size="14" type="text"  cssStyle="width:30px" /></th>
     <th width="15%"><span id="span_description"></span></th>
@@ -127,10 +157,13 @@
     <th ><input id="line_memo" name="line_memo" size="40"  maxlength="50" type="text" cssStyle="width:160px" />
   </tr>
 </form>
+<form id="delform" action="" method="POST" onsubmit="return deleteOnSubmit( {{ quotehead.id }} )" >{% csrf_token %}
+  <input type='hidden' name='quotehead_id' value="{{ quotehead.id }}"/>
 
   <tr>
-    <th width="3%">作廢</th>
-    <th width="3%">行號</th>
+    <th width="6%"><button type="submit" class="btn btn-danger" >Delete Item</button></th>
+  
+    <th width="4%">行號</th>
     <th width="8%">料號</th>
     <th width="15%">品名</th>
     <th width="4%">產品圖示</th>
@@ -140,7 +173,7 @@
   </tr>
   {% for row in quotehead.quotedetail_set.all %}
   <tr>
-    <td>{{ row.invalid }}</td>
+    <td><input type="checkbox" name="rows" id='row_{{ row.id }}' value="{{ row.id }}"> </td>
     <td><a href='{{ row.get_absolute_url }}'>{{ row.line_no }}</a></td>
     <td>{{ row.product.part_number }}</td>
     <td>{{ row.product.description }}</td>
@@ -154,6 +187,7 @@
     <td>{{ row.line_memo | linebreaks | truncatechars:30 }}</td>
   </tr>
   {% endfor%}
+</form>
 </table>
 
 {% endblock content %}
