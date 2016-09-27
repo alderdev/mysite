@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^exam/', include( 'exam.urls', namespace="exam")),
     url(r'^prod_model/', include( 'prod_model.urls', namespace="prod_model")),
     url(r'^cart/', include( 'cart.urls', namespace="cart")),
+    url(r'^modelquote/', include( 'modelquote.urls', namespace="modelquote")),
 
 
     #url(r'^chaining/', include( 'smart_selects.urls' )),

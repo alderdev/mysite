@@ -7,12 +7,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 
 from .models import ProdModel
-#from .forms import QuoteHeadCreateForm, QuoteDetailAddinForm
+from .forms import ProdModelForm
 
 class ProdModelList(ListView):
     model = ProdModel
     paginate_by = 3
-
 
     def get_queryset(self):
         query = self.request.GET.get('q')
@@ -24,9 +23,14 @@ class ProdModelList(ListView):
             ).distinct()
 
             return query_list
-
         return ProdModel.objects.all()
 
 
 class ProdModelDetail(DetailView):
     model = ProdModel
+
+
+
+class ProdModelCreate( CreateView ):
+    model = ProdModel
+    form_class = ProdModelForm

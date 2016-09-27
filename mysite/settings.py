@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'exam',
     'prod_model',
     'cart',
+    'modelquote',
 
 ]
 
