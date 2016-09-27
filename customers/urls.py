@@ -16,7 +16,6 @@ urlpatterns = [
 
     # Function Base View
     #url(r'^create/$', views.employee_create, name="create" ),
-    #url(r'^(?P<pk>\d+)/detail/delete/$', views.ProductDelete(), name="delete" ),
     #url(r'^(?P<id>\d+)/detail/edit/$', views.product_update, name="edit" ),
     #url(r'^(?P<id>\d+)/detail/delete/$', views.product_delete, name="delete" ),
 ]
