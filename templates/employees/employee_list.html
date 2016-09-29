@@ -30,14 +30,13 @@
 {% for record in object_list %}
 
 <div class="col-sm-6 col-md-4">
-
     {% if record.image %}
       <img src="{{ record.image.url }}" class="img-circle" height="240" width="240"/>
     {% endif %}
 
   <h3><a href='{{ record.get_absolute_url }}'>{{ record.first_name | truncatechars:30 }}{{ record.last_name | truncatechars:30 }}</a>
     <small>{{ record.job  }}</small>
-</h3>
+  </h3>
 
     <p>{{ record.department | linebreaks | truncatechars:80 }}</p>
     {{ record.modify | date:"Y-m-d"}}

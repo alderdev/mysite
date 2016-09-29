@@ -13,6 +13,8 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
+
   <div id="sidebar">
       <h3>Categories</h3>
       <ul>
@@ -26,16 +28,18 @@
             {% endfor %}
       </ul>
   </div>
-  <div id="main" class="table table-striped">
+
   <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
       {% for product in products %}
-          <div class="item">
+      <div class="col-sm-6 col-md-4">
+          <div  class="thumbnail">
               <a href="{{ product.get_absolute_url }}">
-                  <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                  <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/Noimages.png" %}{% endif %}">
               </a>
-              <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
-              ${{ product.price }}
+              <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+              <p>${{ product.price }}</p>
           </div>
+      </div>
       {% endfor %}
-  </div>
+</div>
 {% endblock content %}
