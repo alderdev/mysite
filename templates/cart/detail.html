@@ -3,7 +3,7 @@
 {% block title %}  Your shopping cart {% endblock %}
 {% block content %}
   <h1>Your shopping cart</h1>
-  <table class="cart">
+  <table class="table table-striped" >
       <thead>
           <tr>
               <th>Image</th>
@@ -17,7 +17,7 @@
 
       <tbody>
       {% for item in cart %}
-        {{ item.prod_model.id }}
+        {{ item.product.id }}
         {% with product=item.product %}
         <tr>
             <td>

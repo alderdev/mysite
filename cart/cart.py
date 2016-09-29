@@ -1,5 +1,5 @@
 from django.conf import settings
-from prod_model.models import ProdModel
+from quoted.models import Product
 from decimal import Decimal
 #from shop.models import Product
 
@@ -49,7 +49,7 @@ class Cart(object):
 
     def __iter__(self):
         product_ids = self.cart.keys()
-        products = ProdModel.objects.filter(id__in=product_ids)
+        products = Product.objects.filter(id__in=product_ids)
         for product in products:
             self.cart[str(product.id)]['product'] = product
 
