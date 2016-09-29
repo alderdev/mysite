@@ -55,7 +55,7 @@
       if(!iChoose){
         return false;
       }else{
-        document.getElementById("delform").action = "/quotations/deleteitem/";
+        document.getElementById("delform").action = "/modelquote/deleteitem/";
         delform.submit();
 
 
@@ -96,7 +96,7 @@
 
 
     if(validateflag){
-      document.getElementById("myform").action = "/quotations/detailadd/";
+      document.getElementById("myform").action = "/modelquote/quotelineadd/";
       myform.submit();
     }else{
       return false;
@@ -179,7 +179,6 @@
             <img src="{{ row.product.image.url }}" class="img-rectangle" height="80" width="80"/>
           {% endif %}
     </td>
-
     <td>{{ row.product.specification | linebreaks }}</td>
     <td align="right">{{ row.unit_price }}</td>
     <td>{{ row.line_memo | linebreaks | truncatechars:30 }}</td>

@@ -13,6 +13,10 @@ urlpatterns = [
 
 
 
+    #url(r'^add/(?P<prodmodel_id>\d+)/$', views.cart_add , name="cart_add"),
+
+
+
     #url(r'^detailadd/$', views.quote_create_line  ),
 
 

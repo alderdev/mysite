@@ -6,7 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.core.urlresolvers import reverse_lazy
 from smart_selects.db_fields import ChainedForeignKey
 from .models import ModelQuote, QuoteLine
-from .forms import ModelQuoteCreateForm
+from .forms import ModelQuoteCreateForm, QuoteLineAddinForm
 
 # Create your views here.
 class ModelQuoteList( ListView):
@@ -26,6 +26,25 @@ class ModelQuoteCreate( CreateView ):
         return super( ModelQuoteCreate, self).form_valid(form)
 
 
-
 class ModelQuoteDetail( DetailView ):
     model = ModelQuote
+
+
+
+class ModelQuoteUpdate( UpdateView ):
+    model = ModelQuote
+    form_class = ModelQuoteCreateForm
+
+
+
+def quoteline_create(request):
+    form = QuoteLineAddinForm(request.POST or None )
+
+    if form.is_valid():
+
+        instance = form.save(commit=False)
+        instance.line_no = QuoteLine.objects.current_number(instance.quotehead_id)
+        instance.save()
+        return HttpResponseRedirect("../%s" %str(instance.quotehead.id))
+
+    return render(request, "modelquote/modelquote_detail.html", locals())

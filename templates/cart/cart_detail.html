@@ -17,6 +17,7 @@
 
       <tbody>
       {% for item in cart %}
+        {{ item.prod_model.id }}
         {% with product=item.product %}
         <tr>
             <td>

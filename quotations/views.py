@@ -48,7 +48,6 @@ class QuoteDetailCreate( CreateView):
         #print("QuoteDetailCreate.form_valid  Running")
         form.instance.order_number = QuoteHead.objects.month_sequence()
         form.instance.request_user = self.request.user
-
         return super(QuotationCreate, self).form_valid(form)
 
 
@@ -62,19 +61,16 @@ def quote_delete_line(request):
         instance.delete()
         return HttpResponseRedirect("../%s" %str(request.POST['quotehead_id']))
 
-
     return render(request, "../%s" %str(request.POST['quotehead_id']), locals())
 
 
 
 def quote_create_line(request):
     form = QuoteDetailAddinForm(request.POST or None )
-    print(form)
+    #print(form)
     if form.is_valid():
 
-
         instance = form.save(commit=False)
-
         instance.line_no = QuoteDetail.objects.current_number(instance.quotehead_id)
         instance.save()
         return HttpResponseRedirect("../%s" %str(instance.quotehead.id))

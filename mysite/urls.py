@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^prod_model/', include( 'prod_model.urls', namespace="prod_model")),
     url(r'^cart/', include( 'cart.urls', namespace="cart")),
     url(r'^modelquote/', include( 'modelquote.urls', namespace="modelquote")),
+    url(r'^quoted/', include( 'quoted.urls', namespace="quoted")),
 
 
     #url(r'^chaining/', include( 'smart_selects.urls' )),

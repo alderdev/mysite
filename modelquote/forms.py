@@ -2,7 +2,7 @@ from django import forms
 from django.utils import timezone
 from customers.models import Customer
 from quotations.models import Currency
-from modelquote.models import ModelQuote
+from modelquote.models import ModelQuote, QuoteLine
 from prod_model.models import ProdModel
 from pagedown.widgets import PagedownWidget
 
@@ -30,3 +30,19 @@ class ModelQuoteCreateForm(forms.ModelForm):
     class Meta:
         model = ModelQuote
         exclude = ( 'create_at','modify','invalid', 'order_number', 'request_user' )
+
+
+
+
+
+class QuoteLineAddinForm(forms.ModelForm):
+    quotehead = forms.ModelChoiceField( queryset= ModelQuote.objects.all()  )
+    line_no = forms.IntegerField(required=False )
+    product = forms.ModelChoiceField( queryset= ProdModel.objects.all() ,widget= forms.TextInput( attrs={'class':'form-control'} ) )
+    unit_price = forms.FloatField() #報價日期
+    line_memo = forms.CharField( widget=forms.Textarea( attrs={'class':'form-control', 'size':'30', 'rows':'20'} ), required=False  )
+
+
+    class Meta:
+        model = QuoteLine
+        exclude = ( 'create_at','modify','invalid' )
