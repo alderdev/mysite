@@ -8,6 +8,7 @@
           <tr>
               <th>Image</th>
               <th>Product</th>
+              <th>ModelName</th>
               <th>Quantity</th>
               <th>Remove</th>
               <th>Unit price</th>
@@ -17,19 +18,25 @@
 
       <tbody>
       {% for item in cart %}
-        {{ item.product.id }}
+
         {% with product=item.product %}
         <tr>
+
             <td>
             <a href="{{ product.get_absolute_url }}">
             <img src="{% if product.image %}{{ product.image.url }}
                     {% else %}
-            {% static "img/no_image.png" %}{% endif %}">
+            {% static "img/no_image.png" %}{% endif %}" class="img-rectangle" height="60" width="60">
             </a>
             </td>
             <td>{{ product.name }}</td>
+            <td>{{ product.modelname }}</td>
+
+
             <td>{{ item.quantity }}</td>
-            <td><a href="{% url "cart:cart_remove" product.id  %}">Remove</a></td>
+            <td>
+              <a href="{% url "cart:cart_remove" product.id  %}" class="btn btn-danger" role="button">Remove</a>
+            </td>
         <td class="num">${{ item.price }}</td>
         <td class="num">${{ item.total_price }}</td>
         </tr>

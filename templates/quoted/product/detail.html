@@ -5,19 +5,30 @@
 {% if category %}{{ category.title }}{% else %}Products{% endif %}
 {% endblock %}
 {% block content %}
-<div class="product-detail">
-<img src="{% if product.image %}{{ product.image.url }}{% else %}
-{% static "img/no_image.png" %}{% endif %}">
-<h1>{{ product.name }}</h1>
-<h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
+<div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
+    <div  class="media-left media-middle">
+      <img src="{% if product.image %}{{ product.image.url }}{% else %}
+    {% static "img/no_image.png" %}{% endif %}">
+    </div>
+    <div class="media-body">
+        <h1>{{ product.name }}</h1>
+        <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
+      <p>Model Name:{{ product.modelname }}</p>
+      <p>Family: {{ product.family }}</p>
+      <p>Option 1: {{ product.option1 }}</p>
+      <p>Beam Angle: {{ product.beam_angle }}</p>
+      <p>CCT: {{ product.cct }}</p>
+      <p>CRI: {{ product.cri }}</p>
+      <p>Watt: {{ product.watt }}</p>
+      <p>Lm: {{ product.lm }}</p>
+      <p>Price: ${{ product.price }}</p>
+      <p>Active: {{ product.is_active }}</p>
+      <form action="{% url "cart:cart_add" product.id %}" method="post">
+      {{ cart_product_form }}
+      {% csrf_token %}
+      <input type="submit" value="Add to cart">
+      </form>
 
-<p class="price">${{ product.price }}</p>
-<form action="{% url "cart:cart_add" product.id %}" method="post">
-{{ cart_product_form }}
-{% csrf_token %}
-<input type="submit" value="Add to cart">
-</form>
-
-{{ product.description|linebreaks }}
+    </div>
 </div>
 {% endblock %}
