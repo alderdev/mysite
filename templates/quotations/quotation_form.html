@@ -22,7 +22,7 @@
             var end = data.indexOf("</p>", start);
             var str = data.substring(start+14, end);
             $("<div id='title_customer'>" + str + "</div>").insertAfter("#id_customer");
-					
+
 				},
         error: function(jqXHR, exception)
         {
@@ -37,7 +37,6 @@
 
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
   <h1>{{ title }}</h1>
-
 <form action="" method="POST">{% csrf_token %}
 
   {{ form.as_p }}

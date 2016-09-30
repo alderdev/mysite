@@ -31,8 +31,6 @@
             </td>
             <td>{{ product.name }}</td>
             <td>{{ product.modelname }}</td>
-
-
             <td>{{ item.quantity }}</td>
             <td>
               <a href="{% url "cart:cart_remove" product.id  %}" class="btn btn-danger" role="button">Remove</a>
@@ -51,7 +49,7 @@
   </table>
   <p class="text-right">
   <a href="#" class="button  light">Continue shopping</a>
-  <a href="#" class="button">Checkout</a>
+  <a href="{% url "quoted:order_create" %}" class="button">Checkout</a>
   </p>
 
 

@@ -13,9 +13,23 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="order-info">
+  <h3>Your order</h3>
+  <ul>
 
-  <div id="sidebar">
+  {% for item in cart %}
+  <li>
+  {{ item.quantity }}x {{ item.product.name }}
+  <span>${{ item.total_price }}</span>
+  </li>
+  {% endfor %}
+  </ul>
+  <p>Total: ${{ cart.get_total_price }}</p>
+</div>
+
+<div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1">
+  <div  class="media-left media-top">
+    <div>
       <h3>Categories</h3>
       <ul>
           <li {% if not category %} class="selected" {% endif %} >
@@ -27,19 +41,52 @@
             </li>
             {% endfor %}
       </ul>
+    </div>
   </div>
-
+  <div class="media-body">
   <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
       {% for product in products %}
       <div class="col-sm-6 col-md-4">
           <div  class="thumbnail">
               <a href="{{ product.get_absolute_url }}">
-                  <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}">
+                  <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" class="img-rectangle" height="360" width="360">
               </a>
               <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+              <p>{{ product.modelname }}</p>
               <p>${{ product.price }}</p>
+
+          <form  id="additem_to_cart_form" action="{% url "cart:cart_add" product.id %}" method="post">
+          {{ cart_product_form }}
+          {% csrf_token %}
+          <input type="submit" value="Add to cart">
+          </form>
           </div>
       </div>
       {% endfor %}
+</div>
+<script>
+  $(document).on.('submit','#additem_to_cart_form',function(e){
+      e.preventDefault();
+
+      $.ajax
+			({
+				url : 
+				type: "POST",
+				data : {
+          product_id:$('#product_id').val(),
+          quantity:$('#quantity_id').val(),
+
+        },
+				success: function(){
+
+				},
+
+			});
+
+
+  });
+</script>
+
+
 </div>
 {% endblock content %}
