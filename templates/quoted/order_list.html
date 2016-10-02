@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div>
+    <form action="" method="GET">
+      <input type="text" name="q" placeholder="Customer  Number or Title"  value="{{ request.GET.q }}"/>
+      <input type="submit"  value="Search" class="btn btn-success"/>
+      <span ><a href="/prod_model/create" class="btn btn-primary">Create New</a></span>
+      <span align="right">
+          <div class="pagination">
+             <ul class="pager">
+                <span>{{ title }}</span>
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <li><a href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
+                    {% endif %}
+                </span>
+              </ul>
+          </div>
+      </span>
+
+    </form>
+</div>
+
+
+<div>
+<table class="table table-striped" >
+  <tr>
+    <th width="5%">Family</th>
+    <th width="5%">Image</th>
+    <th width="20%">Product Name</th>
+    <th width="30%">Model</th>
+    <th width="5%">Option 1</th>
+    <th width="5%">Beam Angle</th>
+    <th width="4%">CCT</th>
+    <th width="5%">CRI</th>
+    <th width="5%">Lm</th>
+    <th width="5%">Watt</th>
+
+  </tr>
+{% for record in object_list %}
+  <tr>
+    <td>{{ record.family }}</td>
+    <td>
+        {% if record.image %}
+          <img src="{{ record.image.url }}" class="img-rectangle" height="60" width="60"/>
+        {% endif %}</td>
+    <td><a href=''>{{ record.customer }}</a></td>
+    <td><a href=''>{{ record.id | linebreaks | truncatechars:60 }}</a></td>
+    <td>{{ record.created| date:"Y-m-d" }}</td>
+    <td>{{ record.currency.description }}</td>
+    <td>{{ record.quote_sales }}</td>
+    <td>{{ record.effective_date | date:"Y-m-d" }}</td>
+    <td>{{ record.lm }}</td>
+    <td>{{ record.watt  }}</td>
+  </tr>
+{% endfor %}
+</table>
+<div>
+
+{% endblock content %}

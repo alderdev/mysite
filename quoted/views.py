@@ -1,9 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Category, Product, OrderItem
+from .models import Category, Product, OrderItem, Order
 from .forms import OrderCreateForm
 from cart.cart import Cart
 from cart.forms import CartAddProductForm
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.core.urlresolvers import reverse_lazy
+from django.db.models import Q
 
 def product_list(request, category_slug=None):
 
@@ -46,3 +50,12 @@ def order_create(request):
 
 
     return render(request,'quoted/order_form.html',locals())
+
+
+class OrderList(ListView):
+    model = Order
+    paginate_by = 10
+
+
+class OrderDetail(DetailView):
+    model = Order

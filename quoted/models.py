@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from customers.models import Customer
+from quotations.models import Currency
+from django.utils import timezone
 
 # Create your models here.
 class Category(models.Model):
@@ -58,6 +60,9 @@ class Product(models.Model):
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     email = models.EmailField()
+    quote_sales = models.CharField(max_length=60, null=False, blank=False)
+    effective_date = models.DateField( default=timezone.now ) # 報價單有效日期
+    currency = models.ForeignKey( Currency )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
@@ -70,6 +75,11 @@ class Order(models.Model):
 
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())
+
+
+    def get_absolute_url(self):
+        return reverse('quoted:order_list', kwargs={"pk": self.id} )
+
 
 
 class OrderItem(models.Model):

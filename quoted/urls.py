@@ -2,6 +2,11 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
+
+
+    url(r'^order/$', views.OrderList.as_view( template_name = 'quoted/order_list.html'), name="order_list" ),
+    url(r'^order/(?P<pk>\d+)/$', views.OrderDetail.as_view( template_name = 'quotations/quotation_detail.html'), name="order_detail" ),
+
     url(r'^create/$', views.order_create, name='order_create'),
     url(r'^$', views.product_list, name='product_list'),
     url(r'^(?P<category_slug>[-\w]+)/$',    views.product_list,    name='product_list_by_category'),
