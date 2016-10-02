@@ -3,6 +3,38 @@
 Checkout
 {% endblock %}
 {% block content %}
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<script>
+  $(document).ready(function(){
+		$("#id_customer").blur(function(){
+			var account = $("#id_customer").val();
+      $("#title_customer").text("");
+			//var formData = {account: id};
+
+			$.ajax
+			({
+				url : "/customers/ajax/"+account,
+				type: "GET",
+				//data : formData,
+				success: function(data, textStatus, jqXHR)
+				{
+            var start = data.indexOf("<p id='title'>", 0);
+            var end = data.indexOf("</p>", start);
+            var str = data.substring(start+14, end);
+            $("<div id='title_customer'>" + str + "</div>").insertAfter("#id_customer");
+
+				},
+        error: function(jqXHR, exception)
+        {
+          alert( "Invalid Customer"  );
+        }
+			});
+		})
+  });
+	</script>
+
 <h1>Checkout</h1>
 <div class="order-info">
   <h3>Your order</h3>
@@ -16,7 +48,7 @@ Checkout
   </ul>
   <p>Total: ${{ cart.get_total_price }}</p>
 </div>
-  <form action="." method="post" class="order-form">
+  <form action="" method="post" class="order-form">
   {{ form.as_p }}
   <p><input type="submit" value="Place order"></p>
   {% csrf_token %}
