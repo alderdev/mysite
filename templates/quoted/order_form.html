@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}
 Checkout
 {% endblock %}
@@ -35,22 +36,29 @@ Checkout
   });
 	</script>
 
-<h1>Checkout</h1>
-<div class="order-info">
-  <h3>Your order</h3>
-  <ul>
-  {% for item in cart %}
-  <li>
-  {{ item.quantity }}x {{ item.product.name }}
-  <span>${{ item.total_price }}</span>
-  </li>
-  {% endfor %}
-  </ul>
-  <p>Total: ${{ cart.get_total_price }}</p>
+
+<div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
+  <h1>Checkout</h1>
+    <div  class="media-left media-middle col-sm-8 ">
+      <h3>Your Quotation Items</h3>
+      <ul>
+
+      {% for item in cart %}
+      <li>
+        <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"  class="img-rectangle" height="60" width="60" >
+      {{ item.product.name }}  {{ item.product.modelname }}
+      <span>$ {{ item.product.price }}</span>
+      </li>
+      {% endfor %}
+      </ul>
+
+    </div>
+    <div class="media-body ">
+      <form action="" method="post" class="order-form">
+      {{ form.as_p }}
+      <p><input type="submit" value="Place order"></p>
+      {% csrf_token %}
+      </form>
+    </div>
 </div>
-  <form action="" method="post" class="order-form">
-  {{ form.as_p }}
-  <p><input type="submit" value="Place order"></p>
-  {% csrf_token %}
-  </form>
 {% endblock %}

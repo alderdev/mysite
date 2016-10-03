@@ -39,6 +39,8 @@ def order_create(request):
     if request.method == 'POST':
 
         if form.is_valid():
+
+            form.instance.order_number = Order.objects.month_sequence()
             order = form.save()
             for item in cart:
                 OrderItem.objects.create(order=order,product=item['product'],price=item['price'],quantity=item['quantity'])

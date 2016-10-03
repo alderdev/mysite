@@ -8,5 +8,5 @@ class OrderCreateForm(forms.ModelForm):
                                         widget= forms.TextInput( attrs={'class':'form-control' , 'onfocus':'select()', 'require':'True' } ) )
     class Meta:
         model = Order
-        fields = ['customer', 'email']
+        fields = ['customer', 'email', 'currency','quote_sales','ord_date', 'effective_date']
         raw_id_fields = ('customer',)

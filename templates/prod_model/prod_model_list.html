@@ -47,6 +47,7 @@
     <th width="5%">Watt</th>
 
   </tr>
+
 {% for record in object_list %}
   <tr>
     <td>{{ record.family }}</td>
@@ -62,9 +63,13 @@
     <td>{{ record.cri }}</td>
     <td>{{ record.lm }}</td>
     <td>{{ record.watt  }}</td>
+
+
   </tr>
 {% endfor %}
+  </form>
 </table>
+
 <div>
 
 {% endblock content %}

@@ -39,30 +39,30 @@
     </nav>
 
 <div>
-<table class="table table-striped" >
-  <tr>
-    <th width="6%">作廢標記</th>
-    <th width="8%">報價日期</th>
-    <th width="8%">報價單號</th>
-    <th width="8%">業務姓名</th>
-    <th width="25%">客戶名稱</th>
-    <th width="4%">幣別</th>
-    <th width="8%">有效日期</th>
-    <th>註記事項</th>
-  </tr>
-{% for record in object_list %}
-  <tr>
-    <td>{{ record.invalid }}</td>
-    <td><a href='{{ record.get_absolute_url }}'>{{ record.ord_date | date:"Y-m-d" }}</a></td>
-    <td><a href='{{ record.get_absolute_url }}'>{{ record.order_number }}</a></td>
-    <td><a href='{{ record.get_absolute_url }}'>{{ record.request_user }}</a></td>
-    <td>{{ record.customer.title }}</td>
-    <td>{{ record.currency }}</td>
-    <td>{{ record.effective_date | date:"Y-m-d" }}</td>
-    <td>{{ record.comment | linebreaks | truncatechars:30 }}</td>
-  </tr>
-{% endfor %}
-</table>
+    <table class="table table-striped" >
+      <tr>
+        <th width="6%">作廢標記</th>
+        <th width="8%">報價日期</th>
+        <th width="8%">報價單號</th>
+        <th width="8%">業務姓名</th>
+        <th width="25%">客戶名稱</th>
+        <th width="4%">幣別</th>
+        <th width="8%">有效日期</th>
+        <th>註記事項</th>
+      </tr>
+    {% for record in object_list %}
+      <tr>
+        <td>{{ record.invalid }}</td>
+        <td><a href='{{ record.get_absolute_url }}'>{{ record.ord_date | date:"Y-m-d" }}</a></td>
+        <td><a href='{{ record.get_absolute_url }}'>{{ record.order_number }}</a></td>
+        <td><a href='{{ record.get_absolute_url }}'>{{ record.request_user }}</a></td>
+        <td>{{ record.customer.title }}</td>
+        <td>{{ record.currency }}</td>
+        <td>{{ record.effective_date | date:"Y-m-d" }}</td>
+        <td>{{ record.comment | linebreaks | truncatechars:30 }}</td>
+      </tr>
+    {% endfor %}
+    </table>
 <div>
 
 {% endblock content %}

@@ -4,6 +4,7 @@ from customers.models import Customer
 from quotations.models import Currency
 from django.utils import timezone
 
+
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=200)
@@ -57,15 +58,53 @@ class Product(models.Model):
         return reverse('quoted:product_detail',args=[self.id, self.slug])
 
 
+
+
+
+
+#自訂單據號碼
+class OrderNumberManager(models.Manager):
+
+    #短的月份序號如：16080001
+    def short_month_sequence(self):
+        order_date, _ = str(timezone.now()).split(' ')
+        nextNumber = self.filter(created__contains = order_date[:7] ).count()+1
+        order_number = nextNumber + int(order_date[2:7].replace('-',''))*10000
+        return order_number
+    #月份序號如：2016080001
+    def month_sequence(self):
+        order_date, _ = str(timezone.now()).split(' ')
+        nextNumber = self.filter(created__contains = order_date[:7] ).count()+1
+        order_number = nextNumber + int(order_date[:7].replace('-',''))*10000
+        return order_number
+    #月份序號如：2016080001
+    def day_sequence(self):
+        order_date, _ = str(timezone.now()).split(' ')
+        nextNumber = self.filter(created__contains = order_date ).count()+1
+        order_number = nextNumber + int(order_date.replace('-',''))*10000
+        return order_number
+    #短的日序號如：1608310001
+    def short_day_sequence(self):
+        order_date, _ = str(timezone.now()).split(' ')
+        nextNumber = self.filter(created__contains = order_date ).count()+1
+        order_number = nextNumber + int(order_date.replace('-','')[2:])*10000
+        return order_number
+
+
+
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     email = models.EmailField()
     quote_sales = models.CharField(max_length=60, null=False, blank=False)
+    ord_date = models.DateField(default=timezone.now) #報價日期
     effective_date = models.DateField( default=timezone.now ) # 報價單有效日期
-    currency = models.ForeignKey( Currency )
+    currency = models.ForeignKey( Currency,  null=False, blank=False )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
+    order_number = models.CharField(max_length=12, null=True, blank=True, unique=True) #報價單號
+    objects = OrderNumberManager()
+
 
     class Meta:
         ordering = ('-created',)

@@ -35,33 +35,27 @@
 <div>
 <table class="table table-striped" >
   <tr>
-    <th width="5%">Family</th>
-    <th width="5%">Image</th>
-    <th width="20%">Product Name</th>
-    <th width="30%">Model</th>
-    <th width="5%">Option 1</th>
-    <th width="5%">Beam Angle</th>
-    <th width="4%">CCT</th>
-    <th width="5%">CRI</th>
-    <th width="5%">Lm</th>
-    <th width="5%">Watt</th>
-
+    <th width="5%">Id</th>
+    <th width="5%">OrderNumber</th>
+    <th width="30%">Customer</th>
+    <th width="5%">Currency</th>
+    <th width="5%">Order Date</th>
+    <th width="4%">Sales</th>
+    <th width="5%">Effective Date</th>
+    <th width="5%">Contact Person</th>
+    <th width="5%">Email Address</th>
   </tr>
 {% for record in object_list %}
   <tr>
-    <td>{{ record.family }}</td>
-    <td>
-        {% if record.image %}
-          <img src="{{ record.image.url }}" class="img-rectangle" height="60" width="60"/>
-        {% endif %}</td>
+    <td>{{ record.id }}</td>
+    <td>{{ record.order_number  }}</td>
     <td><a href=''>{{ record.customer }}</a></td>
-    <td><a href=''>{{ record.id | linebreaks | truncatechars:60 }}</a></td>
-    <td>{{ record.created| date:"Y-m-d" }}</td>
     <td>{{ record.currency.description }}</td>
+    <td>{{ record.ord_date| date:"Y-m-d" }}</td>
     <td>{{ record.quote_sales }}</td>
     <td>{{ record.effective_date | date:"Y-m-d" }}</td>
-    <td>{{ record.lm }}</td>
-    <td>{{ record.watt  }}</td>
+    <td>{{ record.customer.contact }}</td>
+    <td>{{ record.customer.email }}</td>
   </tr>
 {% endfor %}
 </table>
