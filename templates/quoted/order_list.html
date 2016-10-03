@@ -49,7 +49,7 @@
   <tr>
     <td>{{ record.id }}</td>
     <td>{{ record.order_number  }}</td>
-    <td><a href=''>{{ record.customer }}</a></td>
+    <td><a href='{{ record.get_absolute_url }}'>{{ record.customer }}</a></td>
     <td>{{ record.currency.description }}</td>
     <td>{{ record.ord_date| date:"Y-m-d" }}</td>
     <td>{{ record.quote_sales }}</td>

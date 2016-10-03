@@ -115,21 +115,21 @@
 <table class="table table-bordered">
   <tr>
     <td>報價單號</td>
-    <td>{{ quotehead.order_number }}</td>
+    <td>{{ order.order_number }}</td>
     <td>報價日期</td>
-    <td>{{ quotehead.ord_date | date:"Y-m-d" }}</td>
+    <td>{{ order.ord_date | date:"Y-m-d" }}</td>
   </tr>
   <tr>
     <td>業務代表</td>
-    <td>{{ quotehead.request_user }}</td>
+    <td>{{ order.quote_sales }}</td>
     <td>有效日期</td>
-    <td colspan="3">{{ quotehead.effective_date | date:"Y-m-d" }}</td>
+    <td colspan="3">{{ order.effective_date | date:"Y-m-d" }}</td>
   </tr>
   <tr>
     <td>客戶名稱</td>
-    <td>{{ quotehead.customer.title }}</td>
+    <td>{{ order.customer.title }}</td>
     <td>幣別</td>
-    <td>{{ quotehead.currency }}</td>
+    <td>{{ order.currency }}</td>
   </tr>
   <tr>
     <td>註記事項</td>
@@ -169,19 +169,20 @@
     <th width="5%">單價</th>
     <th >註記事項</th>
   </tr>
-  {% for row in quotehead.quotedetail_set.all %}
+  {{ order|length }}
+  {% for row in order.orderitem_set.all %}
   <tr>
     <td><input type="checkbox" name="rows" id='row_{{ row.id }}' value="{{ row.id }}"> </td>
     <td><a href='{{ row.get_absolute_url }}'>{{ row.line_no }}</a></td>
     <td>{{ row.product.part_number }}</td>
-    <td>{{ row.product.description }}</td>
+    <td>{{ row.product.modelname }}</td>
     <td>  {% if row.product.image %}
             <img src="{{ row.product.image.url }}" class="img-rectangle" height="80" width="80"/>
           {% endif %}
     </td>
 
     <td>{{ row.product.specification | linebreaks }}</td>
-    <td align="right">{{ row.unit_price }}</td>
+    <td align="right">{{ row.price }}</td>
     <td>{{ row.line_memo | linebreaks | truncatechars:30 }}</td>
   </tr>
   {% endfor%}

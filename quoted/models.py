@@ -117,7 +117,7 @@ class Order(models.Model):
 
 
     def get_absolute_url(self):
-        return reverse('quoted:order_list', kwargs={"pk": self.id} )
+        return reverse('quoted:order_detail', kwargs={"pk": self.id} )
 
 
 
