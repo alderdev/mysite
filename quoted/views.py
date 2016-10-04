@@ -59,5 +59,17 @@ class OrderList(ListView):
     paginate_by = 10
 
 
+
+#顯示和列印共用
 class OrderDetail(DetailView):
     model = Order
+
+
+from django.template.loader import render_to_string
+def order_print(request, id):
+    order = get_object_or_404(Order,id=id)
+    html = render_to_string('quoted/order_print.html',{'order': order})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename=\"order_{}.pdf"'.format(order.id)
+
+    return response
