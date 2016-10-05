@@ -10,5 +10,5 @@ class OrderCreateForm(forms.ModelForm):
     email = forms.EmailField( widget= forms.EmailInput( attrs={'class':'form-control' , 'size':'30', 'onfocus':'select()' , 'placeholder':'Email Address'  } ) )
     class Meta:
         model = Order
-        fields = ['customer', 'email', 'currency','quote_sales','ord_date', 'effective_date']
+        fields = ['customer', 'email', 'currency','quote_sales','ord_date', 'effective_date','comment']
         raw_id_fields = ('customer',)

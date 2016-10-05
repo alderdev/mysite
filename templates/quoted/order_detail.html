@@ -110,8 +110,7 @@
 
 
   <h1>{{ title }}</h1>
-<a href="/ship/export_pdf">Export PDF</a>
-<p>作廢註記: {{ quotehead.invalid }}</p>
+<a href="{{ order.get_absolute_url }}print" class="btn btn-primary" target="_blank">Export PDF</a>
 <table class="table table-bordered">
   <tr>
     <td>報價單號</td>
@@ -134,14 +133,13 @@
   <tr>
     <td>幣別</td>
     <td>{{ order.currency }}</td>
-
     <td>有效日期</td>
-    <td colspan="3">{{ order.effective_date | date:"Y-m-d" }}</td>
+    <td>{{ order.effective_date | date:"Y-m-d" }}</td>
   </tr>
 
   <tr>
     <td>註記事項</td>
-    <td colspan="3">{{ quotehead.comment | linebreaks  }}</td>
+    <td >{{ quotehead.comment | linebreaks  }}</td>
   </tr>
 
 </table>
@@ -177,7 +175,6 @@
     <th width="5%">單價</th>
     <th >註記事項</th>
   </tr>
-  {{ order.orderitem_set.all |length }}
   {% for row in order.orderitem_set.all %}
   <tr>
     <td>
