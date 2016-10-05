@@ -1,0 +1,23 @@
+img {
+   width: 40px;
+   height: 40px;
+}
+
+table, th, td {
+   border: 0px solid black;
+   text-align: center;
+   font-size: 0.875em; /* 14px/16=0.875em */
+}
+
+
+h1 {
+    font-size: 2.5em; /* 40px/16=2.5em */
+}
+
+h2 {
+    font-size: 1.875em; /* 30px/16=1.875em */
+}
+
+td {
+    font-size: 0.875em; /* 14px/16=0.875em */
+}
