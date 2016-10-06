@@ -1,20 +1,23 @@
 {% load staticfiles %}
-<media="print" />
 <html>
 <head>
+
           <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+
+
+
 </head>
 <body>
 <div><img src="{% static 'img/alder_logo.png' %}">Alder Optomechanical Corp.</div>
-<div><h2 class='report name' align='center'>Quotation</h2></div>
+<h2 align='center'>Quotation</h2>
 <div class="col-sm-12 col-sm-offset-1">
 
-    <table class="table table-striped" border="0">
+    <table class="table table-bordered">
       <tr>
-        <td width="15%">Quote Number</td>
-        <td width="20%">{{ order.order_number }}</td>
-        <td width="10%">Quote Date</td>
-        <td width="20%">{{ order.ord_date | date:"Y-m-d" }}</td>
+        <td>Quote Number</td>
+        <td>{{ order.order_number }}</td>
+        <td>Quote Date</td>
+        <td>{{ order.ord_date | date:"Y-m-d" }}</td>
       </tr>
       <tr>
         <td>Customer</td>
@@ -29,11 +32,11 @@
         <td>{{ order.email }}</td>
       </tr>
       <tr>
-        <td>Currenty</td>
+        <td>Currency</td>
         <td>{{ order.currency }}</td>
 
         <td>Effective Date</td>
-        <td >{{ order.effective_date | date:"Y-m-d" }}</td>
+        <td>{{ order.effective_date | date:"Y-m-d" }}</td>
       </tr>
 
       <tr>
@@ -45,7 +48,7 @@
 
     <table class="table table-striped" border="0">
       <tr>
-        <th width="4%">Items</th>
+        <th width="4%">Item</th>
         <th width="6%">Image</th>
         <th width="15%">Product</th>
         <th width="25%">Model Name</th>
@@ -56,11 +59,12 @@
       </tr>
       {% for row in order.orderitem_set.all %}
       <tr>
-        <td>{{ forloop.counter }}</a></td>
+        <td>{{ row.id }}</td>
         <td>
-            {% if row.product.image %}<img src="{{ row.product.image.url }}" class="img-rectangle" height="40" width="40"/>{% endif %}
+                {% if row.product.image %}
+                 <img src="{{ row.product.image.url }}" class="img-rectangle" height="40" width="40"/>
+               {% endif %}
         </td>
-
         <td>{{ row.product.name }}</td>
         <td>{{ row.product.modelname }}</td>
         <td>{{ row.product.option1 }}</td>
