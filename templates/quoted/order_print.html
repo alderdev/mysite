@@ -39,10 +39,7 @@
         <td>{{ order.effective_date | date:"Y-m-d" }}</td>
       </tr>
 
-      <tr>
-        <td>Comment</td>
-        <td colspan="3">{{ order.comment | linebreaks  }}</td>
-      </tr>
+
 
     </table>
 
@@ -55,7 +52,7 @@
         <th width="6%">Family</th>
         <th width="8%">Category</th>
         <th width="5%">Unit Price</th>
-        <th >Comment</th>
+        <th width="5%">Memo</th>
       </tr>
       {% for row in order.orderitem_set.all %}
       <tr>
@@ -72,9 +69,17 @@
         <td>{{ row.product.category | linebreaks }}</td>
         <td align="right">{{ row.price }}</td>
         <td>{{ row.line_memo | linebreaks | truncatechars:30 }}</td>
+
       </tr>
       {% endfor%}
     </table>
+
+<hr>
+    <span>Comment</spam>
+<hr>
+    <div class='comment'>  {{ order.comment | linebreaks  }}</div>
+
+
 </div>
 </body>
 </html>
