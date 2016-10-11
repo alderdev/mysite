@@ -68,17 +68,29 @@ from django.conf import settings
 from django.template.loader import render_to_string
 import weasyprint
 
-def order_print(request, id):
 
+
+def order_print(request, id):
 
     order = get_object_or_404(Order,id=id)
     html = render_to_string('quoted/order_print.html',{'order': order})
-    #print(html)
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'filename=\"order_{}.pdf"'.format(order.id)
     weasyprint.HTML(string=html, base_url = request.build_absolute_uri() ).write_pdf(response,stylesheets=[weasyprint.CSS( settings.STATIC_ROOT + '/css/pdf.css')])
 
-
-
     return response
+
+
+
+
+def quote_delete_item(request):
+
+    print( request.POST['order_id'] )
+    if request.POST or None:
+        rq = request.POST.getlist('rows')
+        instance = Order.objects.filter(id__in= rq )
+        instance.delete()
+        return HttpResponseRedirect("../%s" %str(request.POST['order_id']))
+
+    return render(request, "../%s" %str(request.POST['order_id']), locals())
