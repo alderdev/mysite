@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Category, Product, OrderItem, Order
-from .forms import OrderCreateForm
+from .forms import OrderCreateForm, OrderItemForm
 from cart.cart import Cart
 from cart.forms import CartAddProductForm
 from django.views.generic import ListView, DetailView
@@ -60,6 +60,15 @@ class OrderList(ListView):
 
 
 
+
+def order_detail(request, id):
+    order = get_object_or_404(Order,id=id)
+    orderitem_form = OrderItemForm()
+
+    return render(request,'quoted/order_detail.html',locals() )
+
+
+
 #顯示和列印共用
 class OrderDetail(DetailView):
     model = Order
@@ -84,13 +93,15 @@ def order_print(request, id):
 
 
 
-def quote_delete_item(request):
+def quote_delete_item(request, id):
 
-    print( request.POST['order_id'] )
+    #print( request.POST.get['order_id'] )
     if request.POST or None:
         rq = request.POST.getlist('rows')
-        instance = Order.objects.filter(id__in= rq )
+
+        instance = OrderItem.objects.filter(id__in= rq )
         instance.delete()
-        return HttpResponseRedirect("../%s" %str(request.POST['order_id']))
+        return HttpResponseRedirect("../")
+        #return HttpResponseRedirect("../%s" %str(request.POST['order_id']))
 
     return render(request, "../%s" %str(request.POST['order_id']), locals())

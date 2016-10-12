@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.admin.widgets import ForeignKeyRawIdWidget
-from .models import Order
+from .models import Order, Product
 from customers.models import Customer
 
 class OrderCreateForm(forms.ModelForm):
@@ -12,3 +12,10 @@ class OrderCreateForm(forms.ModelForm):
         model = Order
         fields = ['customer', 'email', 'currency','quote_sales','ord_date', 'effective_date','comment']
         raw_id_fields = ('customer',)
+
+
+class OrderItemForm(forms.ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ['name', 'price']
