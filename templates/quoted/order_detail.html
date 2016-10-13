@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
+
+
 {% block content %}
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 	<script>
   $(document).ready(function(){
@@ -57,15 +58,10 @@
       }else{
         document.getElementById("delform").action = "/quoted/order/"+{{ order.id }}+"/deleteitem/";
         delform.submit();
-
-
       }
     }
     return true;
   }
-
-
-
 
   function checkOnSubmit(){
 
@@ -105,7 +101,46 @@
   }
   </script>
 
+  <form action="" id="milk_form">
+    <input type="text" name="milk_input_name" id="milk_input_id" class="milk_input_class" value=""><br/>
+    <a id="milk_a_id" href="#">See Milk List</a>
+  </form>
 
+  <div id="dialog" title="請選擇一個項目">
+    <select id="myselect" name="Icecream Flavours">
+      <option value="Allen">Allen</option>
+      <option value="Dennis">Dennis</option>
+      <option value="Fanncy">Fanncy</option>
+      <option value="Amy">Amy</option>
+    </select>
+  </div>
+
+
+  <script>
+    $(function() {
+      var dialog = $("#dialog" ).dialog({
+        autoOpen: false,
+        height: 300,
+        width: 350,
+        modal: true,
+        buttons: {
+           OK: addUser
+        },
+        close: function() {}
+      });
+
+      $( "#milk_a_id" ).on( "click", function() {
+        dialog.dialog( "open" );
+      });
+
+       function addUser(){
+         var selectedItem = $("#myselect option:selected" ).text();
+        $("#milk_input_id").val(selectedItem);
+          dialog.dialog( "close" );
+       }
+    });
+
+  </script>
 
 
 
