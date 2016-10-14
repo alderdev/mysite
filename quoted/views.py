@@ -66,11 +66,33 @@ def order_detail(request, id):
     category = None
     categories = Category.objects.all()
     products = Product.objects.filter(available=True)
-    
+
     order = get_object_or_404(Order,id=id)
     orderitem_form = OrderItemForm()
 
     return render(request,'quoted/order_detail.html',locals() )
+
+
+
+
+
+def order_item_insert(request):
+    if request.method=='POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        password = request.POST['password']
+
+        User.object.create(
+            name ,
+            email,
+            password
+        )
+
+        return HttpResponse('')
+
+
+
+
 
 
 

@@ -4,7 +4,6 @@
 
 {% block content %}
 
-
 	<script>
   $(document).ready(function(){
 		$("#id_product").blur(function(){
@@ -107,7 +106,7 @@
     $(function() {
       var dialog = $("#dialog" ).dialog({
         autoOpen: false,
-        height: 600,
+        height: 800,
         width: 1200,
         modal: true,
         buttons: {
@@ -127,14 +126,17 @@
        }
     });
 
+
+
+
   </script>
 
-    <form action="" id="milk_form">
-      <input type="text" name="milk_input_name" id="milk_input_id" class="milk_input_class" value=""><br/>
-      <a id="milk_a_id" href="#">See Group List</a>
-    </form>
+
 
     <div id="dialog" title="請選擇一個項目">
+
+      <span id="order_id">Order ID:{{ order.id }}</span><br>
+      <span id="order_number">Order Number:{{ order.order_number }}</span>
 
       <div  class="media-left media-top">
         <div>
@@ -164,10 +166,13 @@
                   <p>{{ product.modelname }}</p>
                   <p>${{ product.price }}</p>
 
-              <form  id="additem_to_cart_form" action="{% url "cart:cart_add" product.id %}" method="post">
-              {{ cart_product_form }}
-              {% csrf_token %}
-              <input type="submit" value="Add to cart">
+              <form  id="additem_to_order" action="" method="post">
+                  {% csrf_token %}
+                  <input type="text" name="order" value='{{ order.id }}'><br>
+                  <input type="text" name="products" value='{{ product.id }}'><br>
+                  <input type="text" name="prices" value='{{ product.price }}'><br>
+
+              <input type="submit" value="Add to Order" class="btn btn-success form-control">
               </form>
               </div>
           </div>
@@ -176,6 +181,32 @@
 
 </div>
 
+<script type="text/javascript">
+$(document).on('submit', '#additem_to_order', function(e){
+    alert("into ajax function");
+    e.preventDefault();
+
+    $.ajax({
+
+      type:'POST',
+      url:'/quoted/order/'{{ order.id }}'/iteminsert/',
+      data:{
+          order_id:$('#name').val(),
+          product_id:$('#email').val(),
+          quantity:1,
+          price:$('#price').val(),
+          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+      },
+      success:function(){
+
+      }
+
+
+
+    });
+});
+
+</script>
 
 
 
@@ -220,9 +251,11 @@
 
   <form id ='myform' action="" method="POST" onsubmit="return checkOnSubmit()">{% csrf_token %}
   <tr>
-    <th width="6%"><button type="submit" class="btn btn-primary" >Add in</button>
+    <th width="6%">
+            <button type="submit" class="btn btn-primary" >Add item</button>
+
     </th>
-    <th width="3%">
+    <th width="3%"><a id="milk_a_id" href="#"  class="btn btn-primary" >See Group List</a>
       <input id="order_id" name="order_item" size="8" type="hidden" value='{{ order.id }}' cssStyle="width:20px" />
     </th>
     <th width="8%"><input id="id_product" name="product" size="14" type="text"  cssStyle="width:30px" />
