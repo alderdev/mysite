@@ -12,7 +12,8 @@ urlpatterns = [
 
     #url(r'^order/(?P<pk>\d+)/print/$', views.OrderDetail.as_view( template_name = 'quoted/order_print.html'), name="order_print" ),
     url(r'^order/(?P<id>\d+)/print/$', views.order_print , name="order_print" ),
-    url(r'^order/(?P<id>\d+)/iteminsert/$', views.order_item_insert , name="item_insert" ),
+    url(r'^order/(?P<id>\d+)/iteminsert/$', views.order_item_insert ),
+    url(r'^order/(?P<id>\d+)/deleteitem/$', views.quote_delete_item ),
 
 
     url(r'^create/$', views.order_create, name='order_create'),
@@ -20,8 +21,6 @@ urlpatterns = [
     url(r'^(?P<category_slug>[-\w]+)/$',    views.product_list,    name='product_list_by_category'),
     url(r'^(?P<id>\d+)/(?P<slug>[-\w]+)/$',    views.product_detail,    name='product_detail'),
 
-
-    url(r'^order/(?P<id>\d+)/deleteitem/$', views.quote_delete_item ),
 
 
 

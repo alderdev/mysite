@@ -76,23 +76,6 @@ def order_detail(request, id):
 
 
 
-def order_item_insert(request):
-    if request.method=='POST':
-        name = request.POST['name']
-        email = request.POST['email']
-        password = request.POST['password']
-
-        User.object.create(
-            name ,
-            email,
-            password
-        )
-
-        return HttpResponse('')
-
-
-
-
 
 
 
@@ -132,3 +115,18 @@ def quote_delete_item(request, id):
         #return HttpResponseRedirect("../%s" %str(request.POST['order_id']))
 
     return render(request, "../%s" %str(request.POST['order_id']), locals())
+
+
+def order_item_insert(request):
+    if request.method=='POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        password = request.POST['password']
+
+        User.object.create(
+            name ,
+            email,
+            password
+        )
+
+        return HttpResponse('../')

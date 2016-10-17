@@ -159,14 +159,14 @@
           {% for product in products %}
           <div class="col-sm-6 col-md-4">
               <div  class="thumbnail">
-                  <a href="{{ product.get_absolute_url }}">
+                  <a href="#">
                       <img src="{% if product.image %}{{ product.image.url }}{% endif %}" class="img-rectangle" height="360" width="360">
                   </a>
-                  <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+                  <h3>{{ product.name }}</h3>
                   <p>{{ product.modelname }}</p>
                   <p>${{ product.price }}</p>
 
-              <form  id="additem_to_order" action="" method="post">
+              <form  name="additem_to_order" id='form_{{ product.id }}' action="" method="post">
                   {% csrf_token %}
                   <input type="text" name="order" value='{{ order.id }}'><br>
                   <input type="text" name="products" value='{{ product.id }}'><br>
@@ -177,12 +177,14 @@
               </div>
           </div>
           {% endfor %}
+					<script src="http://code.jquery.com/jquery-1.10.2.js" ></script>
+					<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js" ></script>
     </div>
 
 </div>
 
 <script type="text/javascript">
-$(document).on('submit', '#additem_to_order', function(e){
+$(document).on('submit', 'additem_to_order', function(e){
     alert("into ajax function");
     e.preventDefault();
 
@@ -191,17 +193,18 @@ $(document).on('submit', '#additem_to_order', function(e){
       type:'POST',
       url:'/quoted/order/'{{ order.id }}'/iteminsert/',
       data:{
-          order_id:$('#name').val(),
-          product_id:$('#email').val(),
+				/*
+          order_id:$('order').val(),
+          product_id:$('email').val(),
           quantity:1,
-          price:$('#price').val(),
-          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+          price:$('price').val(),
+					*/
+          //csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
       },
       success:function(){
+					alert("Success function");
 
       }
-
-
 
     });
 });
