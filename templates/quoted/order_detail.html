@@ -110,25 +110,22 @@
         width: 1200,
         modal: true,
         buttons: {
-           OK: addUser
+           OK: AddtoOrder
         },
-        close: function() {}
+        close: function() {
+
+          }
+
       });
 
-      $( "#milk_a_id" ).on( "click", function() {
+      $( "#product_a_id" ).on( "click", function() {
         dialog.dialog( "open" );
       });
 
-       function addUser(){
-         var selectedItem = $("#myselect option:selected" ).text();
-        $("#milk_input_id").val(selectedItem);
-          dialog.dialog( "close" );
+       function AddtoOrder(){
+         dialog.dialog( "close" );
        }
     });
-
-
-
-
   </script>
 
 
@@ -171,8 +168,7 @@
                   <input type="text" name="order" value='{{ order.id }}'><br>
                   <input type="text" name="products" value='{{ product.id }}'><br>
                   <input type="text" name="prices" value='{{ product.price }}'><br>
-
-              <input type="submit" value="Add to Order" class="btn btn-success form-control">
+                  <button  value="Add to Order" class="btn btn-success form-control" onsubmit="return addItem()">Add Item to Order</button>
               </form>
               </div>
           </div>
@@ -180,10 +176,10 @@
 					<script src="http://code.jquery.com/jquery-1.10.2.js" ></script>
 					<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js" ></script>
     </div>
-
 </div>
 
-<script type="text/javascript">
+<script>
+function addItem(){
 $(document).on('submit', 'additem_to_order', function(e){
     alert("into ajax function");
     e.preventDefault();
@@ -208,6 +204,7 @@ $(document).on('submit', 'additem_to_order', function(e){
 
     });
 });
+}
 
 </script>
 
@@ -245,69 +242,54 @@ $(document).on('submit', 'additem_to_order', function(e){
 
   <tr>
     <td>註記事項</td>
-    <td colspan="3">{{ order.comment | linebreaks  }}</td>
+    <td colspan="3">{{ order.comment | linebreaks | truncatewords:60  }}</td>
   </tr>
 
 </table>
 
 <table class="table table-striped">
 
-  <form id ='myform' action="" method="POST" onsubmit="return checkOnSubmit()">{% csrf_token %}
-  <tr>
-    <th width="6%">
-            <button type="submit" class="btn btn-primary" >Add item</button>
+    <form id ='myform' action="" method="POST" onsubmit="return checkOnSubmit()">{% csrf_token %}
+          <tr>
+            <th width="6%"><button type="submit" class="btn btn-primary" >Add item</button></th>
+            <th width="3%"><a id="product_a_id" href="#"  class="btn btn-primary" >See Group List</a></th>
+            <th width="8%"><input id="order_id" name="order_item" size="8" type="text" value='{{ order.id }}' cssStyle="width:20px" /><input id="id_product" name="product" size="14" type="text"  cssStyle="width:30px" /></th>
+            <th width="15%"><span id="span_description"></span></th>
+            <th width="8%"><span id="span_img"></span></th>
+            <th width="30%"><span id="span_specification"></span></th>
+            <th width="5%"><input id="id_unit_price" name="unit_price" size="4" step="any" type="number"/><th >
+          </tr>
+    </form>
+    <form id="delform" action="" method="POST" onsubmit="return deleteOnSubmit( {{ order.id }} )" >{% csrf_token %}
+          <input type='hidden' name='order_id' value="{{ order.id }}"/>
+          <tr>
+            <th width="6%"><button type="submit" class="btn btn-danger" >Delete Item</button></th>
 
-    </th>
-    <th width="3%"><a id="milk_a_id" href="#"  class="btn btn-primary" >See Group List</a>
-      <input id="order_id" name="order_item" size="8" type="hidden" value='{{ order.id }}' cssStyle="width:20px" />
-    </th>
-    <th width="8%"><input id="id_product" name="product" size="14" type="text"  cssStyle="width:30px" />
-
-    <th width="15%"><span id="span_description"></span></th>
-    <th width="8%"><span id="span_img"></span></th>
-    <th width="30%"><span id="span_specification"></span></th>
-    <th width="5%"><input id="id_unit_price" name="unit_price" size="4" step="any" type="number"/>
-    <th >
-  </tr>
-</form>
-<form id="delform" action="" method="POST" onsubmit="return deleteOnSubmit( {{ order.id }} )" >{% csrf_token %}
-  <input type='hidden' name='order_id' value="{{ order.id }}"/>
-
-  <tr>
-    <th width="6%"><button type="submit" class="btn btn-danger" >Delete Item</button></th>
-
-    <th width="4%">行號</th>
-    <th width="8%">料號</th>
-    <th width="15%">品名</th>
-    <th width="6%">產品圖示</th>
-    <th width="30%">規格</th>
-    <th width="5%">單價</th>
-    <th >註記事項</th>
-  </tr>
-  {% for row in order.orderitem_set.all %}
-  <tr>
-    <td>
-        <input type="checkbox" name="rows" id='row_{{ row.id }}' value="{{ row.id }}">
-            {% if row.product.image %}
-             <img src="{{ row.product.image.url }}" class="img-rectangle" height="80" width="80"/>
-           {% endif %}
-    </td>
-    <td><a href='{{ row.get_absolute_url }}'>{{ row.id }}</a></td>
-    <td>{{ row.product.name }}</td>
-    <td>{{ row.product.modelname }}</td>
-    <td>{{ row.product.option1 }}</td>
-
-    <td>{{ row.product.category | linebreaks }}</td>
-    <td align="right">{{ row.price }}</td>
-    <td>{{ row.line_memo | linebreaks | truncatechars:30 }}</td>
-  </tr>
-  {% endfor%}
-</form>
-
-
-
+            <th width="4%">行號</th>
+            <th width="8%">料號</th>
+            <th width="15%">品名</th>
+            <th width="6%">產品圖示</th>
+            <th width="30%">規格</th>
+            <th width="5%">單價</th>
+            <th >註記事項</th>
+          </tr>
+          {% for row in order.orderitem_set.all %}
+          <tr>
+            <td>
+                <input type="checkbox" name="rows" id='row_{{ row.id }}' value="{{ row.id }}">
+                    {% if row.product.image %}
+                     <img src="{{ row.product.image.url }}" class="img-rectangle" height="80" width="80"/>
+                   {% endif %}
+            </td>
+            <td>{{ row.id }}</td>
+            <td>{{ row.product.name }}</td>
+            <td>{{ row.product.modelname }}</td>
+            <td>{{ row.product.option1 }}</td>
+            <td>{{ row.product.category | linebreaks }}</td>
+            <td align="right">{{ row.price }}</td>
+            <td>{{ row.line_memo | linebreaks | truncatechars:30 }}</td>
+          </tr>
+          {% endfor%}
+    </form>
 </table>
-
-
-
 {% endblock content %}
