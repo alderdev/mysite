@@ -118,6 +118,7 @@ def quote_delete_item(request, id):
 
 
 def order_item_insert(request):
+    print("into order_item_insert function")
     if request.method=='POST':
         name = request.POST['name']
         email = request.POST['email']
