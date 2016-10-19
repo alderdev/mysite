@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^order/(?P<id>\d+)/print/$', views.order_print , name="order_print" ),
     url(r'^order/(?P<id>\d+)/iteminsert/$', views.order_item_insert ),
     url(r'^order/(?P<id>\d+)/deleteitem/$', views.quote_delete_item ),
-
+    url(r'^insertitem/$', views.order_item_insert ),
 
     url(r'^create/$', views.order_create, name='order_create'),
     url(r'^$', views.product_list, name='product_list'),

@@ -133,7 +133,7 @@
 
 
 
-    <div id="dialog" title="請選擇一個項目">
+    <div id="dialog" title="Choose you want ">
 
       <span id="order_id">Order ID:{{ order.id }}</span><br>
       <span id="order_number">Order Number:{{ order.order_number }}</span>
@@ -164,14 +164,13 @@
                   </a>
                   <h3>{{ product.name }}</h3>
                   <p>{{ product.modelname }}</p>
-                  <p>${{ product.price }}</p>
+                  <p>Standar Price: ${{ product.price }}</p>
 
               <form  name="additem_to_order" id='form_{{ product.id }}' action="" method="post">
                   {% csrf_token %}
-                  <input type="text" name="order" value='{{ order.id }}'><br>
-                  <input type="text" name="products" value='{{ product.id }}'><br>
-                  <input type="text" name="prices" value='{{ product.price }}'><br>
-
+                  <input type="hidden" id="order_{{ product.id }}" value='{{ order.id }}'>
+                  <input type="hidden" id="products_{{ product.id }}" value='{{ product.id }}'>
+                  Quote Price:<input type="text" id="prices_{{ product.id }}" value='{{ product.price }}' onfocus="select()">
               <button type="button"  class="btn btn-success form-control">Add to Order</button>
               </form>
               </div>
@@ -180,139 +179,95 @@
 					<script src="http://code.jquery.com/jquery-1.10.2.js" ></script>
 					<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js" ></script>
     </div>
-
-
 </div>
 <script>
 $("button").click(function(e){
-	alert("function")
-	  e.preventDefault();
 
+    var form = $(this).closest('form')[0];
+	  //alert(form.id)
+    var item = form.id.split('_');
+    var order_id = document.getElementById('order_'+item[1]).value
+    var product_id = document.getElementById('products_'+item[1]).value
+    var prices_id = document.getElementById('prices_'+item[1]).value
+
+    e.preventDefault();
 
 	 $.ajax({
 			 type:"POST",
-			 //url:'/quoted/order/'{{ order.id }}'/iteminsert/',
+			 url:'/quoted/insertitem/',
 			 data:{
- 				/*
-           order_id:$('order').val(),
-           product_id:$('email').val(),
-           quantity:1,
-           price:$('price').val(),
- 					*/
-           //csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+           order_id: order_id,
+           product_id: product_id,
+           price: prices_id,
+ 				   csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
        },
 
 			 success: function(result){
-				 alert('Success!!!')
-				 $("#d1").html("Success!!");
+				 //$("#d1").html("Success!!");
+         alert('Put item to Order')
 			 },
 			 error: function(e){
 				 alert('Error')
-				 //$("#d1").html("Error!!");
 			 }
 	 });
 });
 </script>
 
-<script type="text/javascript">
-$(document).on('submit', 'additem_to_order', function(e){
-    alert("into ajax function");
-
-
-    $.ajax({
-
-      type:'POST',
-      url:'/quoted/order/'{{ order.id }}'/iteminsert/',
-      data:{
-				/*
-          order_id:$('order').val(),
-          product_id:$('email').val(),
-          quantity:1,
-          price:$('price').val(),
-					*/
-          //csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
-      },
-      success:function(){
-					alert("Success function");
-
-      }
-    });
-});
-
-</script>
-
-
-
-
 
   <h1>{{ title }}</h1>
-<a href="{{ order.get_absolute_url }}print" class="btn btn-primary" target="_blank">Export PDF</a>
+<a href="{{ order.get_absolute_url }}print" class="btn btn-primary" target="_blank">to PDF</a>
 <table class="table table-bordered">
   <tr>
-    <td>報價單號</td>
+    <td>Quote No.</td>
     <td>{{ order.order_number }}</td>
-    <td>報價日期</td>
+    <td>Quote Date</td>
     <td>{{ order.ord_date | date:"Y-m-d" }}</td>
   </tr>
   <tr>
-    <td>客戶名稱</td>
+    <td>Customer Title</td>
     <td>{{ order.customer.title }}</td>
-    <td>業務代表</td>
+    <td>Sales</td>
     <td>{{ order.quote_sales }}</td>
   </tr>
   <tr>
-    <td>聯絡人</td>
+    <td>Contact</td>
     <td></td>
-    <td>聯絡信箱</td>
+    <td>Email</td>
     <td>{{ order.email }}</td>
   </tr>
   <tr>
-    <td>幣別</td>
+    <td>Currency</td>
     <td>{{ order.currency }}</td>
-    <td>有效日期</td>
+    <td>Effective Date</td>
     <td>{{ order.effective_date | date:"Y-m-d" }}</td>
   </tr>
 
   <tr>
-    <td>註記事項</td>
+    <td>Comment</td>
     <td colspan="3">{{ order.comment | linebreaks |truncatewords:60 }}</td>
   </tr>
 
 </table>
 
 <table class="table table-striped">
+<a id="milk_a_id" href="#"  class="btn btn-primary" >See Model List</a>
 
-  <form id ='myform' action="" method="POST" onsubmit="return checkOnSubmit()">{% csrf_token %}
-  <tr>
-    <th width="6%">
-            <button type="submit" class="btn btn-primary" >Add item</button>
-
-    </th>
-    <th width="3%"><a id="milk_a_id" href="#"  class="btn btn-primary" >See Group List</a>
-      <input id="order_id" name="order_item" size="8" type="hidden" value='{{ order.id }}' cssStyle="width:20px" />
-    </th>
-    <th width="8%"><input id="id_product" name="product" size="14" type="text"  cssStyle="width:30px" />
-
-    <th width="15%"><span id="span_description"></span></th>
-    <th width="8%"><span id="span_img"></span></th>
-    <th width="30%"><span id="span_specification"></span></th>
-    <th width="5%"><input id="id_unit_price" name="unit_price" size="4" step="any" type="number"/>
-    <th >
-  </tr>
-</form>
 <form id="delform" action="" method="POST" onsubmit="return deleteOnSubmit( {{ order.id }} )" >{% csrf_token %}
   <input type='hidden' name='order_id' value="{{ order.id }}"/>
 
   <tr>
     <th width="6%"><button type="submit" class="btn btn-danger" >Delete Item</button></th>
 
-    <th width="4%">行號</th>
-    <th width="8%">料號</th>
-    <th width="15%">品名</th>
-    <th width="6%">產品圖示</th>
-    <th width="30%">規格</th>
-    <th width="5%">單價</th>
-    <th >註記事項</th>
+    <th width="4%">No.</th>
+    <th width="8%">Product</th>
+    <th width="15%">Model Name</th>
+    <th width="6%">Family</th>
+    <th width="6%">Beam angle</th>
+    <th width="6%">Option1</th>
+    <th width="6%">CCT</th>
+    <th width="5%">Category</th>
+    <th width="5%">Price</th>
+
   </tr>
   {% for row in order.orderitem_set.all %}
   <tr>
@@ -322,14 +277,16 @@ $(document).on('submit', 'additem_to_order', function(e){
              <img src="{{ row.product.image.url }}" class="img-rectangle" height="80" width="80"/>
            {% endif %}
     </td>
-    <td><a href='{{ row.get_absolute_url }}'>{{ row.id }}</a></td>
+    <td>{{ row.id }}</td>
     <td>{{ row.product.name }}</td>
     <td>{{ row.product.modelname }}</td>
+    <td>{{ row.product.family }}</td>
+    <td>{{ row.product.beam_angle }}</td>
     <td>{{ row.product.option1 }}</td>
-
+    <td>{{ row.product.cct }}</td>
     <td>{{ row.product.category | linebreaks }}</td>
     <td align="right">{{ row.price }}</td>
-    <td>{{ row.line_memo | linebreaks | truncatechars:30 }}</td>
+
   </tr>
   {% endfor%}
 </form>

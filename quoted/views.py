@@ -74,11 +74,6 @@ def order_detail(request, id):
 
 
 
-
-
-
-
-
 #顯示和列印共用
 class OrderDetail(DetailView):
     model = Order
@@ -118,16 +113,18 @@ def quote_delete_item(request, id):
 
 
 def order_item_insert(request):
-    print("into order_item_insert function")
+    
     if request.method=='POST':
-        name = request.POST['name']
-        email = request.POST['email']
-        password = request.POST['password']
+        order_id = request.POST['order_id']
+        product_id = request.POST['product_id']
+        price = request.POST['price']
+        quantity = 1
 
-        User.object.create(
-            name ,
-            email,
-            password
+        OrderItem.objects.create(
+            order_id = order_id,
+            product_id = product_id,
+            price = price,
+            quantity = quantity
         )
 
-        return HttpResponse('../')
+    return HttpResponse()

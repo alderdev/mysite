@@ -47,7 +47,7 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ('name',)
+        ordering = ('category','name',)
         index_together = (('id', 'slug'),)
 
 
