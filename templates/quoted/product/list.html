@@ -10,9 +10,12 @@
     Products
   {% endif %}
 
-{% endblock %}
+{% endblock title %}
 
 {% block content %}
+
+
+<!--
 <div class="order-info">
   <h3>Your order</h3>
   <ul>
@@ -26,6 +29,7 @@
   </ul>
   <p>Total: ${{ cart.get_total_price }}</p>
 </div>
+-->
 
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1">
   <div  class="media-left media-top">
@@ -53,38 +57,17 @@
               </a>
               <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
               <p>{{ product.modelname }}</p>
-              <p>${{ product.price }}</p>
+              <p><strong>Standard Price:</strong> ${{ product.price }}</p>
 
           <form  id="additem_to_cart_form" action="{% url "cart:cart_add" product.id %}" method="post">
-          {{ cart_product_form }}
-          {% csrf_token %}
+            Quote Price: <input type="text" class="form-control" name="price" id="id_product" value='{{ product.price }}' onfocus="select()" />
+            {% csrf_token %}
+
           <input type="submit" value="Add to cart" class="btn btn-success form-control">
           </form>
           </div>
       </div>
       {% endfor %}
-</div>
-<script>
-  $(document).on.('submit','#additem_to_cart_form',function(e){
-      e.preventDefault();
-
-      $.ajax
-			({
-				url :
-				type: "POST",
-				data : {
-          product_id:$('#product_id').val(),
-          quantity:$('#quantity_id').val(),
-
-        },
-				success: function(){
-
-				},
-
-			});
-  });
-</script>
-
-
+    </div>
 </div>
 {% endblock content %}

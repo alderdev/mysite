@@ -23,9 +23,9 @@
       </tr>
       <tr>
         <td>Contact</td>
-        <td></td>
+        <td>{{ order.customer.contact }}</td>
         <td>Email Address</td>
-        <td>{{ order.email }}</td>
+        <td>{{ order.customer.email }}</td>
       </tr>
       <tr>
         <td>Currency</td>
@@ -48,11 +48,11 @@
         <th width="6%">Family</th>
         <th width="8%">Category</th>
         <th width="5%">Unit Price</th>
-        <th width="5%">Memo</th>
+
       </tr>
       {% for row in order.orderitem_set.all %}
       <tr>
-        <td>{{ row.id }}</td>
+        <td>{{ forloop.counter }}</td>
         <td>
                 {% if row.product.image %}
                  <img src="{{ row.product.image.url }}" class="img-rectangle" height="40" width="40"/>
@@ -61,10 +61,9 @@
         <td>{{ row.product.name }}</td>
         <td>{{ row.product.modelname }}</td>
         <td>{{ row.product.option1 }}</td>
-
         <td>{{ row.product.category | linebreaks }}</td>
         <td align="right">{{ row.price }}</td>
-        <td>{{ row.line_memo | linebreaks | truncatechars:30 }}</td>
+
 
       </tr>
       {% endfor%}
@@ -74,8 +73,6 @@
     <span>Comment</spam>
 <hr>
     <div class='comment'>  {{ order.comment | linebreaks  }}</div>
-
-
 </div>
 </body>
 </html>

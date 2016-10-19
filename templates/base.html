@@ -9,28 +9,19 @@
             {% block head_extra %} {% endblock head_extra %}
         </title>
 
-
         <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
         <script src="http://code.jquery.com/jquery-1.10.2.js" ></script>
         <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js" ></script>
-
-
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
         <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}" />
         <!--<script src="{% static 'js/bootstrap.min.js' %}" ></script>-->
         <!--<script src="{% static 'js/jquery-1.8.2.min.js' %}" ></script>-->
         <script src="{% static 'js/myajax.js' %}" ></script>
-
-
-
-
-
     </head>
     <body>
 
         <div class="col-sm-10 col-sm-offset-1">
             <div>
-
               <span>
                 <img src="{% static 'img/alder_upline.jpg' %}" width="100%" height="50"/>
                   <small>{{ request.user }} | {{ request.user.username }} | {{ request.user.id }}</small>
@@ -70,30 +61,6 @@
                                 <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; 電子佈告</span>
                               </a>
                           </li>
-                          <li  class="">
-                              <a href="/prod_model">
-                                <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; 產品類型</span>
-                              </a>
-                          </li>
-
-                          <li  class="">
-                              <a href="/quoted">
-                                <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; 瀏覽產品類型</span>
-                              </a>
-                          </li>
-
-                          <li  class="">
-                              <a href="/quoted/order/">
-                                <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; 報價清單</span>
-                              </a>
-                          </li>
-
-                          <li  class="">
-                              <a href="/cart">
-                                <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; 購物車</span>
-                              </a>
-                          </li>
-
 
                           {% if perms.employees.can_employee %}
                           <li  class="">
@@ -102,13 +69,33 @@
                               </a>
                           </li>
                           {% endif %}
-                          {% if perms.products.can_product %}
+
+                          <!--
                           <li  class="">
-                              <a href="/products">
-                                <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; 產品</span>
+                              <a href="/prod_model">
+                                <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; 產品類型</span>
                               </a>
                           </li>
-                          {% endif %}
+                        -->
+
+                          <li  class="">
+                              <a href="/quoted">
+                                <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; Product Model</span>
+                              </a>
+                          </li>
+
+                          <li  class="">
+                              <a href="/quoted/order/">
+                                <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; Quote List</span>
+                              </a>
+                          </li>
+
+                          <li  class="">
+                              <a href="/cart">
+                                <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; Shipping Car</span>
+                              </a>
+                          </li>
+
                           {% if perms.workorders.can_add_workorder %}
                           <li  class="">
                               <a href="/workorders">
@@ -123,11 +110,22 @@
                               </a>
                           </li>
                           {% endif %}
+
+
                           <li  class="">
                               <a href="/quotations">
                                 <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; 銷售管理</span>
                               </a>
                           </li>
+  <!--
+                          {% if perms.products.can_product %}
+                          <li  class="">
+                              <a href="/products">
+                                <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; 產品</span>
+                              </a>
+                          </li>
+                          {% endif %}
+                        -->
                       </ul>
                   </div>
               </div>

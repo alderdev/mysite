@@ -61,47 +61,7 @@
     }
     return true;
   }
-
-  function checkOnSubmit(){
-
-    var validateflag = true;
-    //檢查存檔是不是有欄位沒填
-    var unit_price = document.getElementById("id_unit_price").value;
-
-    if( unit_price ==''){
-      window.alert("Invalid Price");
-      validateflag = false ;
-      return false;
-    }
-
-    var prod_number = document.getElementById("id_product").value;
-
-    if( prod_number != '' ){
-      var product = document.getElementById("description").innerHTML;
-      if( product ==''){
-        window.alert("Invalid Product");
-        validateflag = false ;
-        return false;
-      }
-    }else{
-        window.alert("Product is require!");
-        validateflag = false ;
-        return false;
-    }
-
-
-    if(validateflag){
-      document.getElementById("myform").action = "/quotations/detailadd/";
-      myform.submit();
-    }else{
-      return false;
-    }
-    return false;
-  }
   </script>
-
-
-
   <script>
     $(function() {
       var dialog = $("#dialog" ).dialog({
@@ -115,7 +75,7 @@
         close: function() {}
       });
 
-      $( "#milk_a_id" ).on( "click", function() {
+      $( "#product_a_id" ).on( "click", function() {
         dialog.dialog( "open" );
       });
 
@@ -125,20 +85,18 @@
           dialog.dialog( "close" );
        }
     });
-
-
-
-
   </script>
 
 
 
     <div id="dialog" title="Choose you want ">
 
-      <span id="order_id">Order ID:{{ order.id }}</span><br>
+      <!--<span id="order_id">Order ID:{{ order.id }}</span><br>-->
       <span id="order_number">Order Number:{{ order.order_number }}</span>
-
+<div>
+		<!--
       <div  class="media-left media-top">
+
         <div>
           <h3>Categories</h3>
           <ul>
@@ -153,6 +111,7 @@
           </ul>
         </div>
       </div>
+		-->
 			<div id="d1"></div>
       <div id='tbody' class="media-body">
       <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
@@ -160,7 +119,7 @@
           <div class="col-sm-6 col-md-4">
               <div  class="thumbnail">
                   <a href="#">
-                      <img src="{% if product.image %}{{ product.image.url }}{% endif %}" class="img-rectangle" height="360" width="360">
+										 <img src="{% if product.image %}{{ product.image.url }}{% endif %}" class="img-rectangle" height="360" width="360">
                   </a>
                   <h3>{{ product.name }}</h3>
                   <p>{{ product.modelname }}</p>
@@ -179,6 +138,7 @@
 					<script src="http://code.jquery.com/jquery-1.10.2.js" ></script>
 					<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js" ></script>
     </div>
+</div>
 </div>
 <script>
 $("button").click(function(e){
@@ -201,7 +161,6 @@ $("button").click(function(e){
            price: prices_id,
  				   csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
        },
-
 			 success: function(result){
 				 //$("#d1").html("Success!!");
          alert('Put item to Order')
@@ -215,8 +174,8 @@ $("button").click(function(e){
 
 
   <h1>{{ title }}</h1>
-<a href="{{ order.get_absolute_url }}print" class="btn btn-primary" target="_blank">to PDF</a>
-<table class="table table-bordered">
+
+<table class="table table-striped" border="0">
   <tr>
     <td>Quote No.</td>
     <td>{{ order.order_number }}</td>
@@ -241,60 +200,50 @@ $("button").click(function(e){
     <td>Effective Date</td>
     <td>{{ order.effective_date | date:"Y-m-d" }}</td>
   </tr>
-
   <tr>
     <td>Comment</td>
     <td colspan="3">{{ order.comment | linebreaks |truncatewords:60 }}</td>
   </tr>
-
 </table>
 
-<table class="table table-striped">
-<a id="milk_a_id" href="#"  class="btn btn-primary" >See Model List</a>
+<table class="table table-striped" border="0">
+	<a href="{{ order.get_absolute_url }}print" class="btn btn-primary" target="_blank">to PDF</a>
+		<a id="product_a_id" href="#"  class="btn btn-primary" >See Model List</a>
 
-<form id="delform" action="" method="POST" onsubmit="return deleteOnSubmit( {{ order.id }} )" >{% csrf_token %}
-  <input type='hidden' name='order_id' value="{{ order.id }}"/>
-
-  <tr>
-    <th width="6%"><button type="submit" class="btn btn-danger" >Delete Item</button></th>
-
-    <th width="4%">No.</th>
-    <th width="8%">Product</th>
-    <th width="15%">Model Name</th>
-    <th width="6%">Family</th>
-    <th width="6%">Beam angle</th>
-    <th width="6%">Option1</th>
-    <th width="6%">CCT</th>
-    <th width="5%">Category</th>
-    <th width="5%">Price</th>
-
-  </tr>
-  {% for row in order.orderitem_set.all %}
-  <tr>
-    <td>
-        <input type="checkbox" name="rows" id='row_{{ row.id }}' value="{{ row.id }}">
-            {% if row.product.image %}
-             <img src="{{ row.product.image.url }}" class="img-rectangle" height="80" width="80"/>
-           {% endif %}
-    </td>
-    <td>{{ row.id }}</td>
-    <td>{{ row.product.name }}</td>
-    <td>{{ row.product.modelname }}</td>
-    <td>{{ row.product.family }}</td>
-    <td>{{ row.product.beam_angle }}</td>
-    <td>{{ row.product.option1 }}</td>
-    <td>{{ row.product.cct }}</td>
-    <td>{{ row.product.category | linebreaks }}</td>
-    <td align="right">{{ row.price }}</td>
-
-  </tr>
-  {% endfor%}
-</form>
-
-
-
+		<form id="delform" action="" method="POST" onsubmit="return deleteOnSubmit( {{ order.id }} )" >{% csrf_token %}
+		  <input type='hidden' name='order_id' value="{{ order.id }}"/>
+		  <tr>
+		    <th width="6%"><button type="submit" class="btn btn-danger" >Delete Item</button></th>
+		    <th width="4%">No.</th>
+		    <th width="8%">Product</th>
+		    <th width="15%">Model Name</th>
+		    <th width="6%">Family</th>
+		    <th width="6%">Beam angle</th>
+		    <th width="6%">Option1</th>
+		    <th width="6%">CCT</th>
+		    <th width="5%">Category</th>
+		    <th width="5%">Price</th>
+		  </tr>
+		  {% for row in order.orderitem_set.all %}
+		  <tr>
+		    <td>
+		        <input type="checkbox" name="rows" id='row_{{ row.id }}' value="{{ row.id }}">
+		            {% if row.product.image %}
+		             <img src="{{ row.product.image.url }}" class="img-rectangle" height="80" width="80"/>
+		           {% endif %}
+		    </td>
+		    <td>{{ forloop.counter }}</td>
+		    <td>{{ row.product.name }}</td>
+		    <td>{{ row.product.modelname }}</td>
+		    <td>{{ row.product.family }}</td>
+		    <td>{{ row.product.beam_angle }}</td>
+		    <td>{{ row.product.option1 }}</td>
+		    <td>{{ row.product.cct }}</td>
+		    <td>{{ row.product.category | linebreaks }}</td>
+		    <td align="right">{{ row.price }}</td>
+		  </tr>
+		  {% endfor%}
+		</form>
 </table>
-
-
 
 {% endblock content %}
