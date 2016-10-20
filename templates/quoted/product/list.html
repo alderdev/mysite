@@ -30,6 +30,14 @@
   <p>Total: ${{ cart.get_total_price }}</p>
 </div>
 -->
+<style>
+.imgbox{
+  width: auto;
+  height: 300px;
+  border: 1px solid;
+  box-sizing: border-box;
+}
+</style>
 
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1">
   <div  class="media-left media-top">
@@ -52,9 +60,11 @@
       {% for product in products %}
       <div class="col-sm-6 col-md-4">
           <div  class="thumbnail">
+              <div class='imgbox'>
               <a href="{{ product.get_absolute_url }}">
                   <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" class="img-rectangle" height="360" width="360">
               </a>
+              </div>
               <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
               <p>{{ product.modelname }}</p>
               <p><strong>Standard Price:</strong> ${{ product.price }}</p>
