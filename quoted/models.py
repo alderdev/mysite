@@ -1,10 +1,24 @@
 from django.db import models
 from django.core.urlresolvers import reverse
-from customers.models import Customer
+from customers.models import Customer, Contact
 from quotations.models import Currency
 from django.utils import timezone
+from smart_selects.db_fields import ChainedForeignKey
 
 
+class PaymentTerm(models.Model):
+    description = models.CharField(max_length=200, blank=False, null=False)
+
+    def __str__(self):
+        return self.description
+
+
+
+class PriceTerm(models.Model):
+    description = models.CharField(max_length=200, blank=False, null=False)
+
+    def __str__(self):
+        return self.description
 
 
 
@@ -97,7 +111,15 @@ class OrderNumberManager(models.Manager):
 
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    contact = ChainedForeignKey( Contact,
+                        chained_field="customer",
+                        chained_model_field="customer",
+                        show_all = False,
+                        auto_choose= True
+                    )
     email = models.EmailField()
+    paymentterm = models.ForeignKey(PaymentTerm)
+    priceterm = models.ForeignKey(PriceTerm)
     quote_sales = models.CharField(max_length=60, null=False, blank=False)
     ord_date = models.DateField(default=timezone.now) #報價日期
     effective_date = models.DateField( default=timezone.now ) # 報價單有效日期

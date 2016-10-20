@@ -42,8 +42,7 @@ urlpatterns = [
     url(r'^modelquote/', include( 'modelquote.urls', namespace="modelquote")),
     url(r'^quoted/', include( 'quoted.urls', namespace="quoted")),
 
-
-    #url(r'^chaining/', include( 'smart_selects.urls' )),
+    url(r'^chaining/', include('smart_selects.urls')),
 
 
 ]

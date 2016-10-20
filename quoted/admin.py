@@ -1,5 +1,19 @@
 from django.contrib import admin
-from .models import Category, Product, Order, OrderItem
+from .models import Category, Product, Order, OrderItem, PaymentTerm, PriceTerm
+
+
+
+class PriceTermAdmin(admin.ModelAdmin):
+    list_display = ['description']
+
+admin.site.register(PriceTerm, PriceTermAdmin)
+
+
+
+class PaymentTermAdmin(admin.ModelAdmin):
+    list_display = ['description']
+
+admin.site.register(PaymentTerm, PaymentTermAdmin)
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug']
@@ -22,8 +36,8 @@ class OrderItemInline(admin.TabularInline):
 
 class OrderAdmin(admin.ModelAdmin):
 
-    list_display = [ 'customer','email','paid','created', 'updated']
-    raw_id_fields = ['customer']
+    list_display = [ 'customer','email','created', 'updated','paid']
+    #raw_id_fields = ['customer']
     list_filter = ['paid', 'created', 'updated']
     inlines = [OrderItemInline]
 
