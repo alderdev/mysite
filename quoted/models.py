@@ -112,14 +112,15 @@ class OrderNumberManager(models.Manager):
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     contact = ChainedForeignKey( Contact,
+                        limit_choices_to={'invalid': False},
                         chained_field="customer",
                         chained_model_field="customer",
                         show_all = False,
                         auto_choose= True
                     )
-    email = models.EmailField()
-    paymentterm = models.ForeignKey(PaymentTerm)
-    priceterm = models.ForeignKey(PriceTerm)
+    email = models.EmailField(null=False, blank=False)
+    paymentterm = models.ForeignKey(PaymentTerm,null=False, blank=False)
+    priceterm = models.ForeignKey(PriceTerm,null=False, blank=False)
     quote_sales = models.CharField(max_length=60, null=False, blank=False)
     ord_date = models.DateField(default=timezone.now) #報價日期
     effective_date = models.DateField( default=timezone.now ) # 報價單有效日期
@@ -130,7 +131,6 @@ class Order(models.Model):
     order_number = models.CharField(max_length=12, null=True, blank=True, unique=True) #報價單號
     comment = models.TextField(null=True, blank=True)
     objects = OrderNumberManager()
-
 
     class Meta:
         ordering = ('-created',)

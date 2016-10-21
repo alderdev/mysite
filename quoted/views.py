@@ -9,6 +9,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Q
 
+
 def product_list(request, category_slug=None):
 
     category = None
@@ -31,11 +32,19 @@ def product_detail(request, id, slug):
     return render(request,'quoted/product/detail.html',locals() )
 
 
+from django.contrib import admin
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    raw_id_fields = ['product']
+
+inlines = [OrderItemInline]
 
 def order_create(request):
 
     cart = Cart(request)
     form = OrderCreateForm(request.POST or None)
+    #raw_id_fields = ['customer']
     if request.method == 'POST':
 
         if form.is_valid():
@@ -47,9 +56,7 @@ def order_create(request):
             cart.clear()
             return HttpResponseRedirect( '../' )
 
-
         return render(request,'quoted/product/list.html',locals())
-
 
     return render(request,'quoted/order_form.html',locals())
 
@@ -113,7 +120,7 @@ def quote_delete_item(request, id):
 
 
 def order_item_insert(request):
-    
+
     if request.method=='POST':
         order_id = request.POST['order_id']
         product_id = request.POST['product_id']

@@ -5,6 +5,25 @@ Checkout
 {% endblock %}
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css" />
+<link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css" />
+
+
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+<script type="text/javascript" src="/static/admin/js/vendor/jquery/jquery.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/static/admin/js/actions.js"></script>
+<script type="text/javascript" src="/static/admin/js/urlify.js"></script>
+<script type="text/javascript" src="/static/admin/js/prepopulate.js"></script>
+<script type="text/javascript" src="/static/admin/js/vendor/xregexp/xregexp.min.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.js"></script>
+<script type="text/javascript" src="/static/smart-selects/admin/js/chainedfk.js"></script>
+<script type="text/javascript" src="/static/admin/js/calendar.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+<script type="text/javascript" src="/static/admin/js/inlines.js"></script>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 	<script>
@@ -56,9 +75,17 @@ Checkout
     <div class="media-body ">
       <form action="" method="post" class="order-form">
       {{ form.as_p }}
-      <p><input type="submit" value="Place order"></p>
+          <p><input type="submit" value="Place order" class="form-control"></p>
       {% csrf_token %}
       </form>
+
+      <!-- 放大鏡的功能,需user有該app(customer)的change的權限, 因為這裡有smart_selects的關係, 所以會有點問題
+      <a href="/admin/customers/customer/?_to_field=sap_no" class="related-lookup" id="lookup_id_customer" title="Lookup"></a>
+      -->
     </div>
 </div>
+
+
+
+
 {% endblock %}

@@ -23,7 +23,7 @@ admin.site.register(Category, CategoryAdmin)
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'modelname', 'slug', 'price', 'stock', 'available', 'created', 'updated']
-    list_filter = ['available', 'family', 'updated']
+    list_filter = ['available', 'category', 'family', 'watt']
     list_editable = ['price', 'stock', 'available']
     prepopulated_fields = {'slug': ('name',)}
 
@@ -34,10 +34,12 @@ class OrderItemInline(admin.TabularInline):
     model = OrderItem
     raw_id_fields = ['product']
 
+
+
 class OrderAdmin(admin.ModelAdmin):
 
     list_display = [ 'customer','email','created', 'updated','paid']
-    #raw_id_fields = ['customer']
+    raw_id_fields = ['customer']
     list_filter = ['paid', 'created', 'updated']
     inlines = [OrderItemInline]
 

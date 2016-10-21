@@ -199,7 +199,7 @@ $("button").click(function(e){
   </tr>
   <tr>
     <td>Contact</td>
-    <td>{{ order.customer.contact }}</td>
+    <td>{{ order.contact }}</td>
     <td>Email</td>
     <td>{{ order.email }}</td>
   </tr>
@@ -208,6 +208,12 @@ $("button").click(function(e){
     <td>{{ order.currency }}</td>
     <td>Effective Date</td>
     <td>{{ order.effective_date | date:"Y-m-d" }}</td>
+  </tr>
+  <tr>
+    <td>Payment Term</td>
+    <td>{{ order.paymentterm }}</td>
+    <td>Price Term</td>
+    <td>{{ order.priceterm }}</td>
   </tr>
   <tr>
     <td>Comment</td>
