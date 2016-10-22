@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Category, Product, OrderItem, Order
-from .forms import OrderCreateForm, OrderItemForm
+from .forms import OrderCreateForm,OrderUpdateForm, OrderItemForm
 from cart.cart import Cart
 from cart.forms import CartAddProductForm
 from django.views.generic import ListView, DetailView
@@ -88,6 +88,12 @@ class OrderDetail(DetailView):
 from django.conf import settings
 from django.template.loader import render_to_string
 import weasyprint
+
+
+class OrderUpdate(UpdateView):
+    model = Order
+    fields = ['customer', 'contact', 'email', 'currency', 'paymentterm', 'priceterm', 'quote_sales','ord_date', 'effective_date','comment']
+    form_clss = OrderUpdateForm()
 
 
 

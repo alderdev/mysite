@@ -5,10 +5,10 @@ urlpatterns = [
 
 
     url(r'^order/$', views.OrderList.as_view( template_name = 'quoted/order_list.html'), name="order_list" ),
-
-
     url(r'^order/(?P<id>\d+)/$', views.order_detail, name="order_detail" ),
     url(r'^order/(?P<pk>\d+)/$', views.OrderDetail.as_view( template_name = 'quoted/order_detail.html'), name="order_detail" ),
+
+    url(r'^order/(?P<pk>\d+)/update/$', views.OrderUpdate.as_view( template_name = 'quoted/order_updateform.html'), name="order_update" ),
 
     #url(r'^order/(?P<pk>\d+)/print/$', views.OrderDetail.as_view( template_name = 'quoted/order_print.html'), name="order_print" ),
     url(r'^order/(?P<id>\d+)/print/$', views.order_print , name="order_print" ),
