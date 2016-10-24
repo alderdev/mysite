@@ -38,9 +38,10 @@ class OrderItemInline(admin.TabularInline):
 
 class OrderAdmin(admin.ModelAdmin):
 
-    list_display = [ 'customer','email','created', 'updated','paid']
+    list_display = [ 'is_valid','order_number','customer','email','quote_sales','ord_date', 'effective_date']
+    list_display_links = ['order_number','customer','email']
     raw_id_fields = ['customer']
-    list_filter = ['paid', 'created', 'updated']
+    list_filter = ['is_valid', 'quote_sales']
     inlines = [OrderItemInline]
 
 admin.site.register(Order, OrderAdmin)

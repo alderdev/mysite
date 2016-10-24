@@ -61,12 +61,11 @@ Modify
     <p>Quotation Number: {{ order.order_number }}</p>
     <div class="media-body ">
       <form action="" method="post" class="order-form">
-      {{ form.as_p }}
+          {{ form.as_p }}
       <div class="form-inline">
-      <a href="{{ instance.get_absolute_url }}" class="btn btn-success" role="button" >Return</a>
           <button type="submit"  class="btn btn-primary" >Save</button>
       </div>
-      {% csrf_token %}
+        {% csrf_token %}
       </form>
 
       <!-- 放大鏡的功能,需user有該app(customer)的change的權限, 因為這裡有smart_selects的關係, 所以會有點問題

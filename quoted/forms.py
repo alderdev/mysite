@@ -15,7 +15,8 @@ class OrderCreateForm(forms.ModelForm):
         fields = ['customer', 'contact', 'email', 'currency', 'paymentterm', 'priceterm', 'quote_sales','ord_date', 'effective_date','comment']
         raw_id_fields = ['customer']
         widgets = {
-            'email': forms.EmailInput(attrs={ 'class':'form-control'}),
+            'contact': forms.Select(attrs={ 'class':'form-control'}),
+            'email': forms.EmailInput(attrs={ 'class':'form-control','onfocus':'select()'}),
             'currency': forms.Select(attrs={ 'class':'form-control'}),
             'paymentterm': forms.Select(attrs={ 'class':'form-control'}),
             'priceterm': forms.Select(attrs={ 'class':'form-control'}),
@@ -29,7 +30,7 @@ class OrderCreateForm(forms.ModelForm):
 class OrderUpdateForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['customer', 'contact', 'email', 'currency', 'paymentterm', 'priceterm', 'quote_sales','ord_date', 'effective_date','comment']
+        fields = ['is_valid','customer',  'email', 'currency', 'paymentterm', 'priceterm', 'quote_sales','ord_date', 'effective_date','comment']
         raw_id_fields = ['customer']
         widgets = {
             'customer': forms.TextInput(attrs={ 'class':'form-control', 'readonly':'readonly'}),

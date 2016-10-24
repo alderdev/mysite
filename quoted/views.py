@@ -66,6 +66,21 @@ class OrderList(ListView):
     paginate_by = 10
 
 
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            query_list = Order.objects.filter(
+                Q(order_number=query)
+            ).distinct()
+            return query_list
+
+        return Order.objects.filter(is_valid=True)
+
+
+
+
+
+
 
 
 def order_detail(request, id):
@@ -92,7 +107,7 @@ import weasyprint
 
 class OrderUpdate(UpdateView):
     model = Order
-    fields = ['customer', 'contact', 'email', 'currency', 'paymentterm', 'priceterm', 'quote_sales','ord_date', 'effective_date','comment']
+    fields = ['is_valid','customer', 'contact', 'email', 'currency', 'paymentterm', 'priceterm', 'quote_sales','ord_date', 'effective_date','comment']
     form_clss = OrderUpdateForm()
 
 

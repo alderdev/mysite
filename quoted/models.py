@@ -131,6 +131,7 @@ class Order(models.Model):
     order_number = models.CharField(max_length=12, null=True, blank=True, unique=True) #報價單號
     comment = models.TextField(null=True, blank=True)
     objects = OrderNumberManager()
+    is_valid = models.BooleanField(default=True)
 
     class Meta:
         ordering = ('-created',)
