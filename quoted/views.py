@@ -156,3 +156,28 @@ def order_item_insert(request):
         )
 
     return HttpResponse()
+
+
+#use ReportLab
+from io import BytesIO
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4, cm , letter
+
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+def gen_pdf(request,id):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="genReport.pdf"'
+    #pdfmetrics.registerFont(TTFont('SimHei','SimHei.ttf'))
+
+    buffer = BytesIO()
+
+    c = canvas.Canvas(buffer, pagesize=A4)
+    c.setFont("SimHei", 10)
+    c.drawString(100, 600, "Hello world.")
+    c.drawString(200, 600, '你好')
+    c.showPage()
+    c.save()
+    return response

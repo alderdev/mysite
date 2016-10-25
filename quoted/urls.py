@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^order/(?P<pk>\d+)/update/$', views.OrderUpdate.as_view( template_name = 'quoted/order_updateform.html'), name="order_update" ),
 
     #url(r'^order/(?P<pk>\d+)/print/$', views.OrderDetail.as_view( template_name = 'quoted/order_print.html'), name="order_print" ),
+    url(r'^order/(?P<id>\d+)/gen_pdf/$', views.gen_pdf , name="gen_pdf" ),
     url(r'^order/(?P<id>\d+)/print/$', views.order_print , name="order_print" ),
     url(r'^order/(?P<id>\d+)/iteminsert/$', views.order_item_insert ),
     url(r'^order/(?P<id>\d+)/deleteitem/$', views.quote_delete_item ),
