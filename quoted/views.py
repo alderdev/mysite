@@ -166,18 +166,84 @@ from reportlab.lib.pagesizes import A4, cm , letter
 
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+from reportlab.lib.utils import ImageReader
+from django.contrib.staticfiles.templatetags.staticfiles import static
 
 def gen_pdf(request,id):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="genReport.pdf"'
-    #pdfmetrics.registerFont(TTFont('SimHei','SimHei.ttf'))
+    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))
 
-    buffer = BytesIO()
+    #print(pdfmetrics.getRegisteredFontNames())
 
-    c = canvas.Canvas(buffer, pagesize=A4)
-    c.setFont("SimHei", 10)
-    c.drawString(100, 600, "Hello world.")
-    c.drawString(200, 600, '你好')
+    order = get_object_or_404(Order,id=id)
+    order_number = order.order_number
+
+    logo = ImageReader('http://www.alder.com.tw/Content/Images/logo.gif')
+
+
+
+
+
+    c = canvas.Canvas(response)
+    c.drawImage(logo, 90, 780, mask='auto', width=45,height=45)
+    c.setFont("Times-Roman", 24)
+    c.drawString(150, 800, "Alder Optomechanical Corp.")
+    c.setFont("Times-Roman", 22)
+    c.drawString(250, 780, "Quotation")
+
+    c.setFont("Times-Roman", 10)
+    # Report Field lable
+    y = 745
+    x = 100
+
+    c.drawRightString(x,y ,"Order Number " + ":")
+    c.drawRightString(x,y-15, "Customer " + ":")
+    c.drawRightString(x,y-30, "Contact Person " + ":")
+    c.drawRightString(x,y-45, "Contact Email " + ":")
+    c.drawRightString(x,y-60, "Payment Term " + ":")
+    c.drawRightString(x,y-75, "Price Term " + ":")
+
+    c.drawRightString(x+350,y, "Sales Name " + ":")
+    c.drawRightString(x+350,y-15, "Effective Date " + ":")
+    c.drawRightString(x+350,y-30, "Quote Date " + ":")
+    c.drawRightString(x+350,y-45, "Currency " + ":")
+
+
+    # Django Field
+    c.drawString(x +5, y, order_number )
+    c.drawString(x +5, y-15, order.customer.title )
+    c.drawString(x +5, y-30, order.contact.name )
+    c.drawString(x +5, y-45, order.email )
+    c.drawString(x +5, y-60, order.paymentterm.description )
+    c.drawString(x +5, y-75, order.priceterm.description )
+
+    #c.drawDate(x +5, y-90, order.ord_date )
+    #c.drawDate(x +5, y-105, order.effective_date )
+    c.drawString(x +355, y, order.quote_sales )
+    c.drawString(x +355, y-45, order.currency.code )
+
+
+
+    #c.setFont("STSong-Light", 10)
+
+
+    y_position = 650
+    for item in order.orderitem_set.all():
+        #img = static( item.product.image.url )
+        #c.drawImage( img, 30, y_position, mask='auto', width=45,height=45)
+        #c.drawImage(item.product.image.url, 30, y_position, mask='auto', width=45,height=45)
+        c.drawString( 100, y_position, item.product.modelname )
+        c.drawString( 100+200, y_position, item.product.name )
+        c.drawString( 100+300, y_position, item.product.watt )
+        c.drawString( 100+350, y_position, item.product.cri )
+        c.drawString( 100+400, y_position, item.product.cct )
+        y_position -= 15
+
+
+
+
     c.showPage()
     c.save()
     return response
