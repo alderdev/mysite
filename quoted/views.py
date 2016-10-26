@@ -173,6 +173,11 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 def gen_pdf(request,id):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="genReport.pdf"'
+    pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
+    pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
+    pdfmetrics.registerFont(TTFont('VeraIt', 'VeraIt.ttf'))
+    pdfmetrics.registerFont(TTFont('VeraBI', 'VeraBI.ttf'))
+    pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
     pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))
 
     #print(pdfmetrics.getRegisteredFontNames())
@@ -186,14 +191,20 @@ def gen_pdf(request,id):
 
 
 
-    c = canvas.Canvas(response)
+
+
+    c = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    c.setTitle("Alder Optomechanical Corp.")
+    c.setSubject("Quotation")
     c.drawImage(logo, 90, 780, mask='auto', width=45,height=45)
-    c.setFont("Times-Roman", 24)
+    c.setFont("simhei", 24)
     c.drawString(150, 800, "Alder Optomechanical Corp.")
-    c.setFont("Times-Roman", 22)
+    c.setFont("simhei", 22)
     c.drawString(250, 780, "Quotation")
 
-    c.setFont("Times-Roman", 10)
+    c.setFont("simhei", 8)
     # Report Field lable
     y = 745
     x = 100
@@ -234,12 +245,13 @@ def gen_pdf(request,id):
         #img = static( item.product.image.url )
         #c.drawImage( img, 30, y_position, mask='auto', width=45,height=45)
         #c.drawImage(item.product.image.url, 30, y_position, mask='auto', width=45,height=45)
+        c.drawImage(logo, 40, y_position-25, mask='auto', width=30,height=30)
         c.drawString( 100, y_position, item.product.modelname )
         c.drawString( 100+200, y_position, item.product.name )
         c.drawString( 100+300, y_position, item.product.watt )
         c.drawString( 100+350, y_position, item.product.cri )
         c.drawString( 100+400, y_position, item.product.cct )
-        y_position -= 15
+        y_position -= 35
 
 
 
