@@ -185,30 +185,33 @@ def gen_pdf(request,id):
     order = get_object_or_404(Order,id=id)
     order_number = order.order_number
 
-    logo = ImageReader('http://www.alder.com.tw/Content/Images/logo.gif')
-
-
-
-
-
-
+    #logo = ImageReader('http://www.alder.com.tw/Content/Images/logo.gif')
+    logo = settings.STATIC_ROOT +"/img/alder_logo.png"
 
     c = canvas.Canvas(response, pagesize=A4)
     width, height = A4
 
+
+    upline = settings.STATIC_ROOT +"/img/alder_upline.jpg"
+    footer_line = settings.STATIC_ROOT +"/img/footer_line.jpg"
+    c.drawImage(footer_line, 80, 805, mask='auto', width=490,height=20)
+    c.drawImage(upline, 40, 25, mask='auto', width=500,height=20)
+
+
+
     c.setTitle("Alder Optomechanical Corp.")
     c.setSubject("Quotation")
-    c.drawImage(logo, 90, 780, mask='auto', width=45,height=45)
+    c.drawImage(logo, 25, 780, mask='auto', width=45,height=45)
     c.setFont("simhei", 24)
-    c.drawString(150, 800, "Alder Optomechanical Corp.")
+    c.drawString(150, 780, "Alder Optomechanical Corp.")
     c.setFont("simhei", 22)
-    c.drawString(250, 780, "Quotation")
+    c.drawString(250, 760, "Quotation")
 
     c.setFont("simhei", 8)
     # Report Field lable
     y = 745
     x = 100
-
+    #Header left
     c.drawRightString(x,y ,"Order Number " + ":")
     c.drawRightString(x,y-15, "Customer " + ":")
     c.drawRightString(x,y-30, "Contact Person " + ":")
@@ -216,10 +219,12 @@ def gen_pdf(request,id):
     c.drawRightString(x,y-60, "Payment Term " + ":")
     c.drawRightString(x,y-75, "Price Term " + ":")
 
+    #Header Right
     c.drawRightString(x+350,y, "Sales Name " + ":")
-    c.drawRightString(x+350,y-15, "Effective Date " + ":")
+    c.drawRightString(x+350,y-15, "Sales Email " + ":")
     c.drawRightString(x+350,y-30, "Quote Date " + ":")
-    c.drawRightString(x+350,y-45, "Currency " + ":")
+    c.drawRightString(x+350,y-45, "Effective Date " + ":")
+    c.drawRightString(x+350,y-60, "Currency " + ":")
 
 
     # Django Field
@@ -230,28 +235,59 @@ def gen_pdf(request,id):
     c.drawString(x +5, y-60, order.paymentterm.description )
     c.drawString(x +5, y-75, order.priceterm.description )
 
-    #c.drawDate(x +5, y-90, order.ord_date )
-    #c.drawDate(x +5, y-105, order.effective_date )
     c.drawString(x +355, y, order.quote_sales )
-    c.drawString(x +355, y-45, order.currency.code )
+    c.drawString(x +355, y-15, "sales@alder.com.tw" )
+    c.drawString(x +355, y-30, str(order.ord_date) )
+    c.drawString(x +355, y-45, str(order.effective_date) )
+    c.drawString(x +355, y-60, order.currency.code )
 
 
 
     #c.setFont("STSong-Light", 10)
 
+    x_position = 80
+    y_position = 600
+    number = 1
 
-    y_position = 650
+    c.drawString( 25, y_position +25, "No." )
+    c.drawString( 45, y_position +25, "Images" )
+    c.drawString( x_position, y_position +25, "Model Name" )
+    c.drawString( x_position +200, y_position +25, "Product Name" )
+    c.drawString( x_position +300, y_position +25, "WATT" )
+    c.drawString( x_position +350, y_position +25, "CRI" )
+    c.drawString( x_position +400, y_position +25, "CCT" )
+    c.line(25,640,570,640)
+    c.line(25,615,570,615)
+
     for item in order.orderitem_set.all():
-        #img = static( item.product.image.url )
-        #c.drawImage( img, 30, y_position, mask='auto', width=45,height=45)
-        #c.drawImage(item.product.image.url, 30, y_position, mask='auto', width=45,height=45)
-        c.drawImage(logo, 40, y_position-25, mask='auto', width=30,height=30)
-        c.drawString( 100, y_position, item.product.modelname )
-        c.drawString( 100+200, y_position, item.product.name )
-        c.drawString( 100+300, y_position, item.product.watt )
-        c.drawString( 100+350, y_position, item.product.cri )
-        c.drawString( 100+400, y_position, item.product.cct )
+        c.drawString( 25, y_position, str(number)+ ". " )
+
+        imageurl = settings.MEDIA_ROOT+"/" +str(item.product.image.url).split("/")[2]
+        c.drawImage(imageurl, 40, y_position-25, mask='auto', width=30,height=30)
+
+        #c.drawString( 100, y_position-10, imageurl )
+        #print( str(item.product.image.url).split("/")[2] )
+        c.drawString( x_position, y_position, item.product.modelname )
+        c.drawString( x_position +200, y_position, item.product.name )
+        c.drawString( x_position +300, y_position, item.product.watt )
+        c.drawString( x_position +350, y_position, item.product.cri )
+        c.drawString( x_position +400, y_position, item.product.cct )
+
         y_position -= 35
+        number += 1
+
+    print(y_position)
+
+
+    c.drawRightString( 60, y_position-25, "Remark :")
+    remark_obj = c.beginText(60 , y_position - 40)
+    remark_obj.textLines(order.comment)
+    c.drawText( remark_obj )
+
+    yp = remark_obj.getY()
+    print(yp)
+
+
 
 
 
@@ -259,3 +295,107 @@ def gen_pdf(request,id):
     c.showPage()
     c.save()
     return response
+
+
+
+
+
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER, TA_RIGHT
+from django.contrib.auth.models import User
+
+@staticmethod
+def _header_footer(canvas, doc):
+    # Save the state of our canvas so we can draw on it
+    canvas.saveState()
+    styles = getSampleStyleSheet()
+
+    # Header
+    header = Paragraph('This is a multi-line header.  It goes on every page.   ' * 5, styles['Normal'])
+    w, h = header.wrap(doc.width, doc.topMargin)
+    header.drawOn(canvas, doc.leftMargin, doc.height + doc.topMargin - h)
+
+    # Footer
+    footer = Paragraph('This is a multi-line footer.  It goes on every page.   ' * 5, styles['Normal'])
+    w, h = footer.wrap(doc.width, doc.bottomMargin)
+    footer.drawOn(canvas, doc.leftMargin, h)
+
+    # Release the canvas
+    canvas.restoreState()
+
+
+
+def gen_pdfv2(request,id):
+    # Register Fonts
+    pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
+    #pdfmetrics.registerFont(TTFont('Arial', settings.STATIC_ROOT + 'fonts/arial.ttf'))
+    #pdfmetrics.registerFont(TTFont('Arial-Bold', settings.STATIC_ROOT + 'fonts/arialbd.ttf'))
+
+    # A large collection of style sheets pre-made for us
+    styles = getSampleStyleSheet()
+    # Our Custom Style
+    styles.add(ParagraphStyle(name='RightAlign', fontName='helvetica', align=TA_RIGHT))
+
+
+
+    #buffer = self.buffer
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer,
+                                rightMargin=72,
+                                leftMargin=72,
+                                topMargin=72,
+                                bottomMargin=72,
+                                pagesize=A4)
+
+        # Our container for 'Flowable' objects
+    elements = []
+
+        # A large collection of style sheets pre-made for us
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='RightAlign', fontName='helvetica' ,alignment=TA_RIGHT))
+
+        # Draw things on the PDF. Here's where the PDF generation happens.
+        # See the ReportLab documentation for the full list of functionality.
+    users = User.objects.all()
+    elements.append(Paragraph('My User Names', styles['RightAlign']))
+    for i, user in enumerate(users):
+        elements.append(Paragraph(user.get_full_name(), styles['Normal']))
+
+    doc.build(elements, onFirstPage= _header_footer, onLaterPages= _header_footer,
+                  canvasmaker=NumberedCanvas)
+
+        # Get the value of the BytesIO buffer and write it to the response.
+    pdf = buffer.getvalue()
+    buffer.close()
+
+
+
+    return pdf
+
+
+
+
+
+class NumberedCanvas(canvas.Canvas):
+    def __init__(self, *args, **kwargs):
+        canvas.Canvas.__init__(self, *args, **kwargs)
+        self._saved_page_states = []
+
+    def showPage(self):
+        self._saved_page_states.append(dict(self.__dict__))
+        self._startPage()
+
+    def save(self):
+        """add page info to each page (page x of y)"""
+        num_pages = len(self._saved_page_states)
+        for state in self._saved_page_states:
+            self.__dict__.update(state)
+            self.draw_page_number(num_pages)
+            canvas.Canvas.showPage(self)
+        canvas.Canvas.save(self)
+
+    def draw_page_number(self, page_count):
+        self.setFont("Helvetica", 7)
+        self.drawRightString(200*mm, 20*mm,
+            "Page %d of %d" % (self._pageNumber, page_count))
