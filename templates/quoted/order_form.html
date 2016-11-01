@@ -75,9 +75,27 @@ Checkout
     <div class="media-body ">
       <form action="" method="post" class="order-form">
       {{ form.as_p }}
-          <p><input type="submit" value="Place order" class="form-control"></p>
+          <p><input type="submit" value="Place Quotation" class="form-control"></p>
       {% csrf_token %}
       </form>
+
+
+
+
+      <script type="text/javascript">
+       (function($) {
+           var chainfield = "#id_customer";
+           var url = "/chaining/filter/customers/Contact/customer/quoted/Order/contact";
+           var id = "#id_contact";
+           var value = 10;
+           var auto_choose = true;
+           var empty_label = "---------";
+
+           $(document).ready(function() {
+               chainedfk.init(chainfield, url, id, value, empty_label, auto_choose);
+           });
+       })(jQuery || django.jQuery);
+       </script>
 
       <!-- 放大鏡的功能,需user有該app(customer)的change的權限, 因為這裡有smart_selects的關係, 所以會有點問題
       <a href="/admin/customers/customer/?_to_field=sap_no" class="related-lookup" id="lookup_id_customer" title="Lookup"></a>
