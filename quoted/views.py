@@ -146,14 +146,24 @@ def order_item_insert(request):
         order_id = request.POST['order_id']
         product_id = request.POST['product_id']
         price = request.POST['price']
-        quantity = 1
+        quantity = request.POST['quantity']
+        #因為單價有可能不一樣,所以不考慮將相同品項的數量加總
+        #print("OrderID: %s, ProductId: %s"  %(order_id,product_id))
+        instance = OrderItem.objects.filter(order_id= order_id, product_id__in= product_id, price=price)
+        if instance:
+            pass
+            #print("Exists True")
+        else:
+            pass
+            #print("Not Exists")
+
 
         OrderItem.objects.create(
-            order_id = order_id,
-            product_id = product_id,
-            price = price,
-            quantity = quantity
-        )
+                order_id = order_id,
+                product_id = product_id,
+                price = price,
+                quantity = quantity
+                )
 
     return HttpResponse()
 
