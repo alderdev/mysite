@@ -70,6 +70,7 @@
               <p><strong>Standard Price:</strong> ${{ product.price }}</p>
 
           <form  id="additem_to_cart_form" action="{% url "cart:cart_add" product.id %}" method="post">
+            Quantity: <input type="text" class="form-control" name="quantity" id="id_quantity" value='1' onfocus="select()" />
             Quote Price: <input type="text" class="form-control" name="price" id="id_product" value='{{ product.price }}' onfocus="select()" />
             {% csrf_token %}
 

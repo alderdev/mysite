@@ -18,7 +18,7 @@ class Cart(object):
         self.cart = cart
 
 
-    def add( self, product, price, update_quantity=False ):
+    def add( self, product, quantity,price, update_quantity=False ):
         """
             Add in product to The Cart
         """
@@ -29,9 +29,11 @@ class Cart(object):
                 'price':price }
 
         if update_quantity:
-            self.cart[product_id]['quantity'] = 1
+            print("update_quantity is True")
+            self.cart[product_id]['quantity'] = quantity
         else:
-            self.cart[product_id]['quantity'] += 1
+            print("update_quantity is False")
+            self.cart[product_id]['quantity'] += quantity
 
         self.save()
 
