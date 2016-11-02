@@ -204,25 +204,25 @@ def gen_pdf(request,id):
 
     upline = settings.STATIC_ROOT +"/img/alder_upline.jpg"
     footer_line = settings.STATIC_ROOT +"/img/footer_line.jpg"
-    c.drawImage(footer_line, 80, 805, mask='auto', width=490,height=20)
+    c.drawImage(footer_line, 20, 805, mask='auto', width=490,height=20)
     c.drawImage(upline, 40, 25, mask='auto', width=500,height=20)
 
 
 
     c.setTitle("Alder Optomechanical Corp.")
     c.setSubject("Quotation")
-    c.drawImage(logo, 25, 780, mask='auto', width=45,height=45)
+    c.drawImage(logo, 525, 780, mask='auto', width=45,height=45)
     c.setFont("simhei", 24)
     c.drawString(150, 780, "Alder Optomechanical Corp.")
     c.setFont("simhei", 22)
     c.drawString(250, 760, "Quotation")
 
-    c.setFont("simhei", 8)
+    c.setFont("simhei", 10)
     # Report Field lable
     y = 745
     x = 100
     #Header left
-    c.drawRightString(x,y ,"Order Number " + ":")
+    c.drawRightString(x,y ,"Quote Number " + ":")
     c.drawRightString(x,y-15, "Customer " + ":")
     c.drawRightString(x,y-30, "Contact Person " + ":")
     c.drawRightString(x,y-45, "Contact Email " + ":")
@@ -230,7 +230,7 @@ def gen_pdf(request,id):
     c.drawRightString(x,y-75, "Price Term " + ":")
 
     #Header Right
-    c.drawRightString(x+350,y, "Sales Name " + ":")
+    c.drawRightString(x+350,y, "Sales Contact " + ":")
     c.drawRightString(x+350,y-15, "Sales Email " + ":")
     c.drawRightString(x+350,y-30, "Quote Date " + ":")
     c.drawRightString(x+350,y-45, "Effective Date " + ":")
@@ -261,11 +261,11 @@ def gen_pdf(request,id):
 
     c.drawString( 25, y_position +25, "No." )
     c.drawString( 45, y_position +25, "Images" )
-    c.drawString( x_position, y_position +25, "Model Name" )
-    c.drawString( x_position +200, y_position +25, "Product Name" )
-    c.drawString( x_position +300, y_position +25, "WATT" )
-    c.drawString( x_position +350, y_position +25, "CRI" )
-    c.drawString( x_position +400, y_position +25, "CCT" )
+    c.drawString( x_position, y_position +25, "Product Name / Model Name / Description" )
+    #c.drawString( x_position +200, y_position +25, "Product Name" )
+    #c.drawString( x_position +300, y_position +25, "WATT" )
+    c.drawString( x_position +400, y_position +25, "Quantity" )
+    c.drawString( x_position +450, y_position +25, "Price" )
     c.line(25,640,570,640)
     c.line(25,615,570,615)
 
@@ -273,20 +273,19 @@ def gen_pdf(request,id):
         c.drawString( 25, y_position, str(number)+ ". " )
 
         imageurl = settings.MEDIA_ROOT+"/" +str(item.product.image.url).split("/")[2]
-        c.drawImage(imageurl, 40, y_position-25, mask='auto', width=30,height=30)
+        c.drawImage(imageurl, 40, y_position-25, mask='auto', width=35,height=35)
 
-        #c.drawString( 100, y_position-10, imageurl )
-        #print( str(item.product.image.url).split("/")[2] )
-        c.drawString( x_position, y_position, item.product.modelname )
-        c.drawString( x_position +200, y_position, item.product.name )
-        c.drawString( x_position +300, y_position, item.product.watt )
-        c.drawString( x_position +350, y_position, item.product.cri )
-        c.drawString( x_position +400, y_position, item.product.cct )
+        c.drawString( x_position, y_position, item.product.name )
+        c.drawString( x_position, y_position-12, item.product.modelname )
 
-        y_position -= 35
+        c.drawString( x_position, y_position-24, "Watt: " + item.product.watt + ",  CRI:" + item.product.cri + ",  CCT:" + item.product.cct  )
+        c.drawRightString( x_position +400, y_position, str(item.quantity) )
+        c.drawRightString( x_position +480, y_position, str(item.price) )
+
+        y_position -= 40
         number += 1
 
-    print(y_position)
+
 
 
     c.drawRightString( 60, y_position-25, "Remark :")
@@ -295,7 +294,6 @@ def gen_pdf(request,id):
     c.drawText( remark_obj )
 
     yp = remark_obj.getY()
-    print(yp)
 
 
 
@@ -310,102 +308,190 @@ def gen_pdf(request,id):
 
 
 
-from reportlab.platypus import SimpleDocTemplate, Paragraph
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_RIGHT
-from django.contrib.auth.models import User
+# from reportlab.platypus import SimpleDocTemplate, Paragraph
+# from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+# from reportlab.lib.enums import TA_CENTER, TA_RIGHT
+# from django.contrib.auth.models import User
+#
+# @staticmethod
+# def _header_footer(canvas, doc):
+#     # Save the state of our canvas so we can draw on it
+#     canvas.saveState()
+#     styles = getSampleStyleSheet()
+#
+#     # Header
+#     header = Paragraph('This is a multi-line header.  It goes on every page.   ' * 5, styles['Normal'])
+#     w, h = header.wrap(doc.width, doc.topMargin)
+#     header.drawOn(canvas, doc.leftMargin, doc.height + doc.topMargin - h)
+#
+#     # Footer
+#     footer = Paragraph('This is a multi-line footer.  It goes on every page.   ' * 5, styles['Normal'])
+#     w, h = footer.wrap(doc.width, doc.bottomMargin)
+#     footer.drawOn(canvas, doc.leftMargin, h)
+#
+#     # Release the canvas
+#     canvas.restoreState()
 
-@staticmethod
-def _header_footer(canvas, doc):
-    # Save the state of our canvas so we can draw on it
+
+
+
+# 測試V2
+
+
+
+
+
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.rl_config import defaultPageSize
+from reportlab.lib.units import inch
+
+PAGE_HEIGHT = defaultPageSize[1]
+PAGE_WIDTH=defaultPageSize[0]
+styles = getSampleStyleSheet()
+Title = "Alder Optomechanical Corp."
+Subject = "Quotation"
+pageinfo = "platypus example"
+logo = settings.STATIC_ROOT +"/img/alder_logo.png"
+upline = settings.STATIC_ROOT +"/img/alder_upline.jpg"
+footer_line = settings.STATIC_ROOT +"/img/footer_line.jpg"
+pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
+pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
+pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
+pdfmetrics.registerFont(TTFont('VeraIt', 'VeraIt.ttf'))
+pdfmetrics.registerFont(TTFont('VeraBI', 'VeraBI.ttf'))
+
+
+def myFirstPage(canvas, doc):
     canvas.saveState()
-    styles = getSampleStyleSheet()
+    canvas.setFont('VeraBd', 18)
+    canvas.drawImage(upline, 25, 25, mask='auto', width=490,height=20)
+    canvas.drawImage(logo, PAGE_WIDTH/4.8,PAGE_HEIGHT-250, mask='auto', width=45,height=45)
 
-    # Header
-    header = Paragraph('This is a multi-line header.  It goes on every page.   ' * 5, styles['Normal'])
-    w, h = header.wrap(doc.width, doc.topMargin)
-    header.drawOn(canvas, doc.leftMargin, doc.height + doc.topMargin - h)
+    canvas.drawCentredString(PAGE_WIDTH/1.9,PAGE_HEIGHT-250, Title )
+    canvas.drawCentredString(PAGE_WIDTH/2.0,PAGE_HEIGHT-270, Subject )
+    canvas.setFont('Times-Roman', 9)
 
-    # Footer
-    footer = Paragraph('This is a multi-line footer.  It goes on every page.   ' * 5, styles['Normal'])
-    w, h = footer.wrap(doc.width, doc.bottomMargin)
-    footer.drawOn(canvas, doc.leftMargin, h)
+    canvas.drawString(530, 0.45 * inch, "First Page" )
+    #canvas.drawString(450, 0.45 * inch, "First Page %s" % pageinfo )
+    canvas.restoreState()
 
-    # Release the canvas
+def myLaterPage(canvas, doc):
+    canvas.saveState()
+    canvas.setFont('Times-Roman', 9)
+    canvas.drawImage(logo, 530,780, mask='auto', width=45,height=45)
+    canvas.drawString(530, 0.45 * inch, "Page %d " % ( doc.page) )
+    #canvas.drawString(inch, 0.45 * inch, "Page %d %s" % ( doc.page, pageinfo) )
+    canvas.drawImage(footer_line, 25, 805, mask='auto', width=490,height=20)
     canvas.restoreState()
 
 
 
+def _generate_pdf(course, output):
+    from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_LEFT, TA_CENTER
+    from reportlab.lib.pagesizes import A4
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table , TableStyle
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.lib.units import mm, inch
+    from reportlab.lib import colors
+    from reportlab.platypus import XPreformatted
+    from django.conf import settings
+    from reportlab.pdfgen import canvas
+    #from cStringIO import StringIO
+
+    doc = SimpleDocTemplate(output,pagesize=A4,
+    rightMargin=.5*inch,leftMargin=.5*inch,
+    topMargin=inch,bottomMargin=.6*inch)
+
+
+    Story = [Spacer(1, 2*inch)]
+    style = styles["Normal"]
+    styleN = styles['Normal']
+    styleH = styles['Heading1']
+
+    Story.append(PageBreak())
+
+
+    element = []
+    tableheader = ['Image', 'Model Name / Product Name', 'WATT',  'CRI','Quantity' ,'Price']
+    element.append(tableheader)
+    for item in course.orderitem_set.all():
+        myitem = []
+        img = settings.MEDIA_ROOT+"/" +str(item.product.image.url).split("/")[2]
+        I = Image(img)
+        I.drawHeight = 0.5*inch
+        I.drawWidth = 0.5*inch
+
+        myitem.append( I )
+        myitem.append( item.product.modelname + "<b> " +item.product.name )
+
+        myitem.append( item.product.watt )
+        #myitem.append( item.product.cct )
+        myitem.append( item.product.cri )
+        myitem.append( item.quantity )
+        myitem.append( item.price )
+
+        element.append(myitem)
+
+
+    t = Table(element)
+
+    t.setStyle(
+        TableStyle(
+            [('BACKGROUND',(0,0),(6,0),colors.skyblue),
+             ('ALIGN',(0,0),(5,0),'CENTER'),
+             ('ALIGN',(3,0),(3,-1), 'RIGHT'),
+             ('ALIGN',(4,0),(5,-1), 'RIGHT'),
+
+             ]
+        )
+    )
+    # t.setStyle(TableStyle([('ALIGN',(1,1),(-2,-2),'RIGHT'),
+    #                    ('TEXTCOLOR',(1,1),(-2,-2),colors.red),
+    #                    ('VALIGN',(0,0),(0,-1),'TOP'),
+    #                    ('TEXTCOLOR',(0,0),(0,-1),colors.blue),
+    #                    ('ALIGN',(0,-1),(-1,-1),'CENTER'),
+    #                    ('VALIGN',(0,-1),(-1,-1),'MIDDLE'),
+    #                    ('TEXTCOLOR',(0,-1),(-1,-1),colors.green),
+    #                    ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+    #                    ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+    #                    ]))
+
+
+
+    Story.append(t)
+
+    # for item in course.orderitem_set.all():
+    #     imageurl = settings.MEDIA_ROOT+"/" +str(item.product.image.url).split("/")[2]
+    #     #canvas.drawImage(imageurl, 40, y_position-25, mask='auto', width=30,height=30)
+    #
+    #     bogustext = item.product.modelname
+    #     p = Paragraph(bogustext, style)
+    #     Story.append(p)
+    #     bogustext = item.product.name
+    #     p = Paragraph(bogustext, style)
+    #
+    #     Story.append(p)
+    #     Story.append(Paragraph(item.product.modelname, styleH))
+    #     Story.append(Paragraph(item.product.name, styleN))
+    #
+    #     Story.append(Spacer(1,0.2*inch))
+
+    # for i in range(100):
+    #     bogustext = ("This is Paragraph Number %s." %i) * 20
+    #     p = Paragraph(bogustext, style)
+    #     Story.append(p)
+    #     Story.append(Spacer(1,0.2*inch))
+
+    doc.build(Story, onFirstPage=myFirstPage, onLaterPages=myLaterPage )
+
+
+
 def gen_pdfv2(request,id):
-    # Register Fonts
-    pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
-    #pdfmetrics.registerFont(TTFont('Arial', settings.STATIC_ROOT + 'fonts/arial.ttf'))
-    #pdfmetrics.registerFont(TTFont('Arial-Bold', settings.STATIC_ROOT + 'fonts/arialbd.ttf'))
+    response = HttpResponse(content_type='application/pdf')
+    filename = '-outline.pdf'
+    response['Content-Disposition'] = 'filename=' + filename
+    course = get_object_or_404(Order,id=id)
+    _generate_pdf(course, response)
 
-    # A large collection of style sheets pre-made for us
-    styles = getSampleStyleSheet()
-    # Our Custom Style
-    styles.add(ParagraphStyle(name='RightAlign', fontName='helvetica', align=TA_RIGHT))
-
-
-
-    #buffer = self.buffer
-    buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer,
-                                rightMargin=72,
-                                leftMargin=72,
-                                topMargin=72,
-                                bottomMargin=72,
-                                pagesize=A4)
-
-        # Our container for 'Flowable' objects
-    elements = []
-
-        # A large collection of style sheets pre-made for us
-    styles = getSampleStyleSheet()
-    styles.add(ParagraphStyle(name='RightAlign', fontName='helvetica' ,alignment=TA_RIGHT))
-
-        # Draw things on the PDF. Here's where the PDF generation happens.
-        # See the ReportLab documentation for the full list of functionality.
-    users = User.objects.all()
-    elements.append(Paragraph('My User Names', styles['RightAlign']))
-    for i, user in enumerate(users):
-        elements.append(Paragraph(user.get_full_name(), styles['Normal']))
-
-    doc.build(elements, onFirstPage= _header_footer, onLaterPages= _header_footer,
-                  canvasmaker=NumberedCanvas)
-
-        # Get the value of the BytesIO buffer and write it to the response.
-    pdf = buffer.getvalue()
-    buffer.close()
-
-
-
-    return pdf
-
-
-
-
-
-class NumberedCanvas(canvas.Canvas):
-    def __init__(self, *args, **kwargs):
-        canvas.Canvas.__init__(self, *args, **kwargs)
-        self._saved_page_states = []
-
-    def showPage(self):
-        self._saved_page_states.append(dict(self.__dict__))
-        self._startPage()
-
-    def save(self):
-        """add page info to each page (page x of y)"""
-        num_pages = len(self._saved_page_states)
-        for state in self._saved_page_states:
-            self.__dict__.update(state)
-            self.draw_page_number(num_pages)
-            canvas.Canvas.showPage(self)
-        canvas.Canvas.save(self)
-
-    def draw_page_number(self, page_count):
-        self.setFont("Helvetica", 7)
-        self.drawRightString(200*mm, 20*mm,
-            "Page %d of %d" % (self._pageNumber, page_count))
+    return response
