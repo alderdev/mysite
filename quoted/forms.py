@@ -12,7 +12,7 @@ class OrderCreateForm(forms.ModelForm):
     #email = forms.EmailField( widget= forms.EmailInput( attrs={'class':'form-control' , 'size':'30', 'onfocus':'select()' , 'placeholder':'Email Address'  } ) )
     class Meta:
         model = Order
-        fields = ['customer', 'contact', 'email', 'currency', 'paymentterm', 'priceterm', 'quote_sales','ord_date', 'effective_date','comment']
+        fields = ['customer', 'contact', 'email', 'currency', 'paymentterm', 'priceterm', 'quote_user','ord_date', 'effective_date','comment']
         raw_id_fields = ['customer']
         widgets = {
             'contact': forms.Select(attrs={ 'class':'form-control'}),
@@ -24,6 +24,7 @@ class OrderCreateForm(forms.ModelForm):
             'ord_date': forms.DateInput(attrs={ 'class':'form-control'}),
             'effective_date': forms.DateInput(attrs={ 'class':'form-control'}),
             'comment': forms.Textarea(attrs={ 'class':'form-control'}),
+            'quote_user':forms.HiddenInput(attrs={ 'class':'form-control'}),
         }
 
 

@@ -8,7 +8,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Q
-
+from django.contrib import admin
 
 def product_list(request, category_slug=None):
 
@@ -32,7 +32,7 @@ def product_detail(request, id, slug):
     return render(request,'quoted/product/detail.html',locals() )
 
 
-from django.contrib import admin
+
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
@@ -44,12 +44,18 @@ def order_create(request):
 
     cart = Cart(request)
     form = OrderCreateForm(request.POST or None)
+    order_session_id =  request.user.id
+
     #raw_id_fields = ['customer']
     if request.method == 'POST':
 
         if form.is_valid():
 
             form.instance.order_number = Order.objects.month_sequence()
+            form.instance.quote_sales = request.user.username
+            form.instance.quote_user = request.user
+
+
             order = form.save()
             for item in cart:
                 OrderItem.objects.create(order=order,product=item['product'],price=item['price'],quantity=item['quantity'])
@@ -142,6 +148,9 @@ def quote_delete_item(request, id):
 
 def order_item_insert(request):
 
+
+
+
     if request.method=='POST':
         order_id = request.POST['order_id']
         product_id = request.POST['product_id']
@@ -181,6 +190,10 @@ from reportlab.lib.utils import ImageReader
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
 def gen_pdf(request,id):
+
+
+
+
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="genReport.pdf"'
     pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
@@ -421,12 +434,14 @@ def _generate_pdf(course, output):
 
     #頁首的資訊
     header = [['Quotation No:', course.order_number,'                                '],
-              ['ATTN:', course.customer.title,'                                '],
-              ['Contact:', course.contact.name,''],
-              ['Email:', course.email,''],
+              ['Customer:', course.customer.title,'                                '],
+              ['Contact Person:', course.contact.name,''],
+              ['Contact Email:', course.email,''],
               ['Currency:', course.currency,''],
               ['Payment Term:', course.paymentterm,''],
               ['Price Term:', course.priceterm,''],
+              ['Sales Contact:', course.quote_user,''],
+              ['Email:', course.quote_user.email,''],
               ['Date:', course.ord_date,''],
               ['Expired Date:', course.effective_date,''],
               ['Remark:', comment,''],

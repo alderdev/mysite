@@ -1,9 +1,11 @@
+from django.conf import settings
 from django.db import models
 from django.core.urlresolvers import reverse
 from customers.models import Customer, Contact
 from quotations.models import Currency
 from django.utils import timezone
 from smart_selects.db_fields import ChainedForeignKey
+from django.contrib.auth.models import User
 
 
 class PaymentTerm(models.Model):
@@ -57,7 +59,7 @@ class Product(models.Model):
     cct = models.CharField(max_length=60, null=False, blank=False)
     cri = models.CharField(max_length=60, null=False, blank=False)
     watt = models.CharField(max_length=60, null=False, blank=False)
-    dimming = models.ForeignKey(DimmingOption,default= 1) 
+    dimming = models.ForeignKey(DimmingOption,default= 1)
     lm = models.CharField(max_length=60, null=False, blank=False)
     image = models.ImageField( null=True, blank=True, height_field="height_field", width_field="width_field")
     height_field = models.IntegerField( null=True, blank=True, default=0)
@@ -114,7 +116,7 @@ class OrderNumberManager(models.Manager):
         return order_number
 
 
-
+from django.contrib.auth.models import User
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     contact = ChainedForeignKey( Contact,
@@ -127,7 +129,8 @@ class Order(models.Model):
     email = models.EmailField(null=False, blank=False)
     paymentterm = models.ForeignKey(PaymentTerm,null=False, blank=False)
     priceterm = models.ForeignKey(PriceTerm,null=False, blank=False)
-    quote_sales = models.CharField(max_length=60, null=False, blank=False)
+    quote_sales = models.CharField(max_length=60, null=True, blank=True) # 取消此欄位, 以quote_user取代
+    quote_user = models.ForeignKey( User, null=True, blank=True )
     ord_date = models.DateField(default=timezone.now) #報價日期
     effective_date = models.DateField( default=timezone.now ) # 報價單有效日期
     currency = models.ForeignKey( Currency,  null=False, blank=False )
