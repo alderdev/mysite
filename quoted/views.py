@@ -366,23 +366,27 @@ def myFirstPage(canvas, doc):
     canvas.saveState()
     canvas.setFont('VeraBd', 18)
     canvas.drawImage(upline, 25, 25, mask='auto', width=490,height=20)
+    canvas.drawImage(footer_line, 25, 805, mask='auto', width=540,height=20)
     canvas.drawImage(logo, PAGE_WIDTH/4.8,PAGE_HEIGHT-250, mask='auto', width=45,height=45)
-
     canvas.drawCentredString(PAGE_WIDTH/1.9,PAGE_HEIGHT-250, Title )
     canvas.drawCentredString(PAGE_WIDTH/2.0,PAGE_HEIGHT-270, Subject )
     canvas.setFont('Times-Roman', 9)
-
     canvas.drawString(530, 0.45 * inch, "First Page" )
-    #canvas.drawString(450, 0.45 * inch, "First Page %s" % pageinfo )
     canvas.restoreState()
 
 def myLaterPage(canvas, doc):
     canvas.saveState()
+    canvas.setFont('VeraBd', 9)
+    contact_info = "Alder Optomechanical Corp."
+    canvas.drawString(30, 795 ,  contact_info  )
     canvas.setFont('Times-Roman', 9)
     canvas.drawImage(logo, 530,780, mask='auto', width=45,height=45)
     canvas.drawString(530, 0.45 * inch, "Page %d " % ( doc.page) )
     #canvas.drawString(inch, 0.45 * inch, "Page %d %s" % ( doc.page, pageinfo) )
     canvas.drawImage(footer_line, 25, 805, mask='auto', width=490,height=20)
+    contact_address = "No.171 Tianjin Street, Pignzhen Dist., Taoyuan City 32458, Taiwan. \b www.alder.com.tw \n sales@alder.com.tw \n +886-3-4393588"
+    canvas.drawString(30, 785 ,  contact_address )
+    canvas.drawImage(upline, 25, 25, mask='auto', width=490,height=20)
     canvas.restoreState()
 
 
@@ -397,6 +401,7 @@ def _generate_pdf(course, output):
     from reportlab.platypus import XPreformatted
     from django.conf import settings
     from reportlab.pdfgen import canvas
+    pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
     #from cStringIO import StringIO
 
     doc = SimpleDocTemplate(output,pagesize=A4,
@@ -404,45 +409,84 @@ def _generate_pdf(course, output):
     topMargin=inch,bottomMargin=.6*inch)
 
 
-    Story = [Spacer(1, 2*inch)]
+    Story = [Spacer(1, 3.5*inch)]
     style = styles["Normal"]
     styleN = styles['Normal']
     styleH = styles['Heading1']
+
+
+    comment = Paragraph('''
+       <para align=left spaceb=3>'''+ course.comment +'''</para>''',
+       styles["BodyText"])
+
+    #頁首的資訊
+    header = [['Quotation No:', course.order_number,'                                '],
+              ['ATTN:', course.customer.title,'                                '],
+              ['Contact:', course.contact.name,''],
+              ['Email:', course.email,''],
+              ['Currency:', course.currency,''],
+              ['Payment Term:', course.paymentterm,''],
+              ['Price Term:', course.priceterm,''],
+              ['Date:', course.ord_date,''],
+              ['Expired Date:', course.effective_date,''],
+              ['Remark:', comment,''],
+
+              ]
+
+    h = Table(header,style=[
+                        ('ALIGN',(0,0),(0,-1), 'RIGHT'),
+                        ('FONTNAME', (1,0),(1,-1), 'simhei'),
+                        ('SPAN',(1,-1),(2,-1)),
+                        ('VALIGN',(0,0),(0,-1),'TOP'),
+                    ])
+
+    Story.append(h)
 
     Story.append(PageBreak())
 
 
     element = []
-    tableheader = ['Image', 'Model Name / Product Name', 'WATT',  'CRI','Quantity' ,'Price']
+    tableheader = ['No.','Image', 'Product / Model Name  / Description                                                                   ', 'Quantity' ,'Price']
     element.append(tableheader)
+    loopcounter = 1
     for item in course.orderitem_set.all():
+
         myitem = []
+        myitem.append( loopcounter )
         img = settings.MEDIA_ROOT+"/" +str(item.product.image.url).split("/")[2]
         I = Image(img)
-        I.drawHeight = 0.5*inch
-        I.drawWidth = 0.5*inch
+        I.drawHeight = 0.55*inch
+        I.drawWidth = 0.55*inch
 
         myitem.append( I )
-        myitem.append( item.product.modelname + "<b> " +item.product.name )
+        desctiption = "Watt: "+ str(item.product.watt) + " , Option1:" + item.product.option1 + " , Beam Angle:" + item.product.beam_angle + ' , CRI: ' + str(item.product.cri) + ' , CCT: ' +item.product.cct
 
-        myitem.append( item.product.watt )
+
+
+
+        myitem.append( item.product.name + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No.: '+ item.product.modelname )
+
+        #myitem.append( item.product.watt )
         #myitem.append( item.product.cct )
-        myitem.append( item.product.cri )
+        #myitem.append( item.product.cri )
         myitem.append( item.quantity )
-        myitem.append( item.price )
+        myitem.append( '$ '+str(item.price) )
 
         element.append(myitem)
+        loopcounter += 1
 
 
     t = Table(element)
 
     t.setStyle(
         TableStyle(
-            [('BACKGROUND',(0,0),(6,0),colors.skyblue),
-             ('ALIGN',(0,0),(5,0),'CENTER'),
-             ('ALIGN',(3,0),(3,-1), 'RIGHT'),
-             ('ALIGN',(4,0),(5,-1), 'RIGHT'),
+            [('BACKGROUND',(0,0),(4,0),colors.skyblue),
+             ('ALIGN',(0,0),(3,0),'CENTER'),
+             ('SIZE',(2,1),(2,-1), 8),
 
+             ('VALIGN',(0,0),(4,-1),'TOP'),
+             ('ALIGN',(3,0),(4,-1), 'RIGHT'),
+             ('TEXTCOLOR',(3,1),(4,-1), colors.blue),
              ]
         )
     )
@@ -461,27 +505,7 @@ def _generate_pdf(course, output):
 
     Story.append(t)
 
-    # for item in course.orderitem_set.all():
-    #     imageurl = settings.MEDIA_ROOT+"/" +str(item.product.image.url).split("/")[2]
-    #     #canvas.drawImage(imageurl, 40, y_position-25, mask='auto', width=30,height=30)
-    #
-    #     bogustext = item.product.modelname
-    #     p = Paragraph(bogustext, style)
-    #     Story.append(p)
-    #     bogustext = item.product.name
-    #     p = Paragraph(bogustext, style)
-    #
-    #     Story.append(p)
-    #     Story.append(Paragraph(item.product.modelname, styleH))
-    #     Story.append(Paragraph(item.product.name, styleN))
-    #
-    #     Story.append(Spacer(1,0.2*inch))
 
-    # for i in range(100):
-    #     bogustext = ("This is Paragraph Number %s." %i) * 20
-    #     p = Paragraph(bogustext, style)
-    #     Story.append(p)
-    #     Story.append(Spacer(1,0.2*inch))
 
     doc.build(Story, onFirstPage=myFirstPage, onLaterPages=myLaterPage )
 

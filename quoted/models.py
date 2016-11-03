@@ -38,6 +38,11 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('quoted:product_list_by_category',args=[self.slug])
 
+class DimmingOption(models.Model):
+    description = models.CharField(max_length=200, blank=False, null=False)
+
+    def __str__(self):
+        return self.description
 
 
 
@@ -52,6 +57,7 @@ class Product(models.Model):
     cct = models.CharField(max_length=60, null=False, blank=False)
     cri = models.CharField(max_length=60, null=False, blank=False)
     watt = models.CharField(max_length=60, null=False, blank=False)
+    dimming = models.ForeignKey(DimmingOption,default= 1) 
     lm = models.CharField(max_length=60, null=False, blank=False)
     image = models.ImageField( null=True, blank=True, height_field="height_field", width_field="width_field")
     height_field = models.IntegerField( null=True, blank=True, default=0)

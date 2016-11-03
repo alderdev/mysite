@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Order, OrderItem, PaymentTerm, PriceTerm
+from .models import Category, Product, Order, OrderItem, PaymentTerm, PriceTerm, DimmingOption
 
 
 
@@ -13,7 +13,11 @@ admin.site.register(PriceTerm, PriceTermAdmin)
 class PaymentTermAdmin(admin.ModelAdmin):
     list_display = ['description']
 
-admin.site.register(PaymentTerm, PaymentTermAdmin)
+
+class DimmingOptionAdmin(admin.ModelAdmin):
+    list_display = ['description']
+
+admin.site.register(DimmingOption, DimmingOptionAdmin)
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug']
