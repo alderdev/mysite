@@ -368,6 +368,7 @@ pageinfo = "platypus example"
 logo = settings.STATIC_ROOT +"/img/alder_logo.png"
 upline = settings.STATIC_ROOT +"/img/alder_upline.jpg"
 footer_line = settings.STATIC_ROOT +"/img/footer_line.jpg"
+factory_img = settings.STATIC_ROOT +"/img/factory.png"
 pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
 pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
 pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
@@ -381,6 +382,7 @@ def myFirstPage(canvas, doc):
     canvas.drawImage(upline, 25, 25, mask='auto', width=490,height=20)
     canvas.drawImage(footer_line, 25, 805, mask='auto', width=540,height=20)
     canvas.drawImage(logo, PAGE_WIDTH/4.8,PAGE_HEIGHT-250, mask='auto', width=45,height=45)
+    canvas.drawImage(factory_img, 45, 55, mask='auto', width=495,height=320)
     canvas.drawCentredString(PAGE_WIDTH/1.9,PAGE_HEIGHT-250, Title )
     canvas.drawCentredString(PAGE_WIDTH/2.0,PAGE_HEIGHT-270, Subject )
     canvas.setFont('Times-Roman', 9)
@@ -393,11 +395,11 @@ def myLaterPage(canvas, doc):
     contact_info = "Alder Optomechanical Corp."
     canvas.drawString(30, 795 ,  contact_info  )
     canvas.setFont('Times-Roman', 9)
-    canvas.drawImage(logo, 530,780, mask='auto', width=45,height=45)
+    canvas.drawImage(logo, 525,780, mask='auto', width=45,height=45)
     canvas.drawString(530, 0.45 * inch, "Page %d " % ( doc.page) )
     #canvas.drawString(inch, 0.45 * inch, "Page %d %s" % ( doc.page, pageinfo) )
     canvas.drawImage(footer_line, 25, 805, mask='auto', width=490,height=20)
-    contact_address = "No.171 Tianjin Street, Pignzhen Dist., Taoyuan City 32458, Taiwan. \b www.alder.com.tw \n sales@alder.com.tw \n +886-3-4393588"
+    contact_address = "No.171 Tianjin Street, Pignzhen Dist., Taoyuan City 32458, Taiwan.    www.alder.com.tw    sales@alder.com.tw    +886-3-4393588"
     canvas.drawString(30, 785 ,  contact_address )
     canvas.drawImage(upline, 25, 25, mask='auto', width=490,height=20)
     canvas.restoreState()
@@ -437,9 +439,6 @@ class ParagraphStyle(PropertySet):
         }
 
 
-
-
-
 def _generate_pdf(course, output):
     from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_LEFT, TA_CENTER
     from reportlab.lib.pagesizes import A4
@@ -469,6 +468,27 @@ def _generate_pdf(course, output):
     stylesheet=getSampleStyleSheet()
     normalStyle = stylesheet['Normal']
 
+    #頁首的資訊
+    header = [['Quotation No',':', course.order_number],
+              ['Customer',':', course.customer.title],
+              ['Contact Person',':', course.contact.name],
+              ['Contact Email',':', course.contact.email],
+              ['Date',':', course.ord_date],
+              ['Expired Date',':', course.effective_date],
+              ]
+
+    h = Table(header,style=[
+                            ('ALIGN',(0,0),(0,-1), 'LEFT'),
+                            ('FONTNAME', (2,0),(2,-1), 'Arialuni'),
+                            ('SPAN',(1,-1),(1,-1)),
+                            ('VALIGN',(0,0),(0,-1),'TOP'),
+                        ])
+
+    Story.append(h)
+
+
+    Story.append(PageBreak())
+
     #因為要套用字型Arialuni, 所以將comment改為Paragraph
     comment = Paragraph('''
        <para align=left spaceb=3><font face="Arialuni">'''+ course.comment +'''</font></para>''',
@@ -477,34 +497,31 @@ def _generate_pdf(course, output):
 
 
     #頁首的資訊
-    header = [['Quotation No:', course.order_number,'                                '],
-              ['Customer:', course.customer.title,'                                '],
-              ['Contact Person:', course.contact.name,''],
-              ['Contact Email:', course.email,''],
-              ['Currency:', course.currency,''],
-              ['Payment Term:', course.paymentterm,''],
-              ['Price Term:', course.priceterm,''],
-              ['Sales Contact:', course.quote_user,''],
-              ['Email:', course.quote_user.email,''],
-              ['Date:', course.ord_date,''],
-              ['Expired Date:', course.effective_date,''],
-              ['Remark:', comment,''],
+    header = [
+              ['Quotation No',':', course.order_number,'                          ' ,'Date',':', course.ord_date],
+              ['Customer',':', course.customer.title,'','Expired Date',':', course.effective_date],
+              ['Contact Person',':', course.contact.name,'', 'Sales Contact',':', course.quote_user],
+              ['Contact Email',':', course.contact.email,'', 'Email',':', course.quote_user.email],
+              ['Payment Term',':', course.paymentterm,'','Currency',':' , course.currency],
+              ['Price Term',':', course.priceterm,''],
               ]
 
     h = Table(header,style=[
-                        ('ALIGN',(0,0),(0,-1), 'RIGHT'),
-                        ('FONTNAME', (1,0),(2,-1), 'Arialuni'),
-                        ('SPAN',(1,-1),(2,-1)),
+                        ('ALIGN',(0,0),(0,-1), 'LEFT'),
+                        ('SPAN',(2,0),(3,0)),
+                        ('FONTNAME', (2,0),(2,-1), 'Arialuni'),
+
                         ('VALIGN',(0,0),(0,-1),'TOP'),
+                        ('ALIGN',(3,0),(3,-1), 'LEFT'),
+                        ('FONTNAME', (4,0),(4,-1), 'Arialuni'),
                     ])
 
     Story.append(h)
 
-    Story.append(PageBreak())
 
 
     element = []
-    tableheader = ['No.','Image', 'Product / Model Name  / Description                                                                   ', 'Quantity' ,'Price']
+    tableheader = ['No.','Image', 'Product / Description /  Dimming Option / Model Name                             ', 'Quantity' ,'Price']
     element.append(tableheader)
     loopcounter = 1
     for item in course.orderitem_set.all():
@@ -518,33 +535,7 @@ def _generate_pdf(course, output):
 
         myitem.append( I )
         desctiption = "Watt: "+ str(item.product.watt) + " , Option1:" + item.product.option1 + " , Beam Angle:" + item.product.beam_angle + ' , CRI: ' + str(item.product.cri) + ' , CCT: ' +item.product.cct
-
-        # 測試將產品說明用段落的方式呈現, 但字距和行距都不同, 所以樣式都會跑掉
-        # prod = Paragraph('''
-        #    <para align=left ><font size="8" >'''+
-        #    item.product.name
-        #    +'''</font></para>''',
-        #    styles["BodyText"])
-        # desc = Paragraph('''
-        #    <para align=left ><font size="8">'''+
-        #    desctiption
-        #    +'''</font></para>''',
-        #    styles["BodyText"])
-        # dimming = Paragraph('''
-        #    <para align=left ><font size="8" >'''+
-        #    str(item.product.dimming)
-        #    +'''</font></para>''',
-        #    styles["BodyText"])
-        # model = Paragraph('''
-        #    <para align=left ><font size="8" >'''+
-        #    item.product.modelname
-        #    +'''</font></para>''',
-        #    styles["BodyText"])
-        # spec = [ prod,desc,dimming, model  ]
-        # myitem.append( spec )
-
-
-        myitem.append( item.product.name + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\n\b Model No.: '+ item.product.modelname )
+        myitem.append( item.product.name + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No: '+ item.product.modelname )
 
         myitem.append( item.quantity )
         myitem.append( '$ '+str(item.price) )
@@ -560,10 +551,10 @@ def _generate_pdf(course, output):
             [('BACKGROUND',(0,0),(4,0),colors.skyblue),
              ('ALIGN',(0,0),(3,0),'CENTER'),
              ('SIZE',(2,1),(2,-1), 8),
-
              ('VALIGN',(0,0),(4,-1),'TOP'),
              ('ALIGN',(3,0),(4,-1), 'RIGHT'),
              ('TEXTCOLOR',(3,1),(4,-1), colors.blue),
+             ('LINEBELOW', (0,-1), (-1,-1), 1, colors.black),
              ]
         )
     )
@@ -581,6 +572,23 @@ def _generate_pdf(course, output):
 
 
     Story.append(t)
+
+    #頁首的資訊
+    #因為要套用字型Arialuni, 所以將comment改為Paragraph
+    comment = Paragraph('''
+       <para align=left spaceb=3><font face="Arialuni">'''+ course.comment +'''</font></para>''',
+       styles["BodyText"])
+    footer = [['Remark:'],
+              [ comment ],
+
+              ]
+
+    f = Table(footer,style=[
+                            ('ALIGN',(0,0),(0,-1), 'LEFT'),
+                            ('FONTNAME', (0,0),(0,-1), 'Arialuni'),
+                        ])
+
+    Story.append(f)
 
 
 
