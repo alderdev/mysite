@@ -403,18 +403,56 @@ def myLaterPage(canvas, doc):
     canvas.restoreState()
 
 
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle,PropertySet
+from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_LEFT, TA_CENTER
+from reportlab.lib import colors
+class ParagraphStyle(PropertySet):
+    defaults = {
+        'fontName':'Times-Roman',
+        'fontSize':10,
+        'leading':12,
+        'leftIndent':0,
+        'rightIndent':0,
+        'firstLineIndent':12,
+        'alignment':0,
+        'spaceBefore':0,
+        'spaceAfter':0,
+        'bulletFontName':'Times-Roman',
+        'bulletFontSize':10,
+        'bulletIndent':0,
+        'textColor': colors.black,
+        'backColor':None,
+        'wordWrap':None,
+        'borderWidth': 0,
+        'borderPadding': 0,
+        'borderColor': None,
+        'borderRadius': None,
+        'allowWidows': 1,
+        'allowOrphans': 0,
+        'textTransform':None,
+        'endDots':None,
+        'splitLongWords':1,
+        'underlineProportion': 0.0,
+        'bulletAnchor': 'start',
+        }
+
+
+
+
 
 def _generate_pdf(course, output):
     from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_LEFT, TA_CENTER
     from reportlab.lib.pagesizes import A4
     from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table , TableStyle
-    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle,PropertySet
     from reportlab.lib.units import mm, inch
     from reportlab.lib import colors
-    from reportlab.platypus import XPreformatted
+    from reportlab.platypus import XPreformatted, Preformatted
     from django.conf import settings
     from reportlab.pdfgen import canvas
     pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
+    pdfmetrics.registerFont(TTFont('Arialuni', 'arialuni.ttf'))
+
     #from cStringIO import StringIO
 
     doc = SimpleDocTemplate(output,pagesize=A4,
@@ -427,10 +465,16 @@ def _generate_pdf(course, output):
     styleN = styles['Normal']
     styleH = styles['Heading1']
 
+    ###
+    stylesheet=getSampleStyleSheet()
+    normalStyle = stylesheet['Normal']
 
+    #因為要套用字型Arialuni, 所以將comment改為Paragraph
     comment = Paragraph('''
-       <para align=left spaceb=3>'''+ course.comment +'''</para>''',
+       <para align=left spaceb=3><font face="Arialuni">'''+ course.comment +'''</font></para>''',
        styles["BodyText"])
+
+
 
     #頁首的資訊
     header = [['Quotation No:', course.order_number,'                                '],
@@ -445,12 +489,11 @@ def _generate_pdf(course, output):
               ['Date:', course.ord_date,''],
               ['Expired Date:', course.effective_date,''],
               ['Remark:', comment,''],
-
               ]
 
     h = Table(header,style=[
                         ('ALIGN',(0,0),(0,-1), 'RIGHT'),
-                        ('FONTNAME', (1,0),(1,-1), 'simhei'),
+                        ('FONTNAME', (1,0),(2,-1), 'Arialuni'),
                         ('SPAN',(1,-1),(2,-1)),
                         ('VALIGN',(0,0),(0,-1),'TOP'),
                     ])
@@ -470,28 +513,47 @@ def _generate_pdf(course, output):
         myitem.append( loopcounter )
         img = settings.MEDIA_ROOT+"/" +str(item.product.image.url).split("/")[2]
         I = Image(img)
-        I.drawHeight = 0.55*inch
-        I.drawWidth = 0.55*inch
+        I.drawHeight = 0.62*inch
+        I.drawWidth = 0.62*inch
 
         myitem.append( I )
         desctiption = "Watt: "+ str(item.product.watt) + " , Option1:" + item.product.option1 + " , Beam Angle:" + item.product.beam_angle + ' , CRI: ' + str(item.product.cri) + ' , CCT: ' +item.product.cct
 
+        # 測試將產品說明用段落的方式呈現, 但字距和行距都不同, 所以樣式都會跑掉
+        # prod = Paragraph('''
+        #    <para align=left ><font size="8" >'''+
+        #    item.product.name
+        #    +'''</font></para>''',
+        #    styles["BodyText"])
+        # desc = Paragraph('''
+        #    <para align=left ><font size="8">'''+
+        #    desctiption
+        #    +'''</font></para>''',
+        #    styles["BodyText"])
+        # dimming = Paragraph('''
+        #    <para align=left ><font size="8" >'''+
+        #    str(item.product.dimming)
+        #    +'''</font></para>''',
+        #    styles["BodyText"])
+        # model = Paragraph('''
+        #    <para align=left ><font size="8" >'''+
+        #    item.product.modelname
+        #    +'''</font></para>''',
+        #    styles["BodyText"])
+        # spec = [ prod,desc,dimming, model  ]
+        # myitem.append( spec )
 
 
+        myitem.append( item.product.name + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\n\b Model No.: '+ item.product.modelname )
 
-        myitem.append( item.product.name + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No.: '+ item.product.modelname )
-
-        #myitem.append( item.product.watt )
-        #myitem.append( item.product.cct )
-        #myitem.append( item.product.cri )
         myitem.append( item.quantity )
         myitem.append( '$ '+str(item.price) )
 
         element.append(myitem)
         loopcounter += 1
 
-
-    t = Table(element)
+    #repeatRows=1 是指第一行(表頭) 換頁時會重複
+    t = Table(element, repeatRows=1)
 
     t.setStyle(
         TableStyle(
