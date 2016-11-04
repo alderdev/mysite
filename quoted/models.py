@@ -162,6 +162,16 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product,  related_name='order_items')
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=1)
+    price1 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    quantity1 = models.PositiveIntegerField( null=True, blank=True)
+    price2 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    quantity2 = models.PositiveIntegerField( null=True, blank=True)
+    price3 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    quantity3 = models.PositiveIntegerField( null=True, blank=True)
+
+
+
+
 
     class Meta:
         ordering = ( 'product', 'quantity' )

@@ -3,10 +3,10 @@
 {% if perms.posts.can_add_post %}
   <h1>{{ title }}<P><a href="/posts/create" class="btn btn-warning" role="button" >Create New</a></p></h1>
     {% endif %}
-<div class="row">
+<div >
 
   {% for item in object_list %}
-  <div class="col-sm-6 col-md-4">
+  <div class="col-sm-12 col-md-4">
       <div class="thumbnail">
         <p>{{ forloop.counter }}. <a href="{{ item.get_absolute_url }}">{{ item.subject }}</a></p>
         <p>{{ item.timestemp | date:"Y-m-d H:i:s"  }}</p>
@@ -14,9 +14,10 @@
           <a href='{{ item.get_absolute_url }}' class="btn btn-primary" role="button">View</a>
         </p>
       </div>
-    </div>
+  </div>
 
   {% endfor %}
+
 
 </div>
 

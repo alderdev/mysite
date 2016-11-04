@@ -39,7 +39,7 @@
 }
 </style>
 
-<div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1">
+<div class="col-sm-10 col-md-10 col-sm-offset-1 col-md-offset-1">
   <div  class="media-left media-top">
     <div>
       <h3>Categories</h3>
@@ -57,8 +57,9 @@
   </div>
   <div class="media-body">
   <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
+
       {% for product in products %}
-      <div class="col-sm-6 col-md-4">
+      <div class="col-sm-10 col-md-4">
           <div  class="thumbnail">
               <div class='imgbox'>
               <a href="{{ product.get_absolute_url }}">
@@ -69,9 +70,22 @@
               <p>{{ product.modelname }}</p>
               <p><strong>Standard Price:</strong> ${{ product.price }}</p>
 
-          <form  id="additem_to_cart_form" action="{% url "cart:cart_add" product.id %}" method="post">
-            Quantity: <input type="text" class="form-control" name="quantity" id="id_quantity" value='1' onfocus="select()" />
-            Quote Price: <input type="text" class="form-control" name="price" id="id_product" value='{{ product.price }}' onfocus="select()" />
+          <form  class="form-inline" id="additem_to_cart_form" action="{% url "cart:cart_add" product.id %}" method="post">
+            <div>Quantity:</div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="quantity" id="id_quantity" value='1' size='4' onfocus="select()" />
+                <input type="text" class="form-control" name="quantity1" id="id_quantity1" size='4' onfocus="select()" />
+                <input type="text" class="form-control" name="quantity2" id="id_quantity2" size='4' onfocus="select()" />
+                <input type="text" class="form-control" name="quantity3" id="id_quantity3" size='4' onfocus="select()" />
+            </div>
+
+            <div>Quote Price:</div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="price" id="id_product" value='{{ product.price }}' size='4' onfocus="select()" />
+              <input type="text" class="form-control" name="price1" id="id_product1" size='4' onfocus="select()" />
+              <input type="text" class="form-control" name="price2" id="id_product2" size='4' onfocus="select()" />
+              <input type="text" class="form-control" name="price3" id="id_product3" size='4' onfocus="select()" />
+            </div>
             {% csrf_token %}
 
           <input type="submit" value="Add to cart" class="btn btn-success form-control">
@@ -79,6 +93,7 @@
           </div>
       </div>
       {% endfor %}
+
     </div>
 </div>
 {% endblock content %}

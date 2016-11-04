@@ -226,9 +226,11 @@ $("button").click(function(e){
 
 <table class="table table-striped" border="0">
    <a href="{{ order.get_absolute_url }}update" class="btn btn-primary">Modify Ouote</a>
-	 <a href="{{ order.get_absolute_url }}print" class="btn btn-primary" target="_blank">to PDF</a>
-   <a href="{{ order.get_absolute_url }}gen_pdf" class="btn btn-primary" target="_blank">Gen PDF</a>
-   <a href="{{ order.get_absolute_url }}gen_pdfv2" class="btn btn-primary" target="_blank">Gen PDF V2</a>
+   <a href="{{ order.get_absolute_url }}gen_pdfv2" class="btn btn-primary" target="_blank">Generate PDF</a>
+   <!--
+      <a href="{{ order.get_absolute_url }}print" class="btn btn-primary" target="_blank">to PDF</a>
+      <a href="{{ order.get_absolute_url }}gen_pdf" class="btn btn-primary" target="_blank">Generate PDF</a>
+  -->
 		<a id="product_a_id" href="#"  class="btn btn-primary" >See Model List</a>
 
 		<form id="delform" action="" method="POST" onsubmit="return deleteOnSubmit( {{ order.id }} )" >{% csrf_token %}
@@ -245,6 +247,14 @@ $("button").click(function(e){
 				<th width="6%">Quantity</th>
 		    <th width="5%">Price</th>
 		  </tr>
+
+      <style>
+      div.numb {
+          width:100px;
+          margin: auto;
+          border: 0px solid #73AD21;
+      }
+      </style>
 		  {% for row in order.orderitem_set.all %}
 		  <tr>
 		    <td>
@@ -260,8 +270,22 @@ $("button").click(function(e){
 				<td>{{ row.product.cct }}</td>
 		    <td>{{ row.product.cri }}</td>
 		    <td>{{ row.product.beam_angle }}</td>
-				<td>{{ row.quantity }}</td>
-		    <td align="right">{{ row.price }}</td>
+				<td align="right" >
+          <div class='numb'>
+              <div class='numb'>{% if row.quantity  != None %}{{ row.quantity  }}{% endif %}</div>
+              <div class='numb'>{% if row.quantity1 != None %}{{ row.quantity1 }}{% endif %}</div>
+              <div class='numb'>{% if row.quantity2 != None %}{{ row.quantity2 }}{% endif %}</div>
+              <div class='numb'>{% if row.quantity3 != None %}{{ row.quantity3 }}{% endif %}</div>
+          </div>
+        </td>
+		    <td align="right" >
+          <div class='numb'>
+              <div class='numb'>{% if row.price  != None %}{{ row.price   }}{% endif %}</div>
+              <div class='numb'>{% if row.price1 != None %}{{ row.price1 }}{% endif %}</div>
+              <div class='numb'>{% if row.price2 != None %}{{ row.price2 }}{% endif %}</div>
+              <div class='numb'>{% if row.price3 != None %}{{ row.price3  }}{% endif %}</div>
+          </div>
+        </td>
 		  </tr>
 		  {% endfor%}
 		</form>

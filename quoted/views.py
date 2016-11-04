@@ -348,11 +348,7 @@ def gen_pdf(request,id):
 
 
 
-# 測試V2
-
-
-
-
+# 正式V2
 
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet
@@ -364,7 +360,7 @@ PAGE_WIDTH=defaultPageSize[0]
 styles = getSampleStyleSheet()
 Title = "Alder Optomechanical Corp."
 Subject = "Quotation"
-pageinfo = "platypus example"
+
 logo = settings.STATIC_ROOT +"/img/alder_logo.png"
 upline = settings.STATIC_ROOT +"/img/alder_upline.jpg"
 footer_line = settings.STATIC_ROOT +"/img/footer_line.jpg"
@@ -375,33 +371,49 @@ pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
 pdfmetrics.registerFont(TTFont('VeraIt', 'VeraIt.ttf'))
 pdfmetrics.registerFont(TTFont('VeraBI', 'VeraBI.ttf'))
 
-
+# 封面的Layout
 def myFirstPage(canvas, doc):
     canvas.saveState()
     canvas.setFont('VeraBd', 18)
     canvas.drawImage(upline, 25, 25, mask='auto', width=490,height=20)
     canvas.drawImage(footer_line, 25, 805, mask='auto', width=540,height=20)
-    canvas.drawImage(logo, PAGE_WIDTH/4.8,PAGE_HEIGHT-250, mask='auto', width=45,height=45)
+    canvas.drawImage(logo, PAGE_WIDTH/5.2,PAGE_HEIGHT-252, mask='auto', width=55,height=45)
     canvas.drawImage(factory_img, 45, 55, mask='auto', width=495,height=320)
     canvas.drawCentredString(PAGE_WIDTH/1.9,PAGE_HEIGHT-250, Title )
-    canvas.drawCentredString(PAGE_WIDTH/2.0,PAGE_HEIGHT-270, Subject )
+    canvas.drawCentredString(PAGE_WIDTH/2.0,PAGE_HEIGHT-285, Subject )
     canvas.setFont('Times-Roman', 9)
     canvas.drawString(530, 0.45 * inch, "First Page" )
     canvas.restoreState()
+
+
 
 def myLaterPage(canvas, doc):
     canvas.saveState()
     canvas.setFont('VeraBd', 9)
     contact_info = "Alder Optomechanical Corp."
-    canvas.drawString(30, 795 ,  contact_info  )
+
     canvas.setFont('Times-Roman', 9)
-    canvas.drawImage(logo, 525,780, mask='auto', width=45,height=45)
+    canvas.drawImage(logo, 520,780, mask='auto', width=55,height=45)
     canvas.drawString(530, 0.45 * inch, "Page %d " % ( doc.page) )
     #canvas.drawString(inch, 0.45 * inch, "Page %d %s" % ( doc.page, pageinfo) )
-    canvas.drawImage(footer_line, 25, 805, mask='auto', width=490,height=20)
+    canvas.drawImage(footer_line, 25, 805, mask='auto', width=485,height=20)
     contact_address = "No.171 Tianjin Street, Pignzhen Dist., Taoyuan City 32458, Taiwan.    www.alder.com.tw    sales@alder.com.tw    +886-3-4393588"
+
+    # 地址放在上面的圖騰下
+    canvas.setFont('VeraBd', 9)
+    canvas.drawString(30, 795 ,  contact_info  )
+    canvas.setFont('Times-Roman', 9)
     canvas.drawString(30, 785 ,  contact_address )
     canvas.drawImage(upline, 25, 25, mask='auto', width=490,height=20)
+
+    # 地址放在下面的圖騰下
+    # canvas.setFont('VeraBd', 9)
+    # canvas.drawString(30, 40 ,  contact_info  )
+    # canvas.setFont('Times-Roman', 9)
+    # canvas.drawString(30, 25 ,  contact_address )
+    # canvas.drawImage(upline, 25, 50, mask='auto', width=540,height=20)
+
+
     canvas.restoreState()
 
 
@@ -498,22 +510,22 @@ def _generate_pdf(course, output):
 
     #頁首的資訊
     header = [
-              ['Quotation No',':', course.order_number,'                          ' ,'Date',':', course.ord_date],
+              ['Quotation No',':', course.order_number,'','Date',':', course.ord_date],
               ['Customer',':', course.customer.title,'','Expired Date',':', course.effective_date],
-              ['Contact Person',':', course.contact.name,'', 'Sales Contact',':', course.quote_user],
+              ['Contact Person',':', course.contact.name, '','Sales Contact',':', course.quote_user],
               ['Contact Email',':', course.contact.email,'', 'Email',':', course.quote_user.email],
               ['Payment Term',':', course.paymentterm,'','Currency',':' , course.currency],
               ['Price Term',':', course.priceterm,''],
               ]
 
-    h = Table(header,style=[
-                        ('ALIGN',(0,0),(0,-1), 'LEFT'),
+    h = Table(header, colWidths=[1.0*inch, 0.1*inch, 2.8*inch, 0.3*inch, 0.9*inch, 0.1*inch, 2.0*inch] ,style=[
+                        #('ALIGN',(0,0),(0,-1), 'LEFT'),
                         ('SPAN',(2,0),(3,0)),
                         ('FONTNAME', (2,0),(2,-1), 'Arialuni'),
 
                         ('VALIGN',(0,0),(0,-1),'TOP'),
                         ('ALIGN',(3,0),(3,-1), 'LEFT'),
-                        ('FONTNAME', (4,0),(4,-1), 'Arialuni'),
+                        ('FONTNAME', (6,0),(6,-1), 'Arialuni'),
                     ])
 
     Story.append(h)
@@ -530,15 +542,31 @@ def _generate_pdf(course, output):
         myitem.append( loopcounter )
         img = settings.MEDIA_ROOT+"/" +str(item.product.image.url).split("/")[2]
         I = Image(img)
-        I.drawHeight = 0.62*inch
-        I.drawWidth = 0.62*inch
+        I.drawHeight = 0.85*inch
+        I.drawWidth = 0.85*inch
 
         myitem.append( I )
         desctiption = "Watt: "+ str(item.product.watt) + " , Option1:" + item.product.option1 + " , Beam Angle:" + item.product.beam_angle + ' , CRI: ' + str(item.product.cri) + ' , CCT: ' +item.product.cct
         myitem.append( item.product.name + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No: '+ item.product.modelname )
 
-        myitem.append( item.quantity )
-        myitem.append( '$ '+str(item.price) )
+        qty_group = [item.quantity, item.quantity1, item.quantity2, item.quantity3]
+        price_group = [item.price, item.price1, item.price2, item.price3]
+
+        str_qty = ''
+        str_price = ''
+
+        for q in qty_group:
+            if q is not None:
+                str_qty += str(q)+'\n'
+
+        for p in price_group:
+            if p is not None:
+                str_price += str(p)+'\n'
+
+
+        myitem.append( str_qty )
+        myitem.append( str_price )
+
 
         element.append(myitem)
         loopcounter += 1
