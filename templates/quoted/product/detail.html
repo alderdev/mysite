@@ -5,9 +5,15 @@
 {% if category %}{{ category.title }}{% else %}Products{% endif %}
 {% endblock %}
 {% block content %}
-<div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
-    <div  class="media-left media-middle">
-      <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" >
+<div class="col-sm-8 col-md-10 col-md-offset-1" >
+  <hr>
+    <div  class="media-left media-middle col-md-8 ">
+      <hr>
+      {% if product.image %}
+          <img src="{{ product.image.url }}"   width="480"  >
+      {% else %}
+      {% static "img/no_image.png" %}
+      {% endif %}
     </div>
     <div class="media-body">
         <h1>{{ product.name }}</h1>
