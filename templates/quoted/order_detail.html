@@ -13,6 +13,7 @@
 }
 </style>
 
+
 	<script>
   $(document).ready(function(){
 		$("#id_product").blur(function(){
@@ -125,7 +126,7 @@
       <div id='tbody' class="media-body">
       <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
           {% for product in products %}
-          <div class="col-sm-6 col-md-4">
+          <div class="col-sm-10 col-md-4">
               <div  class="thumbnail">
                   <div class='imgbox'>
 										 <img src="{% if product.image %}{{ product.image.url }}{% endif %}" class="img-rectangle" height="330" width="330">
@@ -134,12 +135,28 @@
                   <p>{{ product.modelname }}</p>
                   <p>Standard Price: ${{ product.price }}</p>
 
-              <form  name="additem_to_order" id='form_{{ product.id }}' action="" method="post">
+              <form class="form-inline" name="additem_to_order" id='form_{{ product.id }}' action="" method="post">
                   {% csrf_token %}
                   <input type="hidden" id="order_{{ product.id }}" value='{{ order.id }}'>
                   <input type="hidden" id="products_{{ product.id }}" value='{{ product.id }}'>
-                  Quantity: <input type="text" class="form-control" id="quantity_{{ product.id }}" value='1' onfocus="select()" />
-                  Quote Price:<input type="text"  class="form-control" id="prices_{{ product.id }}" value='{{ product.price }}' onfocus="select()">
+
+
+                  <div class="form-group">
+                      Quantity1:<input type="text" class="form-control"  id="quantity_{{ product.id }}" value='1' size='4' onfocus="select()" />
+                      Price1:<input type="text" class="form-control"  id="prices_{{ product.id }}" value='{{ product.price }}' size='8' onfocus="select()" />
+                  </div>
+                  <div class="form-group">
+                    Quantity2:<input type="text" class="form-control"  id="quantity1_{{ product.id }}" size='4' onfocus="select()" />
+                    Price2:<input type="text" class="form-control" id="prices1_{{ product.id }}" size='8' onfocus="select()" />
+                  </div>
+                  <div class="form-group">
+                    Quantity3:<input type="text" class="form-control" id="quantity2_{{ product.id }}" size='4' onfocus="select()" />
+                    Price3:<input type="text" class="form-control"  id="prices2_{{ product.id }}" size='8' onfocus="select()" />
+                  </div>
+                  <div class="form-group">
+                    Quantity4:<input type="text" class="form-control"  id="quantity3_{{ product.id }}" size='4' onfocus="select()" />
+                    Price4:<input type="text" class="form-control" id="prices3_{{ product.id }}" size='8' onfocus="select()" />
+                  </div>
               <button type="button"  class="btn btn-success form-control">Add to Order</button>
               </form>
               </div>
@@ -154,13 +171,20 @@
 $("button").click(function(e){
 
     var form = $(this).closest('form')[0];
-	  //alert(form.id)
+
     var item = form.id.split('_');
     var order_id = document.getElementById('order_'+item[1]).value
     var product_id = document.getElementById('products_'+item[1]).value
     var quantity_id = document.getElementById('quantity_'+item[1]).value
     var prices_id = document.getElementById('prices_'+item[1]).value
 
+    var quantity1_id = document.getElementById('quantity1_'+item[1]).value
+    var prices1_id = document.getElementById('prices1_'+item[1]).value
+    var quantity2_id = document.getElementById('quantity2_'+item[1]).value
+    var prices2_id = document.getElementById('prices2_'+item[1]).value
+    var quantity3_id = document.getElementById('quantity3_'+item[1]).value
+    var prices3_id = document.getElementById('prices3_'+item[1]).value
+    //alert(form.id)
     e.preventDefault();
 
 	 $.ajax({
@@ -171,6 +195,13 @@ $("button").click(function(e){
            product_id: product_id,
            quantity:quantity_id,
            price: prices_id,
+
+           quantity1:quantity1_id,
+           price1: prices1_id,
+           quantity2:quantity2_id,
+           price2: prices2_id,
+           quantity3:quantity3_id,
+           price3: prices3_id,
  				   csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
        },
 			 success: function(result){

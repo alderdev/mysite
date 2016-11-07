@@ -10,9 +10,9 @@
               <th>Product</th>
               <th>ModelName</th>
               <th>Quantity</th>
-              <th>Remove</th>
               <th>Unit price</th>
               <th>Price</th>
+              <th>Remove</th>
           </tr>
       </thead>
 
@@ -31,12 +31,14 @@
             </td>
             <td>{{ product.name }}</td>
             <td>{{ product.modelname }}</td>
-            <td>{{ item.quantity }}</td>
+            <td class="num">
+              <div>{{ item.quantity }}{{ item.quantity1 }}{{ item.quantity2 }}{{ item.quantity3 }}</div>
+            </td>
+            <td class="num">${{ item.price }}</td>
+            <td class="num">${{ item.total_price }}</td>
             <td>
               <a href="{% url "cart:cart_remove" product.id  %}" class="btn btn-danger" role="button">Remove</a>
             </td>
-        <td class="num">${{ item.price }}</td>
-        <td class="num">${{ item.total_price }}</td>
         </tr>
         {% endwith %}
       {% endfor %}

@@ -149,13 +149,38 @@ def quote_delete_item(request, id):
 def order_item_insert(request):
 
 
-
-
     if request.method=='POST':
         order_id = request.POST['order_id']
         product_id = request.POST['product_id']
         price = request.POST['price']
         quantity = request.POST['quantity']
+
+        price1 = request.POST['price1']
+        quantity1 = request.POST['quantity1']
+        price2 = request.POST['price2']
+        quantity2 = request.POST['quantity2']
+        price3 = request.POST['price3']
+        quantity3 = request.POST['quantity3']
+
+        if request.POST['price1'] =='':
+            price1 = None
+            quantity1 = None
+            #print("['price1'] is not None")
+
+
+        if request.POST['price2'] =='':
+            price2 = None
+            quantity2 = None
+            #print("['price2'] is not thing")
+
+
+        if request.POST['price3'] =='':
+            price3 = None
+            quantity3 = None
+            #print("['price3'] is not thing")
+
+
+
         #因為單價有可能不一樣,所以不考慮將相同品項的數量加總
         #print("OrderID: %s, ProductId: %s"  %(order_id,product_id))
         instance = OrderItem.objects.filter(order_id= order_id, product_id__in= product_id, price=price)
@@ -166,12 +191,21 @@ def order_item_insert(request):
             pass
             #print("Not Exists")
 
+        #print("OrderItem.objects.create")
+
 
         OrderItem.objects.create(
                 order_id = order_id,
                 product_id = product_id,
                 price = price,
-                quantity = quantity
+                quantity = quantity,
+
+                price1 = price1,
+                quantity1 = quantity1,
+                price2 = price2,
+                quantity2 = quantity2,
+                price3 = price3,
+                quantity3 = quantity3
                 )
 
     return HttpResponse()
@@ -190,9 +224,6 @@ from reportlab.lib.utils import ImageReader
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
 def gen_pdf(request,id):
-
-
-
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="genReport.pdf"'

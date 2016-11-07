@@ -33,7 +33,7 @@
 <style>
 .imgbox{
   width: auto;
-  height: 300px;
+  height: 360;
   border: 1px solid;
   box-sizing: border-box;
 }
@@ -43,16 +43,17 @@
   <div  class="media-left media-top">
     <div>
       <h3>Categories</h3>
-      <ul>
+      <table class="table">
           <li {% if not category %} class="selected" {% endif %} >
-          <a href="{% url "quoted:product_list" %}">All</a>
+          <a href="{% url "quoted:product_list" %}">ALL</a><hr>
           </li>
             {% for c in categories %}
             <li {% if category.slug == c.slug %}class="selected"{% endif %}>
                 <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                <hr>
             </li>
             {% endfor %}
-      </ul>
+      </table>
     </div>
   </div>
   <div class="media-body">
@@ -63,7 +64,7 @@
           <div  class="thumbnail">
               <div class='imgbox'>
               <a href="{{ product.get_absolute_url }}">
-                  <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" class="img-rectangle" height="360" width="360">
+                  <img src="{% if product.image %}{{ product.image.url }}{% endif %}" class="img-rectangle" height="330" width="330">
               </a>
               </div>
               <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
@@ -71,24 +72,25 @@
               <p><strong>Standard Price:</strong> ${{ product.price }}</p>
 
           <form  class="form-inline" id="additem_to_cart_form" action="{% url "cart:cart_add" product.id %}" method="post">
-            <div>Quantity:</div>
             <div class="form-group">
-                <input type="text" class="form-control" name="quantity" id="id_quantity" value='1' size='4' onfocus="select()" />
-                <input type="text" class="form-control" name="quantity1" id="id_quantity1" size='4' onfocus="select()" />
-                <input type="text" class="form-control" name="quantity2" id="id_quantity2" size='4' onfocus="select()" />
-                <input type="text" class="form-control" name="quantity3" id="id_quantity3" size='4' onfocus="select()" />
+                Quantity1:<input type="text" class="form-control" name="quantity" id="id_quantity" value='1' size='4' onfocus="select()" />
+                Price1:<input type="text" class="form-control" name="price" id="id_product" value='{{ product.price }}' size='8' onfocus="select()" />
             </div>
-
-            <div>Quote Price:</div>
             <div class="form-group">
-              <input type="text" class="form-control" name="price" id="id_product" value='{{ product.price }}' size='4' onfocus="select()" />
-              <input type="text" class="form-control" name="price1" id="id_product1" size='4' onfocus="select()" />
-              <input type="text" class="form-control" name="price2" id="id_product2" size='4' onfocus="select()" />
-              <input type="text" class="form-control" name="price3" id="id_product3" size='4' onfocus="select()" />
+              Quantity2:<input type="text" class="form-control" name="quantity1" id="id_quantity1" size='4' onfocus="select()" />
+              Price2:<input type="text" class="form-control" name="price1" id="id_product1" size='8' onfocus="select()" />
+            </div>
+            <div class="form-group">
+              Quantity3:<input type="text" class="form-control" name="quantity2" id="id_quantity2" size='4' onfocus="select()" />
+              Price3:<input type="text" class="form-control" name="price2" id="id_product2" size='8' onfocus="select()" />
+            </div>
+            <div class="form-group">
+              Quantity4:<input type="text" class="form-control" name="quantity3" id="id_quantity3" size='4' onfocus="select()" />
+              Price4:<input type="text" class="form-control" name="price3" id="id_product3" size='8' onfocus="select()" />
             </div>
             {% csrf_token %}
 
-          <input type="submit" value="Add to cart" class="btn btn-success form-control">
+            <input type="submit" value="Add to cart" class="btn btn-success form-control">
           </form>
           </div>
       </div>
