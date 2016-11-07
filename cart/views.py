@@ -6,11 +6,15 @@ from .forms import CartAddProductForm
 
 @require_POST
 def cart_add(request, product_id):
+    print("cart_add")
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     form = CartAddProductForm(request.POST)
+    print(form)
     if form.is_valid():
+        print("is_valid")
         cd = form.cleaned_data
+
         cart.add( product=product,quantity=cd['quantity'],price=cd['price'],update_quantity=cd['update'])
 
     return redirect('quoted:product_list')

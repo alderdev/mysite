@@ -28,8 +28,19 @@
       <p>Lm: {{ product.lm }}</p>
       <p>Price: ${{ product.price }}</p>
       <p>Active: {{ product.available }}</p>
-      <form action="{% url "cart:cart_add" product.id %}" method="post">
-      {{ cart_product_form }}
+      <form class="form-inline" action="{% url "cart:cart_add" product.id %}" method="post">
+        <div>
+          Quantity1: {{ cart_product_form.quantity}}Price1:{{ cart_product_form.price}}
+        </div>
+        <div>
+          Quantity2:{{ cart_product_form.quantity1}}Price2:{{ cart_product_form.price1}}
+        </div>
+        <div>
+          Quantity3:{{ cart_product_form.quantity2}}Price3:{{ cart_product_form.price2}}
+        </div>
+        <div>
+          Quantity4:{{ cart_product_form.quantity3}}Price4:{{ cart_product_form.price3}}
+        </div>
       {% csrf_token %}
       <input type="submit" value="Add to cart">
       </form>
