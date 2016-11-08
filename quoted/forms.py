@@ -4,10 +4,13 @@ from .models import Order, Product
 from customers.models import Customer
 from smart_selects.db_fields import ChainedForeignKey
 from django.contrib import admin
+from django.utils import timezone
 
 class OrderCreateForm(forms.ModelForm):
     customer = forms.ModelChoiceField( queryset= Customer.objects.all() ,
                                         widget= forms.TextInput( attrs={'class':'form-control' , 'onfocus':'select()', 'require':'True' } ) )
+    effective_date = forms.DateField( initial= timezone.now() + timezone.timedelta(days=30),
+                            widget= forms.DateInput( attrs={'class':'form-control' , 'onfocus':'select()', 'require':'True' } ))
 
     #email = forms.EmailField( widget= forms.EmailInput( attrs={'class':'form-control' , 'size':'30', 'onfocus':'select()' , 'placeholder':'Email Address'  } ) )
     class Meta:

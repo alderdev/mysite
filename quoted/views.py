@@ -58,7 +58,11 @@ def order_create(request):
 
             order = form.save()
             for item in cart:
-                OrderItem.objects.create(order=order,product=item['product'],price=item['price'],quantity=item['quantity'])
+                OrderItem.objects.create(order=order,product=item['product']
+                                        ,price=item['price'],quantity=item['quantity']
+                                        ,price1=item['price1'],quantity1=item['quantity1']
+                                        ,price2=item['price2'],quantity2=item['quantity2']
+                                        ,price3=item['price3'],quantity3=item['quantity3'])
             cart.clear()
             return HttpResponseRedirect( '../' )
 

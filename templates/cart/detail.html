@@ -32,9 +32,21 @@
             <td>{{ product.name }}</td>
             <td>{{ product.modelname }}</td>
             <td class="num">
-              <div>{{ item.quantity }}{{ item.quantity1 }}{{ item.quantity2 }}{{ item.quantity3 }}</div>
+              <div>
+                  <div class="num">{% if item.quantity != None %}{{ item.quantity }}{% endif %}</div>
+                  <div class="num">{% if item.quantity1 != None %}{{ item.quantity1 }}{% endif %}</div>
+                  <div class="num">{% if item.quantity2 != None %}{{ item.quantity2 }}{% endif %}</div>
+                  <div class="num">{% if item.quantity3 != None %}{{ item.quantity3 }}{% endif %}</div>
+              </div>
             </td>
-            <td class="num">${{ item.price }}</td>
+            <td class="num">
+              <div>
+                  <div>{% if item.price != None %}${{ item.price }}{% endif %}</div>
+                  <div>{% if item.price1 != None %}${{ item.price1 }}{% endif %}</div>
+                  <div>{% if item.price2 != None %}${{ item.price2 }}{% endif %}</div>
+                  <div>{% if item.price3 != None %}${{ item.price3 }}{% endif %}</div>
+              </div>
+            </td>
             <td class="num">${{ item.total_price }}</td>
             <td>
               <a href="{% url "cart:cart_remove" product.id  %}" class="btn btn-danger" role="button">Remove</a>

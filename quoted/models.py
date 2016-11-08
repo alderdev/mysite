@@ -126,7 +126,7 @@ class Order(models.Model):
                         show_all = False,
                         auto_choose= True
                     )
-    email = models.EmailField(null=False, blank=False)
+    email = models.EmailField(null=True, blank=True)
     paymentterm = models.ForeignKey(PaymentTerm,null=False, blank=False)
     priceterm = models.ForeignKey(PriceTerm,null=False, blank=False)
     quote_sales = models.CharField(max_length=60, null=True, blank=True) # 取消此欄位, 以quote_user取代
