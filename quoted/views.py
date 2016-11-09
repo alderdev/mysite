@@ -639,10 +639,10 @@ def _generate_pdf(course, output):
     #頁首的資訊
     #因為要套用字型Arialuni, 所以將comment改為Paragraph
     comment = Paragraph('''
-       <para align=left spaceb=3><font face="Arialuni">'''+ course.comment +'''</font></para>''',
+       <para align=left spaceb=3><font face="Arialuni">'''+ str(course.comment).replace('\n','<br/>\n') +'''</font></para>''',
        styles["BodyText"])
     footer = [['Remark:'],
-              [ comment ],
+                [ comment ],
 
               ]
 

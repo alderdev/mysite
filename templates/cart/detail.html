@@ -11,7 +11,7 @@
               <th>ModelName</th>
               <th>Quantity</th>
               <th>Unit price</th>
-              <th>Price</th>
+
               <th>Remove</th>
           </tr>
       </thead>
@@ -47,7 +47,7 @@
                   <div>{% if item.price3 != None %}${{ item.price3 }}{% endif %}</div>
               </div>
             </td>
-            <td class="num">${{ item.total_price }}</td>
+          
             <td>
               <a href="{% url "cart:cart_remove" product.id  %}" class="btn btn-danger" role="button">Remove</a>
             </td>

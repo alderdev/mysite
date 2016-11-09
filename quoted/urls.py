@@ -1,10 +1,12 @@
 from django.conf.urls import url
 from . import views
 
+from django.contrib.auth.decorators import login_required
+
 urlpatterns = [
 
 
-    url(r'^order/$', views.OrderList.as_view( template_name = 'quoted/order_list.html'), name="order_list" ),
+    url(r'^order/$',login_required( views.OrderList.as_view( template_name = 'quoted/order_list.html')), name="order_list" ),
     url(r'^order/(?P<id>\d+)/$', views.order_detail, name="order_detail" ),
     url(r'^order/(?P<pk>\d+)/$', views.OrderDetail.as_view( template_name = 'quoted/order_detail.html'), name="order_detail" ),
 

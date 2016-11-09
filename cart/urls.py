@@ -1,11 +1,12 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 from . import views
+from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
     # Class Base View
-    url(r'^$', views.cart_detail, name="cart_detail"),
+    url(r'^$', login_required(views.cart_detail), name="cart_detail"),
     #url(r'^create/$', views.QuotationCreate.as_view(template_name = 'prod_model/quotation_form.html' ),   name="create" ),
 
     url(r'^(?P<product_id>\d+)/add/$', views.cart_add , name="cart_add"),

@@ -22,11 +22,12 @@ from django.contrib.auth.views import login, logout
 
 from .views import index, logout
 from posts import views
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #url(r'^$', index),
-    url(r'^$', views.post_list, name="list" ),
+    url(r'^$', login_required(views.post_list), name="list" ),
     url(r'^accounts/login/$', login),
     url(r'^accounts/logout/$', logout),
     url(r'^posts/', include( 'posts.urls', namespace="posts")),
