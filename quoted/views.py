@@ -571,6 +571,7 @@ def _generate_pdf(course, output):
     tableheader = ['No.','Image', 'Product / Description /  Dimming Option / Model Name                             ', 'Quantity' ,'Price']
     element.append(tableheader)
     loopcounter = 1
+    grund_total = 0
     for item in course.orderitem_set.all():
 
         myitem = []
@@ -584,23 +585,27 @@ def _generate_pdf(course, output):
         desctiption = "Watt: "+ str(item.product.watt) + " , Option1:" + item.product.option1 + " , Beam Angle:" + item.product.beam_angle + ' , CRI: ' + str(item.product.cri) + ' , CCT: ' +item.product.cct
         myitem.append( item.product.name + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No: '+ item.product.modelname )
 
-        qty_group = [item.quantity, item.quantity1, item.quantity2, item.quantity3]
+        qty_group = [  item.quantity, item.quantity1, item.quantity2, item.quantity3]
         price_group = [item.price, item.price1, item.price2, item.price3]
+        # qty_group = [ item.quantity, item.quantity1, item.quantity2, item.quantity3]
+        # price_group = [item.price, item.price1, item.price2, item.price3]
+
 
         str_qty = ''
         str_price = ''
 
         for q in qty_group:
             if q is not None:
-                str_qty += str(q)+'\n'
+                str_qty += str('{:,.0f}'.format(int(q)))+'\n'
 
         for p in price_group:
             if p is not None:
-                str_price += str(p)+'\n'
+                str_price += str('${:,.2f}'.format(float(p)))+'\n'
 
 
         myitem.append( str_qty )
         myitem.append( str_price )
+
 
 
         element.append(myitem)
@@ -652,18 +657,216 @@ def _generate_pdf(course, output):
                         ])
 
     Story.append(f)
-
-
-
     doc.build(Story, onFirstPage=myFirstPage, onLaterPages=myLaterPage )
 
 
 
-def gen_pdfv2(request,id):
+def gen_quote(request,id):
     response = HttpResponse(content_type='application/pdf')
     filename = '-outline.pdf'
     response['Content-Disposition'] = 'filename=' + filename
     course = get_object_or_404(Order,id=id)
     _generate_pdf(course, response)
+
+    return response
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 明確數量的報價單,有金額小計及總金額的報表模板
+def _generate_pdfv2(course, output):
+    from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_LEFT, TA_CENTER
+    from reportlab.lib.pagesizes import A4
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table , TableStyle
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle,PropertySet
+    from reportlab.lib.units import mm, inch
+    from reportlab.lib import colors
+    from reportlab.platypus import XPreformatted, Preformatted
+    from django.conf import settings
+    from reportlab.pdfgen import canvas
+    pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
+    pdfmetrics.registerFont(TTFont('Arialuni', 'arialuni.ttf'))
+
+
+    #from cStringIO import StringIO
+
+    doc = SimpleDocTemplate(output,pagesize=A4,
+    rightMargin=.5*inch,leftMargin=.5*inch,
+    topMargin=inch,bottomMargin=.6*inch)
+
+
+    Story = [Spacer(1, 3.5*inch)]
+    style = styles["Normal"]
+    styleN = styles['Normal']
+    styleH = styles['Heading1']
+
+    ###
+    stylesheet=getSampleStyleSheet()
+    normalStyle = stylesheet['Normal']
+
+    #頁首的資訊
+    header = [['Quotation No',':', course.order_number],
+              ['Customer',':', course.customer.title],
+              ['Contact Person',':', course.contact.name],
+              ['Contact Email',':', course.contact.email],
+              ['Date',':', course.ord_date],
+              ['Expired Date',':', course.effective_date],
+              ]
+
+    h = Table(header,style=[
+                            ('ALIGN',(0,0),(0,-1), 'LEFT'),
+                            ('FONTNAME', (2,0),(2,-1), 'Arialuni'),
+                            ('SPAN',(1,-1),(1,-1)),
+                            ('VALIGN',(0,0),(0,-1),'TOP'),
+                        ])
+
+    Story.append(h)
+    Story.append(PageBreak())
+
+    #因為要套用字型Arialuni, 所以將comment改為Paragraph
+    comment = Paragraph('''
+       <para align=left spaceb=3><font face="Arialuni">'''+ course.comment +'''</font></para>''',
+       styles["BodyText"])
+
+
+
+    #頁首的資訊
+    header = [
+              ['Quotation No',':', course.order_number,'','Date',':', course.ord_date],
+              ['Customer',':', course.customer.title,'','Expired Date',':', course.effective_date],
+              ['Contact Person',':', course.contact.name, '','Sales Contact',':', course.quote_user],
+              ['Contact Email',':', course.contact.email,'', 'Email',':', course.quote_user.email],
+              ['Payment Term',':', course.paymentterm,'','Currency',':' , course.currency],
+              ['Price Term',':', course.priceterm,''],
+              ]
+
+    h = Table(header, colWidths=[1.0*inch, 0.1*inch, 2.8*inch, 0.3*inch, 0.9*inch, 0.1*inch, 2.0*inch] ,style=[
+                        #('ALIGN',(0,0),(0,-1), 'LEFT'),
+                        ('SPAN',(2,0),(3,0)),
+                        ('FONTNAME', (2,0),(2,-1), 'Arialuni'),
+
+                        ('VALIGN',(0,0),(0,-1),'TOP'),
+                        ('ALIGN',(3,0),(3,-1), 'LEFT'),
+                        ('FONTNAME', (6,0),(6,-1), 'Arialuni'),
+                    ])
+
+    Story.append(h)
+
+    element = []
+    #tableheader = ['No.','Image', 'Product / Description /  Dimming Option / Model Name                             ', 'Quantity' ,'Price', 'Amount']
+    tableheader = ['No.', 'Product / Description /  Dimming Option / Model Name                             ', 'Quantity' ,'Price', 'Sub-Total']
+
+    element.append(tableheader)
+    loopcounter = 1
+    qty_amount = 0
+    grund_total = 0
+    for item in course.orderitem_set.all():
+
+        myitem = []
+        myitem.append( loopcounter )
+        img = settings.MEDIA_ROOT+"/" +str(item.product.image.url).split("/")[2]
+        I = Image(img)
+        I.drawHeight = 0.85*inch
+        I.drawWidth = 0.85*inch
+
+        #myitem.append( I )
+        desctiption = "Watt: "+ str(item.product.watt) + " , Option1:" + item.product.option1 + " , Beam Angle:" + item.product.beam_angle + ' , CRI: ' + str(item.product.cri) + ' , CCT: ' +item.product.cct
+        myitem.append( item.product.name + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No: '+ item.product.modelname )
+
+        qty_group = [item.quantity, item.quantity1, item.quantity2, item.quantity3]
+        price_group = [item.price, item.price1, item.price2, item.price3]
+        #行小計
+        sub_amount = item.quantity * item.price
+
+        #金額總計
+        qty_amount += item.quantity
+        grund_total += sub_amount
+        print( '${:,.2f}'.format(qty_amount) )
+
+
+        str_qty = ''
+        str_price = ''
+
+        for q in qty_group:
+            if q is not None:
+                str_qty += str(q)+'\n'
+
+        for p in price_group:
+            if p is not None:
+                str_price += str(p)+'\n'
+
+
+        myitem.append(  '{:,.0f}'.format(float(str_qty))   )
+        myitem.append(  '${:,.2f}'.format(float(str_price))  )
+        myitem.append( '${:,.2f}'.format(sub_amount)  )
+
+
+        element.append(myitem)
+        loopcounter += 1
+
+    #repeatRows=1 是指第一行(表頭) 換頁時會重複
+    t = Table(element, colWidths=[0.4*inch, 5.0*inch, 0.5*inch, 0.7*inch,  1.0*inch], repeatRows=1)
+
+    t.setStyle(
+        TableStyle(
+            [('BACKGROUND',(0,0),(4,0),colors.skyblue),
+             ('ALIGN',(0,0),(3,0),'CENTER'),
+             ('SIZE',(1,1),(4,-1), 7),
+
+             ('VALIGN',(0,0),(4,-1),'TOP'),
+             ('ALIGN',(2,0),(4,-1), 'DECIMAL'),
+             ('TEXTCOLOR',(4,1),(4,-1), colors.blue),
+             ('LINEBELOW', (0,-1), (-1,-1), 1, colors.black),
+             ]
+        )
+    )
+
+
+    Story.append(t)
+
+    #頁首的資訊
+    #因為要套用字型Arialuni, 所以將comment改為Paragraph
+    comment = Paragraph('''
+       <para align=left spaceb=3><font face="Arialuni">'''+ str(course.comment).replace('\n','<br/>\n') +'''</font></para>''',
+       styles["BodyText"])
+    footer = [  ['', '', '', '', ' ' ,'Quantity Total:', '{:,.0f}'.format(qty_amount) ],
+                ['', '', '', '', ' ' ,'Grand Total:',  '${:,.2f}'.format(grund_total)  ],
+                ['','', '', '', '', ' ',''],
+                [ 'Remark:',comment ],
+              ]
+
+    f = Table(footer,style=[
+                            ('ALIGN',(0,0),(6,-1), 'RIGHT'),
+                            #('ALIGN',(0,0),(0,-1), 'LEFT'),
+                            ('FONTNAME', (0,0),(0,-1), 'Arialuni'),
+                            ('VALIGN',(0,0),(0,-1), 'TOP'),
+                            ('SPAN',(1,3),(6,-1)),
+                        ])
+
+    Story.append(f)
+    doc.build(Story, onFirstPage=myFirstPage, onLaterPages=myLaterPage )
+
+
+# 明確數量的報價單,有金額小計及總金額的
+def gen_pdfv2(request,id):
+    response = HttpResponse(content_type='application/pdf')
+    filename = '-outline.pdf'
+    response['Content-Disposition'] = 'filename=' + filename
+    course = get_object_or_404(Order,id=id)
+    _generate_pdfv2(course, response)
 
     return response
