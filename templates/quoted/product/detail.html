@@ -5,6 +5,21 @@
 {% if category %}{{ category.title }}{% else %}Products{% endif %}
 {% endblock %}
 {% block content %}
+<style>
+.imgbox{
+  width: auto;
+  height: 360;
+  border: 1px solid;
+  box-sizing: border-box;
+}
+.pricebox{
+  width: 72;
+  height: 48;
+  border: 0px solid;
+  box-sizing: border-box;
+}
+</style>
+
 <div class="col-sm-8 col-md-10 col-md-offset-1" >
   <hr>
     <div  class="media-left media-middle col-md-8 ">
@@ -28,6 +43,16 @@
       <p>Lm: {{ product.lm }}</p>
       <p>Price: ${{ product.price }}</p>
       <p>Active: {{ product.available }}</p>
+      <hr>
+        <div class="form-inline ">
+          {% for p in product.productprice_set.all %}
+            <div class="form-group pricebox">
+              <div align="center">{{ p.currency }}</div>
+              <div align="right" >{{ p.std_price }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      <hr>
       <form class="form-inline" action="{% url "cart:cart_add" product.id %}" method="post">
         <div>
           Quantity1: {{ cart_product_form.quantity}}Price1:{{ cart_product_form.price}}

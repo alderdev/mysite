@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Order, OrderItem, PaymentTerm, PriceTerm, DimmingOption
+from .models import Category, Product, Order, OrderItem, PaymentTerm, PriceTerm, DimmingOption, ProductPrice
 
 
 
@@ -25,11 +25,21 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Category, CategoryAdmin)
 
+
+
+
+class PriceInline(admin.TabularInline):
+    model = ProductPrice
+    raw_id_fields = ['product','currency']
+
+
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'modelname', 'slug', 'price', 'stock', 'available', 'created', 'updated']
     list_filter = ['available', 'category', 'family', 'watt']
     list_editable = ['price', 'stock', 'available']
     prepopulated_fields = {'slug': ('name',)}
+    inlines = [PriceInline]
 
 admin.site.register(Product, ProductAdmin)
 

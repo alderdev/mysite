@@ -40,6 +40,8 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('quoted:product_list_by_category',args=[self.slug])
 
+
+
 class DimmingOption(models.Model):
     description = models.CharField(max_length=200, blank=False, null=False)
 
@@ -75,12 +77,24 @@ class Product(models.Model):
         ordering = ('category','watt','name',)
         index_together = (('id', 'slug'),)
 
-
     def __str__(self):
         return self.modelname
 
     def get_absolute_url(self):
         return reverse('quoted:product_detail',args=[self.id, self.slug])
+
+
+
+class ProductPrice(models.Model):
+    product = models.ForeignKey(Product)
+    currency = models.ForeignKey(Currency)
+    std_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    mix_sell =  models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    class Meta:
+        unique_together = (("product","currency"),)
+
+
 
 
 

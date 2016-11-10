@@ -656,7 +656,7 @@ def _generate_pdfv2(course, output):
         #金額總計
         qty_amount += item.quantity
         grund_total += sub_amount
-        print( '${:,.2f}'.format(qty_amount) )
+        #print( '${:,.2f}'.format(qty_amount) )
 
 
         str_qty = ''
@@ -664,17 +664,16 @@ def _generate_pdfv2(course, output):
 
         for q in qty_group:
             if q is not None:
-                str_qty += str(q)+'\n'
+                str_qty += str( '{:,.0f}'.format(int(q)) )+'\n'
 
         for p in price_group:
             if p is not None:
-                str_price += str(p)+'\n'
+                str_price += str( '${:,.2f}'.format(float(p)) )+'\n'
 
 
-        myitem.append(  '{:,.0f}'.format(float(str_qty))   )
-        myitem.append(  '${:,.2f}'.format(float(str_price))  )
+        myitem.append(  str_qty   )
+        myitem.append(  str_price  )
         myitem.append( '${:,.2f}'.format(sub_amount)  )
-
 
         element.append(myitem)
         loopcounter += 1
@@ -855,11 +854,6 @@ def gen_pdf(request,id):
     c.drawText( remark_obj )
 
     yp = remark_obj.getY()
-
-
-
-
-
 
     c.showPage()
     c.save()
