@@ -8,10 +8,19 @@
 <h1>{{ title }}</h1>
 
 
-您尚未登入
-<form action="" method="POST">{% csrf_token %}
 
-      {{ form.as_table }}
-      <input type="submit" value="Login" value='{{ next }}' >
-</form>
+<div class="container">
+
+  <div class="col-sm-6 col-sm-offset-3">
+    <div>
+        您尚未登入
+    </div>
+      <form action="" method="POST">{% csrf_token %}
+        <table class="table">
+            {{ form.as_table }}
+          </table>
+          <input class="form-control btn btn-primary" type="submit" value="Login" value='{{ next }}' >
+      </form>
+  </div>
+</div>
 {% endblock content%}

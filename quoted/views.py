@@ -9,7 +9,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Q
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def product_list(request, category_slug=None):
 
     category = None
@@ -40,6 +42,7 @@ class OrderItemInline(admin.TabularInline):
 
 inlines = [OrderItemInline]
 
+
 def order_create(request):
 
     cart = Cart(request)
@@ -69,6 +72,7 @@ def order_create(request):
         return render(request,'quoted/product/list.html',locals())
 
     return render(request,'quoted/order_form.html',locals())
+
 
 
 class OrderList(ListView):
@@ -115,11 +119,11 @@ from django.template.loader import render_to_string
 import weasyprint
 
 
+
 class OrderUpdate(UpdateView):
     model = Order
     fields = ['is_valid','customer', 'contact', 'email', 'currency', 'paymentterm', 'priceterm', 'quote_sales','ord_date', 'effective_date','comment']
     form_clss = OrderUpdateForm()
-
 
 
 def order_print(request, id):
@@ -150,9 +154,9 @@ def quote_delete_item(request, id):
     return render(request, "../%s" %str(request.POST['order_id']), locals())
 
 
+
+
 def order_item_insert(request):
-
-
     if request.method=='POST':
         order_id = request.POST['order_id']
         product_id = request.POST['product_id']
@@ -171,19 +175,15 @@ def order_item_insert(request):
             quantity1 = None
             #print("['price1'] is not None")
 
-
         if request.POST['price2'] =='':
             price2 = None
             quantity2 = None
             #print("['price2'] is not thing")
 
-
         if request.POST['price3'] =='':
             price3 = None
             quantity3 = None
             #print("['price3'] is not thing")
-
-
 
         #因為單價有可能不一樣,所以不考慮將相同品項的數量加總
         #print("OrderID: %s, ProductId: %s"  %(order_id,product_id))
@@ -196,8 +196,6 @@ def order_item_insert(request):
             #print("Not Exists")
 
         #print("OrderItem.objects.create")
-
-
         OrderItem.objects.create(
                 order_id = order_id,
                 product_id = product_id,
@@ -226,131 +224,6 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.lib.utils import ImageReader
 from django.contrib.staticfiles.templatetags.staticfiles import static
-
-def gen_pdf(request,id):
-
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="genReport.pdf"'
-    pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
-    pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
-    pdfmetrics.registerFont(TTFont('VeraIt', 'VeraIt.ttf'))
-    pdfmetrics.registerFont(TTFont('VeraBI', 'VeraBI.ttf'))
-    pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
-    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))
-
-    #print(pdfmetrics.getRegisteredFontNames())
-
-    order = get_object_or_404(Order,id=id)
-    order_number = order.order_number
-
-    #logo = ImageReader('http://www.alder.com.tw/Content/Images/logo.gif')
-    logo = settings.STATIC_ROOT +"/img/alder_logo.png"
-
-    c = canvas.Canvas(response, pagesize=A4)
-    width, height = A4
-
-
-    upline = settings.STATIC_ROOT +"/img/alder_upline.jpg"
-    footer_line = settings.STATIC_ROOT +"/img/footer_line.jpg"
-    c.drawImage(footer_line, 20, 805, mask='auto', width=490,height=20)
-    c.drawImage(upline, 40, 25, mask='auto', width=500,height=20)
-
-
-
-    c.setTitle("Alder Optomechanical Corp.")
-    c.setSubject("Quotation")
-    c.drawImage(logo, 525, 780, mask='auto', width=45,height=45)
-    c.setFont("simhei", 24)
-    c.drawString(150, 780, "Alder Optomechanical Corp.")
-    c.setFont("simhei", 22)
-    c.drawString(250, 760, "Quotation")
-
-    c.setFont("simhei", 10)
-    # Report Field lable
-    y = 745
-    x = 100
-    #Header left
-    c.drawRightString(x,y ,"Quote Number " + ":")
-    c.drawRightString(x,y-15, "Customer " + ":")
-    c.drawRightString(x,y-30, "Contact Person " + ":")
-    c.drawRightString(x,y-45, "Contact Email " + ":")
-    c.drawRightString(x,y-60, "Payment Term " + ":")
-    c.drawRightString(x,y-75, "Price Term " + ":")
-
-    #Header Right
-    c.drawRightString(x+350,y, "Sales Contact " + ":")
-    c.drawRightString(x+350,y-15, "Sales Email " + ":")
-    c.drawRightString(x+350,y-30, "Quote Date " + ":")
-    c.drawRightString(x+350,y-45, "Effective Date " + ":")
-    c.drawRightString(x+350,y-60, "Currency " + ":")
-
-
-    # Django Field
-    c.drawString(x +5, y, order_number )
-    c.drawString(x +5, y-15, order.customer.title )
-    c.drawString(x +5, y-30, order.contact.name )
-    c.drawString(x +5, y-45, order.email )
-    c.drawString(x +5, y-60, order.paymentterm.description )
-    c.drawString(x +5, y-75, order.priceterm.description )
-
-    c.drawString(x +355, y, order.quote_sales )
-    c.drawString(x +355, y-15, "sales@alder.com.tw" )
-    c.drawString(x +355, y-30, str(order.ord_date) )
-    c.drawString(x +355, y-45, str(order.effective_date) )
-    c.drawString(x +355, y-60, order.currency.code )
-
-
-
-    #c.setFont("STSong-Light", 10)
-
-    x_position = 80
-    y_position = 600
-    number = 1
-
-    c.drawString( 25, y_position +25, "No." )
-    c.drawString( 45, y_position +25, "Images" )
-    c.drawString( x_position, y_position +25, "Product Name / Model Name / Description" )
-    #c.drawString( x_position +200, y_position +25, "Product Name" )
-    #c.drawString( x_position +300, y_position +25, "WATT" )
-    c.drawString( x_position +400, y_position +25, "Quantity" )
-    c.drawString( x_position +450, y_position +25, "Price" )
-    c.line(25,640,570,640)
-    c.line(25,615,570,615)
-
-    for item in order.orderitem_set.all():
-        c.drawString( 25, y_position, str(number)+ ". " )
-
-        imageurl = settings.MEDIA_ROOT+"/" +str(item.product.image.url).split("/")[2]
-        c.drawImage(imageurl, 40, y_position-25, mask='auto', width=35,height=35)
-
-        c.drawString( x_position, y_position, item.product.name )
-        c.drawString( x_position, y_position-12, item.product.modelname )
-
-        c.drawString( x_position, y_position-24, "Watt: " + item.product.watt + ",  CRI:" + item.product.cri + ",  CCT:" + item.product.cct  )
-        c.drawRightString( x_position +400, y_position, str(item.quantity) )
-        c.drawRightString( x_position +480, y_position, str(item.price) )
-
-        y_position -= 40
-        number += 1
-
-
-
-
-    c.drawRightString( 60, y_position-25, "Remark :")
-    remark_obj = c.beginText(60 , y_position - 40)
-    remark_obj.textLines(order.comment)
-    c.drawText( remark_obj )
-
-    yp = remark_obj.getY()
-
-
-
-
-
-
-    c.showPage()
-    c.save()
-    return response
 
 
 
@@ -407,6 +280,7 @@ pdfmetrics.registerFont(TTFont('VeraIt', 'VeraIt.ttf'))
 pdfmetrics.registerFont(TTFont('VeraBI', 'VeraBI.ttf'))
 
 # 封面的Layout
+
 def myFirstPage(canvas, doc):
     canvas.saveState()
     canvas.setFont('VeraBd', 18)
@@ -668,19 +542,6 @@ def gen_quote(request,id):
     course = get_object_or_404(Order,id=id)
     _generate_pdf(course, response)
 
-    return response
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -835,7 +696,6 @@ def _generate_pdfv2(course, output):
         )
     )
 
-
     Story.append(t)
 
     #頁首的資訊
@@ -862,6 +722,7 @@ def _generate_pdfv2(course, output):
 
 
 # 明確數量的報價單,有金額小計及總金額的
+@login_required
 def gen_pdfv2(request,id):
     response = HttpResponse(content_type='application/pdf')
     filename = '-outline.pdf'
@@ -869,4 +730,137 @@ def gen_pdfv2(request,id):
     course = get_object_or_404(Order,id=id)
     _generate_pdfv2(course, response)
 
+    return response
+
+
+
+
+
+
+
+
+
+
+#參考的操作範例, 已不使用
+def gen_pdf(request,id):
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="genReport.pdf"'
+    pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
+    pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
+    pdfmetrics.registerFont(TTFont('VeraIt', 'VeraIt.ttf'))
+    pdfmetrics.registerFont(TTFont('VeraBI', 'VeraBI.ttf'))
+    pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
+    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))
+
+    #print(pdfmetrics.getRegisteredFontNames())
+
+    order = get_object_or_404(Order,id=id)
+    order_number = order.order_number
+
+    #logo = ImageReader('http://www.alder.com.tw/Content/Images/logo.gif')
+    logo = settings.STATIC_ROOT +"/img/alder_logo.png"
+
+    c = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+
+    upline = settings.STATIC_ROOT +"/img/alder_upline.jpg"
+    footer_line = settings.STATIC_ROOT +"/img/footer_line.jpg"
+    c.drawImage(footer_line, 20, 805, mask='auto', width=490,height=20)
+    c.drawImage(upline, 40, 25, mask='auto', width=500,height=20)
+
+
+
+    c.setTitle("Alder Optomechanical Corp.")
+    c.setSubject("Quotation")
+    c.drawImage(logo, 525, 780, mask='auto', width=45,height=45)
+    c.setFont("simhei", 24)
+    c.drawString(150, 780, "Alder Optomechanical Corp.")
+    c.setFont("simhei", 22)
+    c.drawString(250, 760, "Quotation")
+
+    c.setFont("simhei", 10)
+    # Report Field lable
+    y = 745
+    x = 100
+    #Header left
+    c.drawRightString(x,y ,"Quote Number " + ":")
+    c.drawRightString(x,y-15, "Customer " + ":")
+    c.drawRightString(x,y-30, "Contact Person " + ":")
+    c.drawRightString(x,y-45, "Contact Email " + ":")
+    c.drawRightString(x,y-60, "Payment Term " + ":")
+    c.drawRightString(x,y-75, "Price Term " + ":")
+
+    #Header Right
+    c.drawRightString(x+350,y, "Sales Contact " + ":")
+    c.drawRightString(x+350,y-15, "Sales Email " + ":")
+    c.drawRightString(x+350,y-30, "Quote Date " + ":")
+    c.drawRightString(x+350,y-45, "Effective Date " + ":")
+    c.drawRightString(x+350,y-60, "Currency " + ":")
+
+
+    # Django Field
+    c.drawString(x +5, y, order_number )
+    c.drawString(x +5, y-15, order.customer.title )
+    c.drawString(x +5, y-30, order.contact.name )
+    c.drawString(x +5, y-45, order.email )
+    c.drawString(x +5, y-60, order.paymentterm.description )
+    c.drawString(x +5, y-75, order.priceterm.description )
+
+    c.drawString(x +355, y, order.quote_sales )
+    c.drawString(x +355, y-15, "sales@alder.com.tw" )
+    c.drawString(x +355, y-30, str(order.ord_date) )
+    c.drawString(x +355, y-45, str(order.effective_date) )
+    c.drawString(x +355, y-60, order.currency.code )
+
+    #c.setFont("STSong-Light", 10)
+
+    x_position = 80
+    y_position = 600
+    number = 1
+
+    c.drawString( 25, y_position +25, "No." )
+    c.drawString( 45, y_position +25, "Images" )
+    c.drawString( x_position, y_position +25, "Product Name / Model Name / Description" )
+    #c.drawString( x_position +200, y_position +25, "Product Name" )
+    #c.drawString( x_position +300, y_position +25, "WATT" )
+    c.drawString( x_position +400, y_position +25, "Quantity" )
+    c.drawString( x_position +450, y_position +25, "Price" )
+    c.line(25,640,570,640)
+    c.line(25,615,570,615)
+
+    for item in order.orderitem_set.all():
+        c.drawString( 25, y_position, str(number)+ ". " )
+
+        imageurl = settings.MEDIA_ROOT+"/" +str(item.product.image.url).split("/")[2]
+        c.drawImage(imageurl, 40, y_position-25, mask='auto', width=35,height=35)
+
+        c.drawString( x_position, y_position, item.product.name )
+        c.drawString( x_position, y_position-12, item.product.modelname )
+
+        c.drawString( x_position, y_position-24, "Watt: " + item.product.watt + ",  CRI:" + item.product.cri + ",  CCT:" + item.product.cct  )
+        c.drawRightString( x_position +400, y_position, str(item.quantity) )
+        c.drawRightString( x_position +480, y_position, str(item.price) )
+
+        y_position -= 40
+        number += 1
+
+
+
+
+    c.drawRightString( 60, y_position-25, "Remark :")
+    remark_obj = c.beginText(60 , y_position - 40)
+    remark_obj.textLines(order.comment)
+    c.drawText( remark_obj )
+
+    yp = remark_obj.getY()
+
+
+
+
+
+
+    c.showPage()
+    c.save()
     return response

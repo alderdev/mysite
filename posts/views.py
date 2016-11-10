@@ -3,16 +3,17 @@ from django.http import HttpResponse, HttpResponseRedirect
 from . import models
 from .forms import  PostForm
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
-
+@login_required
 def post_list(request):
     title="公告事項"
     object_list = models.Post.objects.all()
     return render(request, "post_list.html", locals())
 
 
-
+@login_required
 def post_create(request):
     title="Posts Create"
     form = PostForm(request.POST or None , request.FILES or None)
@@ -26,19 +27,18 @@ def post_create(request):
         to_mail = [ request.user.email ]
 
         send_mail(mailsubject, mailmessage, from_email, to_mail, fail_silently=False)
-        
+
         return HttpResponseRedirect( instance.get_absolute_url() )
 
 
     return render(request, "post_form.html", locals())
 
 
-
+@login_required
 def post_detail(request, id):
     title="Posts Detail"
     instance = get_object_or_404(models.Post, id=id)
     return render(request, "post_detail.html", locals())
-
 
 
 def post_update(request, id):
@@ -54,7 +54,7 @@ def post_update(request, id):
     return render(request, "post_form.html", locals())
 
 
-
+@login_required
 def post_delete(request, id):
     instance = get_object_or_404(models.Post, id=id)
     instance.delete()
