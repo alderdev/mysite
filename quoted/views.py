@@ -542,6 +542,8 @@ def gen_quote(request,id):
     course = get_object_or_404(Order,id=id)
     _generate_pdf(course, response)
 
+    return response
+
 
 
 
@@ -730,12 +732,6 @@ def gen_pdfv2(request,id):
     _generate_pdfv2(course, response)
 
     return response
-
-
-
-
-
-
 
 
 
