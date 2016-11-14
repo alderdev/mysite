@@ -28,6 +28,11 @@ urlpatterns = [
 
 
 
+    #CBV
+    #url(r'^$', views.ProductList.as_view(template_name = 'quoted/product/list.html'), name='product_list'),
+
+
+
 
 
 ]

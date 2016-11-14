@@ -93,6 +93,10 @@ class ProductPrice(models.Model):
 
     class Meta:
         unique_together = (("product","currency"),)
+        ordering = ["-currency"]
+
+    def __str__(self):
+        return "%s: %d" %(self.currency, self.std_price)
 
 
 

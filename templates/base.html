@@ -134,7 +134,16 @@
             </nav>
 
             {% block content %}
+
             {% endblock content %}
+
+
+            <script>
+              $(document).ready(function(){
+                {% block jquery %}
+                {% endblock jquery %}
+              });
+            </script>
 
                 {% block footer %}
                 <div>

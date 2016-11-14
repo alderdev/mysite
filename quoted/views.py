@@ -11,6 +11,12 @@ from django.db.models import Q
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 
+
+
+class ProductList(ListView):
+    model = Product
+
+
 @login_required
 def product_list(request, category_slug=None):
 
