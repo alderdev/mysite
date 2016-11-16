@@ -36,7 +36,7 @@
         {
           alert( "Invalid Product"  );
         }
-			}); width=None,height=Non
+			}); width=None,height=None
 		})
   });
 	</script>
@@ -80,7 +80,7 @@
         width: 1200,
         modal: true,
         buttons: {
-           OK: addUser
+           OK: addItem
         },
         close: function() {}
       });
@@ -89,9 +89,9 @@
         dialog.dialog( "open" );
       });
 
-       function addUser(){
+       function addItem(){
          var selectedItem = $("#myselect option:selected" ).text();
-        $("#milk_input_id").val(selectedItem);
+         $("#milk_input_id").val(selectedItem);
           dialog.dialog( "close" );
        }
     });
@@ -184,7 +184,7 @@ $("button").click(function(e){
     var prices2_id = document.getElementById('prices2_'+item[1]).value
     var quantity3_id = document.getElementById('quantity3_'+item[1]).value
     var prices3_id = document.getElementById('prices3_'+item[1]).value
-    //alert(form.id)
+
     e.preventDefault();
 
 	 $.ajax({
@@ -193,9 +193,9 @@ $("button").click(function(e){
 			 data:{
            order_id: order_id,
            product_id: product_id,
+
            quantity:quantity_id,
            price: prices_id,
-
            quantity1:quantity1_id,
            price1: prices1_id,
            quantity2:quantity2_id,

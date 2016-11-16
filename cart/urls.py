@@ -9,7 +9,8 @@ urlpatterns = [
     url(r'^$', login_required(views.cart_detail), name="cart_detail"),
     #url(r'^create/$', views.QuotationCreate.as_view(template_name = 'prod_model/quotation_form.html' ),   name="create" ),
 
-    url(r'^(?P<product_id>\d+)/add/$', views.cart_add , name="cart_add"),
+    #url(r'^(?P<product_id>\d+)/add/$', views.cart_add , name="cart_add"),
+    url(r'^addcart/$', views.cart_add , name="addcart"),
     url(r'^remove/(?P<product_id>\d+)/$',views.cart_remove,name='cart_remove'),
 
 

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block title %}
+{% if category %}{{ category.title }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+<style>
+.imgbox{
+  width: auto;
+  height: 360;
+  border: 1px solid;
+  box-sizing: border-box;
+}
+.pricebox{
+    width: auto;
+    height: 60;
+    background-color: skyblue;
+
+}
+</style>
+<script>
+    {% block jquery %}
+
+        $("button").click(function(event){
+
+          var form = $(this).closest('form')[0];
+
+          var item = form.id.split('_');
+
+          var product_id = document.getElementById('product_id').value
+
+          var quantity_id = document.getElementById('id_quantity').value
+          var prices_id = document.getElementById('id_price').value
+          var quantity1_id = document.getElementById('id_quantity1').value
+          var prices1_id = document.getElementById('id_price1').value
+          var quantity2_id = document.getElementById('id_quantity2').value
+          var prices2_id = document.getElementById('id_price2').value
+          var quantity3_id = document.getElementById('id_quantity3').value
+          var prices3_id = document.getElementById('id_price3').value
+
+          event.preventDefault();
+          formData= $("#form.id").serialize();
+          console.log(formData)
+
+
+         $.ajax({
+
+             type:"POST",
+             url:'/cart/addcart/',
+             data:{
+                 product_id: product_id,
+
+                 quantity:quantity_id,
+                 price: prices_id,
+                 quantity1:quantity1_id,
+                 price1: prices1_id,
+                 quantity2:quantity2_id,
+                 price2: prices2_id,
+                 quantity3:quantity3_id,
+                 price3: prices3_id,
+                 csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+             },
+             success: function(result){
+               //$("#d1").html("Success!!");
+               alert('Putted item to Cart')
+             },
+             error: function(e){
+               alert('Error')
+             }
+         });
+
+        });
+
+    {% endblock jquery%}
+</script>
+
+
+
+
+<div class="col-sm-8 col-md-10 col-md-offset-1" >
+  <hr>
+    <div  class="media-left media-middle col-md-8 ">
+      <hr>
+      {% if product.image %}
+          <img src="{{ product.image.url }}"   width="480"  >
+      {% else %}
+      {% static "img/no_image.png" %}
+      {% endif %}
+    </div>
+    <div class="media-body">
+        <h1>{{ product.name }}</h1>
+        <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
+      <p>Model Name:{{ product.modelname }}</p>
+      <p>Family: {{ product.family }}</p>
+      <p>Option 1: {{ product.option1 }}</p>
+      <p>Beam Angle: {{ product.beam_angle }}</p>
+      <p>CCT: {{ product.cct }}</p>
+      <p>CRI: {{ product.cri }}</p>
+      <p>Watt: {{ product.watt }}</p>
+      <p>Lm: {{ product.lm }}</p>
+      <!--<p>Price: ${{ product.price }}</p>-->
+      <p>Active: {{ product.available }}</p>
+
+        <div class="form-inline thumbnail ">
+          {% for p in product.productprice_set.all %}
+            <div class="form-group thumbnail pricebox">
+              <div align="center">{{ p.currency }}</div>
+              <div align="right" >{{ p.std_price }}</div>
+            </div>
+          {% endfor %}
+        </div>
+
+      <form class="form-inline" id="addcart" action="{% url "cart:addcart"  %}" method="post">
+        <div>
+          <input type="hidden" id="product_id" value='{{ product.id }}'>
+          Quantity1:{{ cart_product_form.quantity }}  Price1:{{ cart_product_form.price }}
+        </div>
+        <div>
+          Quantity2:{{ cart_product_form.quantity1 }}  Price2:{{ cart_product_form.price1 }}
+        </div>
+        <div>
+          Quantity3:{{ cart_product_form.quantity2 }}  Price3:{{ cart_product_form.price2 }}
+        </div>
+        <div>
+          Quantity4:{{ cart_product_form.quantity3 }}  Price4:{{ cart_product_form.price3 }}
+        </div>
+      {% csrf_token %}
+        <button type="button"  class="btn btn-success form-control">Add to Cart</button>
+      </form>
+
+    </div>
+</div>
+{% endblock %}

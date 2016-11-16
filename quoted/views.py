@@ -17,12 +17,22 @@ from django.contrib.auth.decorators import login_required
 class ProductList(ListView):
     model = Product
 
-    def get_queryset():
-        pass
+    def get_context_data(self, *args, **kwargs):
+        context = super( ProductList, self).get_context_data(*args, **kwargs )
+        context['categories'] = Category.objects.all()
+        #print(context)
+        return context
+
 
 
 class ProductDetail(DetailView):
     model = Product
+    template_name = 'quoted/product/product_detail.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductDetail, self).get_context_data(*args, **kwargs)
+        context['cart_product_form'] = CartAddProductForm()
+        return context
 
 
 
@@ -31,22 +41,29 @@ def product_list(request, category_slug=None):
 
     category = None
     categories = Category.objects.all()
-    products = Product.objects.filter(available=True)
+    product_list = Product.objects.filter(available=True)
     cart_product_form = CartAddProductForm()
 
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
-        products = products.filter(category=category)
+        product_list = product_list.filter(category=category)
 
-    return render(request,'quoted/product/list.html',locals() )
+    return render(request,'quoted/product/product_list.html',locals() )
 
 
 def product_detail(request, id, slug):
     product = get_object_or_404(Product,id=id,slug=slug,available=True)
-    cart_product_form = CartAddProductForm()
+
+    
+    if product.productprice_set.all().first() is not None:
+        usd_price = product.productprice_set.all().first().std_price
+        cart_product_form = CartAddProductForm({"quantity":1, "price":usd_price })
+    else:
+        cart_product_form = CartAddProductForm()
+
     #return render(request,    'shop/product/detail.html',    {'product': product,    'cart_product_form': cart_product_form})
 
-    return render(request,'quoted/product/detail.html',locals() )
+    return render(request,'quoted/product/product_detail.html',locals() )
 
 
 
