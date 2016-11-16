@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
 
+    #CBV
+
 
     url(r'^order/$',login_required( views.OrderList.as_view( template_name = 'quoted/order_list.html')), name="order_list" ),
     url(r'^order/(?P<id>\d+)/$', views.order_detail, name="order_detail" ),

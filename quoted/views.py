@@ -4,7 +4,8 @@ from .models import Category, Product, OrderItem, Order
 from .forms import OrderCreateForm,OrderUpdateForm, OrderItemForm
 from cart.cart import Cart
 from cart.forms import CartAddProductForm
-from django.views.generic import ListView, DetailView
+from django.views.generic.detail import  DetailView
+from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Q
@@ -15,6 +16,14 @@ from django.contrib.auth.decorators import login_required
 
 class ProductList(ListView):
     model = Product
+
+    def get_queryset():
+        pass
+
+
+class ProductDetail(DetailView):
+    model = Product
+
 
 
 @login_required

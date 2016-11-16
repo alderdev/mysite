@@ -13,10 +13,10 @@
   box-sizing: border-box;
 }
 .pricebox{
-  width: 72;
-  height: 48;
-  border: 0px solid;
-  box-sizing: border-box;
+    width: auto;
+    height: 60;
+    background-color: skyblue;
+
 }
 </style>
 
@@ -43,28 +43,27 @@
       <p>Lm: {{ product.lm }}</p>
       <p>Price: ${{ product.price }}</p>
       <p>Active: {{ product.available }}</p>
-      <hr>
-        <div class="form-inline ">
+
+        <div class="form-inline thumbnail ">
           {% for p in product.productprice_set.all %}
-            <div class="form-group pricebox">
+            <div class="form-group thumbnail pricebox">
               <div align="center">{{ p.currency }}</div>
               <div align="right" >{{ p.std_price }}</div>
             </div>
           {% endfor %}
         </div>
-      <hr>
       <form class="form-inline" action="{% url "cart:cart_add" product.id %}" method="post">
         <div>
-          Quantity1: {{ cart_product_form.quantity}}Price1:{{ cart_product_form.price}}
+          Quantity1:{{ cart_product_form.quantity }}  Price1:{{ cart_product_form.price }}
         </div>
         <div>
-          Quantity2:{{ cart_product_form.quantity1}}Price2:{{ cart_product_form.price1}}
+          Quantity2:{{ cart_product_form.quantity1 }}  Price2:{{ cart_product_form.price1 }}
         </div>
         <div>
-          Quantity3:{{ cart_product_form.quantity2}}Price3:{{ cart_product_form.price2}}
+          Quantity3:{{ cart_product_form.quantity2 }}  Price3:{{ cart_product_form.price2 }}
         </div>
         <div>
-          Quantity4:{{ cart_product_form.quantity3}}Price4:{{ cart_product_form.price3}}
+          Quantity4:{{ cart_product_form.quantity3 }}  Price4:{{ cart_product_form.price3 }}
         </div>
       {% csrf_token %}
       <input type="submit" value="Add to cart">
