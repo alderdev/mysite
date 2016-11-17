@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'prod_model',
     'modelquote',
     'cart',
-    'quoted'
+    'quoted',
 
 ]
 
@@ -100,6 +100,23 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+    'ald-mysql':{
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':'django',
+        'HOST':'172.27.21.38',
+        'USER':'djangoadm',
+        'PASSWORD':'@et288309'
+
+    },
+
+    'sapqas':{
+        'NAME': 'QAS_legarcy',
+        #'ENGINE': 'sqlserver_ado',
+        'HOST': '172.27.21.9\QAS',
+        'USER': 'django',
+        'PASSWORD': '85@jaq#s',
+
     }
 }
 

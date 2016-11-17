@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from quoted.models import Product
 from .cart import Cart
 from .forms import CartAddProductForm
@@ -24,6 +24,10 @@ def cart_add(request):
         ,update_quantity=cd['update'])
 
     #return redirect('quoted:product_list')
+
+    if request.is_ajax():
+        return JsonResponse({"item_add":True})
+
     return HttpResponse()
 
 
