@@ -36,7 +36,7 @@ class CartView(View):
                 carts_item.quantity3 = qty3
                 carts_item.price3 = price3
                 carts_item.save()
-                print(carts_item)
+                #print(carts_item)
         return HttpResponseRedirect("/")
 
 
