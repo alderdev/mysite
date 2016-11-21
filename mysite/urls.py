@@ -23,13 +23,15 @@ from django.contrib.auth.views import login, logout
 from .views import index, logout
 from posts import views
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #url(r'^$', index),
     url(r'^$', login_required(views.post_list), name="list" ),
-    url(r'^accounts/login/$', login),
-    url(r'^accounts/logout/$', logout),
+    url(r'^accounts/login/$', auth_views.login),
+    #url(r'^accounts/logout/$', auth_views.logout),
+    url(r'^logout/$', logout),
     url(r'^posts/', include( 'posts.urls', namespace="posts")),
     url(r'^products/', include( 'products.urls', namespace="products")),
     url(r'^employees/', include( 'employees.urls', namespace="employees")),
@@ -40,6 +42,7 @@ urlpatterns = [
     url(r'^exam/', include( 'exam.urls', namespace="exam")),
     url(r'^prod_model/', include( 'prod_model.urls', namespace="prod_model")),
     url(r'^cart/', include( 'cart.urls', namespace="cart")),
+    url(r'^carts/', include( 'carts.urls', namespace="carts")),
     url(r'^modelquote/', include( 'modelquote.urls', namespace="modelquote")),
     url(r'^quoted/', include( 'quoted.urls', namespace="quoted")),
 

@@ -12,6 +12,7 @@ urlpatterns = [
     #url(r'^(?P<product_id>\d+)/add/$', views.cart_add , name="cart_add"),
     url(r'^addcart/$', views.cart_add , name="addcart"),
     url(r'^remove/(?P<product_id>\d+)/$',views.cart_remove,name='cart_remove'),
+    
 
 
     #url(r'^add/(?P<pk>\d+)/$', views.cart_add , name="cart_add"),
