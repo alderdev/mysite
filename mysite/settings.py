@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'prod_model',
     'modelquote',
     'cart',
+    'carts',
     'quoted',
 
 ]
