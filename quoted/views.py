@@ -54,7 +54,7 @@ def product_list(request, category_slug=None):
 def product_detail(request, id, slug):
     product = get_object_or_404(Product,id=id,slug=slug,available=True)
 
-    
+
     if product.productprice_set.all().first() is not None:
         usd_price = product.productprice_set.all().first().std_price
         cart_product_form = CartAddProductForm({"quantity":1, "price":usd_price })
@@ -304,7 +304,7 @@ Subject = "Quotation"
 logo = settings.STATIC_ROOT +"/img/alder_logo.png"
 upline = settings.STATIC_ROOT +"/img/alder_upline.jpg"
 footer_line = settings.STATIC_ROOT +"/img/footer_line.jpg"
-factory_img = settings.STATIC_ROOT +"/img/factory.png"
+factory_img = settings.STATIC_ROOT +"/img/certification.png"
 pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
 pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
 pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))

@@ -1,10 +1,11 @@
 {% load staticfiles %}
+{% load i18n %}
 <html>
     <head>
         <title>
             {% block title %}
-                Alder Employee Integration Potal
-            {% endblock title%}
+                {% trans "Alder Employee Integration Potal" %}
+             {% endblock title%}
 
             {% block head_extra %} {% endblock head_extra %}
         </title>
@@ -37,7 +38,7 @@
                     {% else %}
                     <a href="/accounts/login">Login</a>
                   {% endif %}
-                  
+
               </span>
 
             </div>

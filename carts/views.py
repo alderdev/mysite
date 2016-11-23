@@ -9,6 +9,16 @@ from quoted.models import Product
 class CartView(View):
 
     def get(self, request, *args, **kwargs):
+        request.session.set_expiry(300)
+        cart_id = request.session.get("cart_id")
+        if cart_id == None:
+            cart = Cart()
+            cart.save()
+            cart_id = cart.id
+            request.session["cart_id"] = cart_id
+
+        cart = Cart.objects.get(id = cart_id)
+
         item_id = request.GET.get("item")
         delete_item = requesy.GET.get("delete")
         if item_id:
@@ -21,8 +31,6 @@ class CartView(View):
             price2 = request.GET.get("price")
             qty3 = request.GET.get("quantity3")
             price3 = request.GET.get("price")
-
-            carts = Carts.objects.all().first()
             carts_item = CartItems.objects.get_or_create(cart=carts, item=product_instance)[0]
             if delete_item:
                 carts_item.delete()
