@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.db.models import Q
 from .models import Customer
 from . import forms
+from django.db import transaction
 
 # Create your views here.
 class CustomerList(ListView):
@@ -57,10 +58,28 @@ class AjaxableResponseMixin(object):
         else:
             return response
 
-class CustomerCreateView(AjaxableResponseMixin, CreateView):
+class CustomerCreateView( AjaxableResponseMixin,CreateView):
     model = Customer
     form_class = forms.CustomerCreateForm
     #success_url = '/customers'
+    def get_context_data(self, **kwargs):
+        data = super(CustomerCreateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['contacts'] = forms.ContactFormset(self.request.POST)
+        else:
+            data['contacts'] = forms.ContactFormset()
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        contacts = context['contacts']
+        self.object = form.save()
+        if contacts.is_valid():
+            contacts.instance = self.object
+            contacts.save()
+
+        return super(CustomerCreateView, self).form_valid(form)
+
 
 
 
