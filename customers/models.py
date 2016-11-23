@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 
 
 
+
 #客戶
 class Customer(models.Model):
     sap_no = models.CharField(primary_key=True, max_length=18) # SAP客尸編號 -9223372036854775808 to 9223372036854775807
@@ -24,6 +25,7 @@ class Customer(models.Model):
 
     def get_absolute_url(self):
         return reverse( "customers:detail", kwargs={"pk": self.sap_no} )
+
 
 
 

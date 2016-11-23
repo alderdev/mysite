@@ -48,7 +48,7 @@
 
 
 
-<div class="col-xs-12  col-sm-12 col-md-10 col-sm-offset-0  col-md-offset-0 col-lg-offset-1">
+<div class="col-xs-12 ">
     <script>
         {% block jquery %}
 
@@ -94,7 +94,7 @@
                  },
                  success: function(result){
 
-                   $("#jquery_message_"+ product_id).html("Success!!");
+                   $("#jquery_message_"+ product_id).html("Success! Put item in the cart!");
 
                  },
                  error: function(e){
@@ -107,7 +107,7 @@
         {% endblock jquery%}
     </script>
 
-    <div class="media-left media-top">
+    <div class="media-left media-top col-xs-2">
       <div>
         <h3>Categories</h3>
         <table class="table">
@@ -115,7 +115,7 @@
             <a href="{% url "quoted:product_list" %}">ALL</a><hr>
             </li>
               {% for c in categories %}
-              <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+              <li {% if category.slug == c.slug %} class="selected"{% endif %}>
                   <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
                   <hr>
               </li>
@@ -123,13 +123,12 @@
         </table>
       </div>
     </div>
+
+
     <div class="media-body">
     <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
-
-
-
         {% for product in product_list %}
-        <div class="col-md-4">
+        <div class="col-xs-4">
             <div class="thumbnail">
                 <div class='thumbnail imgbox'>
 

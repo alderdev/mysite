@@ -126,9 +126,6 @@ class OrderList(ListView):
 
 
 
-
-
-
 def order_detail(request, id):
 
     category = None
@@ -142,7 +139,7 @@ def order_detail(request, id):
 
 
 
-#顯示和列印共用
+
 class OrderDetail(DetailView):
     model = Order
 
@@ -156,18 +153,6 @@ class OrderUpdate(UpdateView):
     model = Order
     fields = ['is_valid','customer', 'contact', 'email', 'currency', 'paymentterm', 'priceterm', 'quote_sales','ord_date', 'effective_date','comment']
     form_clss = OrderUpdateForm()
-
-
-def order_print(request, id):
-
-    order = get_object_or_404(Order,id=id)
-    html = render_to_string('quoted/order_print.html',{'order': order})
-
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'filename=\"order_{}.pdf"'.format(order.id)
-    weasyprint.HTML(string=html, base_url = request.build_absolute_uri() ).write_pdf(response,stylesheets=[weasyprint.CSS( settings.STATIC_ROOT + '/css/pdf.css')])
-
-    return response
 
 
 
@@ -288,7 +273,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
 
-# 正式V2
+# 正式Quote-A
 
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet
@@ -304,7 +289,8 @@ Subject = "Quotation"
 logo = settings.STATIC_ROOT +"/img/alder_logo.png"
 upline = settings.STATIC_ROOT +"/img/alder_upline.jpg"
 footer_line = settings.STATIC_ROOT +"/img/footer_line.jpg"
-factory_img = settings.STATIC_ROOT +"/img/certification.png"
+#factory_img = settings.STATIC_ROOT +"/img/factory.png"
+certification_img = settings.STATIC_ROOT +"/img/certification.png"
 pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
 pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
 pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
@@ -318,10 +304,12 @@ def myFirstPage(canvas, doc):
     canvas.setFont('VeraBd', 18)
     canvas.drawImage(upline, 25, 25, mask='auto', width=490,height=20)
     canvas.drawImage(footer_line, 25, 805, mask='auto', width=540,height=20)
-    canvas.drawImage(logo, PAGE_WIDTH/5.2,PAGE_HEIGHT-252, mask='auto', width=55,height=45)
-    canvas.drawImage(factory_img, 45, 55, mask='auto', width=495,height=320)
-    canvas.drawCentredString(PAGE_WIDTH/1.9,PAGE_HEIGHT-250, Title )
-    canvas.drawCentredString(PAGE_WIDTH/2.0,PAGE_HEIGHT-285, Subject )
+    #canvas.drawImage(logo, PAGE_WIDTH/5.2,PAGE_HEIGHT-252, mask='auto', width=55,height=45)
+    canvas.drawImage(logo, PAGE_WIDTH/2.2,PAGE_HEIGHT-200, mask='auto', width=55,height=45)
+    canvas.drawImage( certification_img, 45, 55, mask='auto', width=495,height=45 )
+    canvas.drawCentredString(PAGE_WIDTH/2.0,PAGE_HEIGHT-235, Title )
+    canvas.setFont('VeraBd', 20)
+    canvas.drawCentredString(PAGE_WIDTH/2.0,PAGE_HEIGHT-310, Subject )
     canvas.setFont('Times-Roman', 9)
     canvas.drawString(530, 0.45 * inch, "First Page" )
     canvas.restoreState()
@@ -583,6 +571,7 @@ def gen_quote(request,id):
 
 
 # 明確數量的報價單,有金額小計及總金額的報表模板
+# 正式Quote-B
 def _generate_pdfv2(course, output):
     from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_LEFT, TA_CENTER
     from reportlab.lib.pagesizes import A4
@@ -682,8 +671,8 @@ def _generate_pdfv2(course, output):
         desctiption = "Watt: "+ str(item.product.watt) + " , Option1:" + item.product.option1 + " , Beam Angle:" + item.product.beam_angle + ' , CRI: ' + str(item.product.cri) + ' , CCT: ' +item.product.cct
         myitem.append( item.product.name + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No: '+ item.product.modelname )
 
-        qty_group = [item.quantity, item.quantity1, item.quantity2, item.quantity3]
-        price_group = [item.price, item.price1, item.price2, item.price3]
+        qty_group = [item.quantity]
+        price_group = [item.price]
         #行小計
         sub_amount = item.quantity * item.price
 
@@ -885,4 +874,19 @@ def gen_pdf(request,id):
 
     c.showPage()
     c.save()
+    return response
+
+
+
+
+
+def order_print(request, id):
+
+    order = get_object_or_404(Order,id=id)
+    html = render_to_string('quoted/order_print.html',{'order': order})
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename=\"order_{}.pdf"'.format(order.id)
+    weasyprint.HTML(string=html, base_url = request.build_absolute_uri() ).write_pdf(response,stylesheets=[weasyprint.CSS( settings.STATIC_ROOT + '/css/pdf.css')])
+
     return response
