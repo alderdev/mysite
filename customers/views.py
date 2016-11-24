@@ -35,7 +35,7 @@ class ContactList(ListView):
     def post(self, request, *args, **kwargs):
         formset = forms.CustomerContactFormSet(request.POST, request.FILES)
         customer_pk = self.kwargs.get("pk")
-        print(request.POST)
+        #print(request.POST)
 
         if formset.is_valid():
             form_instance = formset.save(commit=False)
