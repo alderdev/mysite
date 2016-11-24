@@ -11,17 +11,65 @@ return confirm("Are you sure Delete it?");
 
 
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
-
   <p>Customer No. : {{ customer.sap_no }}</p>
   <p>Title: <span id='span_title'>{{ customer.title }}</span></p>
   <p>Telephone: {{ customer.phone }}</p>
-  <p>Contact Person: {{ customer.contact }}</p>
   <p>Address: {{ customer.address }}</p>
 <hr>
-<strong>Quotation History</strong>
-{% for quota in customer.quotehead_set.all %}
-  <p>{{ quota.order_number }}<p>
+<h3><strong>Contact List</strong></h3>
+<table class="table">
+    <tr>
+      <th>No.</th>
+      <th>Master</th>
+      <th>Invalid</th>
+      <th>Contact Name</th>
+      <th>Job Title</th>
+      <th>Extention</th>
+      <th>Email</th>
+    </tr>
+{% if customer.contact_set.first == None %}
+  <tr><td colspan="6" align="center"><strong>No Contact Person</strong></td><tr>
+{% else %}
+
+
+    {% for contact in customer.contact_set.all %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{% if contact.master %}Yes{% endif %}</td>
+          <td>{% if contact.invalid %}Yes{% endif %}</td>
+          <td>{{ contact.name }}</td>
+          <td>{{ contact.job }}</td>
+          <td>{{ contact.extention }}</td>
+          <td>{{ contact.email }}</td>
+        </tr>
+    {% endfor %}
+
+{% endif %}
+</table>
+<br><br>
+<h3><strong>Quotation History</strong></h3>
+<table class="table">
+  <tr>
+    <th>No.</th>
+    <th>isValid</th>
+    <th>Quote No.</th>
+    <th>Sales Name</th>
+    <th>Quote Date</th>
+    <th>Currency</th>
+  </tr>
+
+
+{% for quota in customer.order_set.all %}
+  <tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{% if not quota.is_valid %}Yes{% endif %}</td>
+    <td>{{ quota.order_number }}</td>
+    <td>{{ quota.quote_user }}</td>
+    <td>{{ quota.ord_date | date:"Y-m-d"}}</td>
+    <td>{{ quota.currency }}</td>
+  </tr>
 {% endfor %}
+</table>
 
   <h3>
     <div class="form-inline">

@@ -1,15 +1,16 @@
 from django import forms
 from .models import Customer, Contact
 from pagedown.widgets import PagedownWidget
-from django.forms.models import inlineformset_factory
+
+from django.forms.models import modelformset_factory
 
 
-class ContactForm(forms.ModelForm):
+class CustomerContactForm(forms.ModelForm):
     class Meta:
-        model = Contact
-        exclude = ('invalid',)
+        model = Customer
+        exclude = ('customer',)
 
-
+CustomerContactFormSet = modelformset_factory(Contact, form=CustomerContactForm,extra=1)
 
 class CustomerSearchForm(forms.ModelForm):
     title = forms.CharField( widget= forms.TextInput( attrs={'class':'form-control' , 'size':'30' , 'placeholder':'Customer Title'  } ) )
@@ -34,8 +35,6 @@ class CustomerCreateForm(forms.ModelForm):
         model = Customer
         #fields = ( 'sap_no', 'title', 'address')
         exclude = ('create_at','modify','invalid' )
-
-ContactFormset = inlineformset_factory( Customer, Contact, form = ContactForm, extra=2 )
 
 
 class CustomerUpdateForm(forms.ModelForm):
