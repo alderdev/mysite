@@ -34,7 +34,7 @@
 .imgbox{
   width: auto;
   height: 360;
-  border: 1px solid;
+  border: 0px solid;
 
   box-sizing: border-box;
 }
@@ -131,7 +131,6 @@
         <div class="col-xs-4">
             <div class="thumbnail">
                 <div class='thumbnail imgbox'>
-
                 <a href="{{ product.get_absolute_url }}">
                     {% if product.image %}
                       <img src="{{ product.image.url }}" class="img-responsive">
@@ -140,15 +139,17 @@
                 </div>
                 <h4><a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
                 <p><small>{{ product.modelname }}</small></p></h4>
-                  <div class="form-inline thumbnail pricebox ">
-                        {% for p in product.productprice_set.all %}
-                            <div class="form-group thumbnail "><small>
-                              <div align="center"><u>{{ p.currency }}</u></div>
-                              <div align="rigcenterht" >{{ p.std_price }}</div>
-                          </small>
-                            </div>
-                        {% endfor %}
-                  </div>
+                    <div class="form-inline thumbnail pricebox ">
+                          {% for p in product.productprice_set.all %}
+                              <div class="form-group thumbnail ">
+                                <small>
+                                    <div align="center"><u>{{ p.currency }}</u></div>
+                                    <div align="rigcenterht" >{{ p.std_price }}</div>
+                                </small>
+                              </div>
+                          {% endfor %}
+
+                    </div>
              <small>
              <form  class="form-inline" id="additem_{{product.id}}" action="" method="POST">
                 <table class="table">
