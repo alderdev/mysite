@@ -11,6 +11,12 @@
   border: 1px solid;
   box-sizing: border-box;
 }
+.pricebox{
+  width: auto;
+  height: 84;
+  background-color: skyblue;
+
+}
 </style>
 
 
@@ -135,6 +141,7 @@
                   <p>{{ product.modelname }}</p>
 
                   <div class="form-inline thumbnail pricebox ">
+                      <p><small>Reference Price</small></p>
                         {% for p in product.productprice_set.all %}
                             <div class="form-group thumbnail "><small>
                               <div align="center"><u>{{ p.currency }}</u></div>
@@ -272,7 +279,7 @@ $("button").click(function(e){
       <a href="{{ order.get_absolute_url }}print" class="btn btn-primary" target="_blank">to PDF</a>
       <a href="{{ order.get_absolute_url }}gen_pdf" class="btn btn-primary" target="_blank">Generate PDF</a>
   -->
-		<a id="product_a_id" href="#"  class="btn btn-primary" >See Model List</a>
+		<a id="product_a_id" href="#"  class="btn btn-primary" >See Product List</a>
 
 		<form id="delform" action="" method="POST" onsubmit="return deleteOnSubmit( {{ order.id }} )" >{% csrf_token %}
 		  <input type='hidden' name='order_id' value="{{ order.id }}"/>
