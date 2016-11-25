@@ -40,7 +40,7 @@
 }
 .pricebox{
   width: auto;
-  height: 60;
+  height: 84;
   background-color: skyblue;
 
 }
@@ -140,6 +140,7 @@
                 <h4><a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
                 <p><small>{{ product.modelname }}</small></p></h4>
                     <div class="form-inline thumbnail pricebox ">
+                        <p><small>Reference Price</small></p>
                           {% for p in product.productprice_set.all %}
                               <div class="form-group thumbnail ">
                                 <small>

@@ -101,7 +101,7 @@ def order_create(request):
             cart.clear()
             return HttpResponseRedirect( '../' )
 
-        return render(request,'quoted/product/list.html',locals())
+        return render(request,'quoted/product/order_list.html',locals())
 
     return render(request,'quoted/order_form.html',locals())
 
