@@ -512,10 +512,12 @@ def _generate_pdf(course, output):
         TableStyle(
             [('BACKGROUND',(0,0),(4,0),colors.skyblue),
              ('ALIGN',(0,0),(3,0),'CENTER'),
+             ('SIZE',(0,1),(0,-1), 8),
              ('SIZE',(2,1),(2,-1), 8),
              ('VALIGN',(0,0),(4,-1),'TOP'),
              ('ALIGN',(3,0),(4,-1), 'RIGHT'),
              ('TEXTCOLOR',(3,1),(4,-1), colors.blue),
+             ('SIZE',(3,1),(4,-1), 8),
              ('LINEBELOW', (0,-1), (-1,-1), 1, colors.black),
              ]
         )
@@ -708,7 +710,7 @@ def _generate_pdfv2(course, output):
         TableStyle(
             [('BACKGROUND',(0,0),(4,0),colors.skyblue),
              ('ALIGN',(0,0),(3,0),'CENTER'),
-             ('SIZE',(1,1),(4,-1), 7),
+             ('SIZE',(0,1),(4,-1), 7),
 
              ('VALIGN',(0,0),(4,-1),'TOP'),
              ('ALIGN',(2,0),(4,-1), 'DECIMAL'),
