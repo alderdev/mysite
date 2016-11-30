@@ -15,7 +15,6 @@ class PaymentTerm(models.Model):
         return self.description
 
 
-
 class PriceTerm(models.Model):
     description = models.CharField(max_length=200, blank=False, null=False)
 
@@ -23,8 +22,6 @@ class PriceTerm(models.Model):
         return self.description
 
 
-
-# Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200,unique=True)
@@ -58,8 +55,8 @@ class Product(models.Model):
     slug = models.SlugField(max_length=200)
     option1 = models.CharField(max_length=60, null=False, blank=False)
     beam_angle = models.CharField(max_length=60, null=False, blank=False)
-    cct = models.CharField(max_length=60, null=False, blank=False)
-    cri = models.CharField(max_length=60, null=False, blank=False)
+    cct = models.CharField("CCT",max_length=60, null=False, blank=False)
+    cri = models.CharField("CRI",max_length=60, null=False, blank=False)
     watt = models.CharField(max_length=60, null=False, blank=False)
     dimming = models.ForeignKey(DimmingOption,default= 1)
     lm = models.CharField(max_length=60, null=False, blank=False)
@@ -89,7 +86,7 @@ class ProductPrice(models.Model):
     product = models.ForeignKey(Product)
     currency = models.ForeignKey(Currency)
     std_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    mix_sell =  models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    min_sell =  models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     class Meta:
         unique_together = (("product","currency"),)
@@ -97,9 +94,6 @@ class ProductPrice(models.Model):
 
     def __str__(self):
         return "%s: %d" %(self.currency, self.std_price)
-
-
-
 
 
 
