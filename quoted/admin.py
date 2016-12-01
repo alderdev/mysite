@@ -35,9 +35,9 @@ class PriceInline(admin.TabularInline):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'modelname', 'slug', 'price', 'stock', 'available', 'created', 'updated']
+    list_display = ['name', 'modelname', 'slug', 'available', 'created', 'updated']
     list_filter = ['available', 'category', 'family', 'watt']
-    list_editable = ['price', 'stock', 'available']
+    list_editable = ['available']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [PriceInline]
 

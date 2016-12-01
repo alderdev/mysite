@@ -65,7 +65,7 @@ class Product(models.Model):
     width_field = models.IntegerField( null=True, blank=True, default=0)
 
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    stock = models.PositiveIntegerField(null=True, blank=True, default=0)
+    #stock = models.PositiveIntegerField(null=True, blank=True, default=0)
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -186,7 +186,7 @@ class OrderItem(models.Model):
 
 
     class Meta:
-        ordering = ( 'product', 'quantity' )
+        ordering = ( 'product', )
 
     def __str__(self):
         return '{}'.format(self.id)

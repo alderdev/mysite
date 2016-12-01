@@ -14,7 +14,7 @@
 }
 .pricebox{
     width: auto;
-    height: 60;
+    height: auto;
     background-color: skyblue;
 
 }
@@ -80,7 +80,7 @@
 
 <div class="col-sm-8 col-md-10 col-md-offset-1" >
   <hr>
-    <div  class="media-left media-middle col-md-8 ">
+    <div  class="media-left media-middle col-md-6 ">
       <hr>
       {% if product.image %}
           <img src="{{ product.image.url }}"   width="480"  >
@@ -102,9 +102,10 @@
       <!--<p>Price: ${{ product.price }}</p>-->
       <p>Active: {{ product.available }}</p>
 
-        <div class="form-inline thumbnail ">
+        <div class="form-inline thumbnail pricebox">
+            <p>Reference Price</p>
           {% for p in product.productprice_set.all %}
-            <div class="form-group thumbnail pricebox">
+            <div class="form-group thumbnail ">
               <div align="center">{{ p.currency }}</div>
               <div align="right" >{{ p.std_price }}</div>
             </div>

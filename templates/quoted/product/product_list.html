@@ -33,14 +33,14 @@
 <style>
 .imgbox{
   width: auto;
-  height: 360;
+  height: auto;
   border: 0px solid;
 
   box-sizing: border-box;
 }
 .pricebox{
   width: auto;
-  height: 84;
+  height: auto;
   background-color: skyblue;
 
 }
@@ -48,12 +48,11 @@
 
 
 
-<div class="col-xs-12 ">
+<div class="col-xs-12 col-md-12">
     <script>
         {% block jquery %}
 
             $("button").click(function(event){
-
 
               var form = $(this).closest('form')[0];
               var item = form.id.split('_');
@@ -125,7 +124,7 @@
     </div>
 
 
-    <div class="media-body">
+    <div class="media-body ">
     <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
         {% for product in product_list %}
         <div class="col-xs-4">
@@ -137,8 +136,8 @@
                     {% endif %}
                 </a>
                 </div>
-                <h4><a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
-                <p><small>{{ product.modelname }}</small></p></h4>
+                <h4><a href="{{ product.get_absolute_url }}">{{ product.name |linebreaks }}</a>
+                <p><small>{{ product.modelname |linebreaks }}</small></p></h4>
                     <div class="form-inline thumbnail pricebox ">
                         <p><small>Reference Price</small></p>
                           {% for p in product.productprice_set.all %}
@@ -151,41 +150,37 @@
                           {% endfor %}
 
                     </div>
-             <small>
-             <form  class="form-inline" id="additem_{{product.id}}" action="" method="POST">
+                <small>
+                <form  class="form-inline" id="additem_{{product.id}}" action="" method="POST">
                 <table class="table">
-              <tr>
-                  <input type="hidden" id="product_{{ product.id }}" value='{{ product.id }}'>
-                  <td>Qty1:<input type="text" class="form-control" name="quantity" id="quantity_{{ product.id }}" value='1' size='4' onfocus="select()" /></td>
-                  <td>Price1:<input type="text" class="form-control" name="price" id="price_{{ product.id }}" value='{{ product.productprice_set.first.std_price }}' size='8' onfocus="select()" /></td>
-              </tr>
-              <tr>
-                <td>Qty2:<input type="text" class="form-control" name="quantity1" id="quantity1_{{ product.id }}" size='4' onfocus="select()" /></td>
-                <td>Price2:<input type="text" class="form-control" name="price1" id="price1_{{ product.id }}" size='8' onfocus="select()" /></td>
-              </tr>
-              <tr>
-                <td>Qty3:<input type="text" class="form-control" name="quantity2" id="quantity2_{{ product.id }}" size='4' onfocus="select()" /></td>
-                <td>Price3:<input type="text" class="form-control" name="price2" id="price2_{{ product.id }}" size='8' onfocus="select()" /></td>
-              </tr>
-              <tr>
-                <td>Qty4:<input type="text" class="form-control" name="quantity3" id="quantity3_{{ product.id }}" size='4' onfocus="select()" /></td>
-                <td>Price4:<input type="text" class="form-control" name="price3" id="price3_{{ product.id }}" size='8' onfocus="select()" /></td>
-              </tr>
-              </table>
-              {% csrf_token %}
-              <div class="form-inline">
+                      <tr>
+                          <input type="hidden" id="product_{{ product.id }}" value='{{ product.id }}'>
+                          <td>Qty1:<input type="text" class="form-control" name="quantity" id="quantity_{{ product.id }}" value='1' size='4' onfocus="select()" /></td>
+                          <td>Price1:<input type="text" class="form-control" name="price" id="price_{{ product.id }}" value='{{ product.productprice_set.first.std_price }}' size='8' onfocus="select()" /></td>
+                      </tr>
+                      <tr>
+                          <td>Qty2:<input type="text" class="form-control" name="quantity1" id="quantity1_{{ product.id }}" size='4' onfocus="select()" /></td>
+                          <td>Price2:<input type="text" class="form-control" name="price1" id="price1_{{ product.id }}" size='8' onfocus="select()" /></td>
+                      </tr>
+                      <tr>
+                          <td>Qty3:<input type="text" class="form-control" name="quantity2" id="quantity2_{{ product.id }}" size='4' onfocus="select()" /></td>
+                          <td>Price3:<input type="text" class="form-control" name="price2" id="price2_{{ product.id }}" size='8' onfocus="select()" /></td>
+                      </tr>
+                      <tr>
+                          <td>Qty4:<input type="text" class="form-control" name="quantity3" id="quantity3_{{ product.id }}" size='4' onfocus="select()" /></td>
+                          <td>Price4:<input type="text" class="form-control" name="price3" id="price3_{{ product.id }}" size='8' onfocus="select()" /></td>
+                      </tr>
+                </table>
+                {% csrf_token %}
+                <div class="form-inline">
                 <button type="button"  class="btn btn-success form-control">Add to Cart</button>
                 <span id="jquery_message_{{ product.id }}"></span>
-              </div>
-            </form>
-        </small>
-
-
+                </div>
+                </form>
+                </small>
             </div>
         </div>
         {% endfor %}
-
       </div>
-
 </div>
 {% endblock content %}
