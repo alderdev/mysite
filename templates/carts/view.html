@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+<script>
+{% block jquery %}
+  $(".item-qty").change(function(){
+    $(this).next(".btn-update").fadeIn();
+  });
+{% endblock jquery %}
+</script>
+
+
+{% block content %}
+
+{{ object }}
+
+<table class="table">
+{% for item in object.cartitems_set.all %}
+    <tr>
+      <form action="." method="GET" >
+      <td>{{ item.item.id }}<input type="hidden" name="item" class="item-qty" value="{{ item.item.id }}" /><td>
+      <td>{{ item }}<td>
+      <td>
+          <div>
+            <div><input type="number" name="quantity" class="item-qty" value="{{ item.quantity }}" /></div>
+            <div>{% if item.quantity1 != None %}<input type="number"  name="quantity1" value="{{ item.quantity1 }}" />{% endif %}</div>
+            <div>{% if item.quantity2 != None %}<input type="number"  name="quantity2" value="{{ item.quantity2 }}" />{% endif %}</div>
+            <div>{% if item.quantity3 != None %}<input type="number"  name="quantity3" value="{{ item.quantity3 }}" />{% endif %}</div>
+          </div>
+      </td>
+      <td>
+          <div>
+            <div><input type="number" name=price value="{{ item.price }}" /></div>
+            <div>{% if item.price1 != None %}<input type="text" name=price1 value="{{ item.price1 }}" />{% endif %}</div>
+            <div>{% if item.price2 != None %}<input type="text" name=price2 value="{{ item.price2 }}" />{% endif %}</div>
+            <div>{% if item.price3 != None %}<input type="text" name=price3 value="{{ item.price3 }}" />{% endif %}</div>
+          </div>
+      </td>
+      <td><a href="?item={{ item.item_id }}&delete=True">X</a><td>
+      <td><input type="submit" class="btn-update btn btn-link"  value="Update" /><td>
+      </form>
+    </tr>
+{% endfor %}
+</table>
+
+{% endblock content %}
