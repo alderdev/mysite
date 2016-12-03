@@ -172,6 +172,7 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order)
     product = models.ForeignKey(Product,  related_name='order_items')
+    is_special = models.BooleanField(default=False)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=1)
     price1 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -180,6 +181,7 @@ class OrderItem(models.Model):
     quantity2 = models.PositiveIntegerField( null=True, blank=True)
     price3 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     quantity3 = models.PositiveIntegerField( null=True, blank=True)
+    line_remark = models.CharField(max_length=60, null=True, blank=True)
 
 
 
