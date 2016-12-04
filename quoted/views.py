@@ -476,8 +476,21 @@ def _generate_pdf(course, output):
         I.drawWidth = 0.85*inch
 
         myitem.append( I )
+        productname = item.product.name
+
+        line_remark =""
+        if item.is_special:
+            special = "★ Spacial Product"
+            productname = "%s      %s" %(item.product.name, special)
+
+        if item.line_remark is not None:
+            line_remark = "%s %s" %("Remark: ", item.line_remark)
+
+
+
+
         desctiption = "Watt: "+ str(item.product.watt) + " , Option1:" + item.product.option1 + " , Beam Angle:" + item.product.beam_angle + ' , CRI: ' + str(item.product.cri) + ' , CCT: ' +item.product.cct
-        myitem.append( item.product.name + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No: '+ item.product.modelname )
+        myitem.append( productname + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No: '+ item.product.modelname + '\n' + line_remark )
 
         qty_group = [  item.quantity, item.quantity1, item.quantity2, item.quantity3]
         price_group = [item.price, item.price1, item.price2, item.price3]
@@ -640,7 +653,7 @@ def _generate_pdfv2(course, output):
               ['Price Term',':', course.priceterm,''],
               ]
 
-    h = Table(header, colWidths=[1.0*inch, 0.1*inch, 2.8*inch, 0.3*inch, 0.9*inch, 0.1*inch, 2.0*inch] ,style=[
+    h = Table(header, colWidths=[0.8*inch, 0.1*inch, 2.8*inch, 0.3*inch, 0.9*inch, 0.1*inch, 2.0*inch] ,style=[
                         #('ALIGN',(0,0),(0,-1), 'LEFT'),
                         ('SPAN',(2,0),(3,0)),
                         ('FONTNAME', (2,0),(2,-1), 'Arialuni'),
@@ -669,9 +682,20 @@ def _generate_pdfv2(course, output):
         I.drawHeight = 0.85*inch
         I.drawWidth = 0.85*inch
 
+        productname = item.product.name
+
+        line_remark =""
+        if item.is_special:
+            special = "★ Spacial Product"
+            productname = "%s      %s" %(item.product.name, special)
+
+        if item.line_remark is not None:
+            line_remark = "%s %s" %("Remark: ", item.line_remark)
+
+
         #myitem.append( I )
         desctiption = "Watt: "+ str(item.product.watt) + " , Option1:" + item.product.option1 + " , Beam Angle:" + item.product.beam_angle + ' , CRI: ' + str(item.product.cri) + ' , CCT: ' +item.product.cct
-        myitem.append( item.product.name + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No: '+ item.product.modelname )
+        myitem.append( productname + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No: '+ item.product.modelname + '\n' + line_remark )
 
         qty_group = [item.quantity]
         price_group = [item.price]
@@ -704,7 +728,7 @@ def _generate_pdfv2(course, output):
         loopcounter += 1
 
     #repeatRows=1 是指第一行(表頭) 換頁時會重複
-    t = Table(element, colWidths=[0.4*inch, 5.0*inch, 0.5*inch, 0.7*inch,  1.0*inch], repeatRows=1)
+    t = Table(element, colWidths=[0.4*inch, 4.9*inch, 0.5*inch, 0.7*inch,  1.0*inch], repeatRows=1)
 
     t.setStyle(
         TableStyle(
