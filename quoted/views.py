@@ -24,7 +24,6 @@ class ProductList(ListView):
         return context
 
 
-
 class ProductDetail(DetailView):
     model = Product
     template_name = 'quoted/product/product_detail.html'
@@ -143,9 +142,11 @@ def order_detail(request, id):
 class OrderDetail(DetailView):
     model = Order
 
+    
+
 from django.conf import settings
 from django.template.loader import render_to_string
-import weasyprint
+#import weasyprint
 
 
 

@@ -54,7 +54,7 @@ class WorkOrderCreate(CreateView):
 class WorkOrderUpdate(UpdateView):
     model = WorkOrder
     form_class = WorkOrderUpdateForm
-    success_url = reverse_lazy('workorders:list') #因為不會回到該項資料的Detail, 所以先回到List吧
+    
 
 
 class WorkOrderDelete(DeleteView):
