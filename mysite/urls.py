@@ -39,8 +39,8 @@ urlpatterns = [
     url(r'^customers/', include( 'customers.urls', namespace="customers")),
     url(r'^quotations/', include( 'quotations.urls', namespace="quotations")),
 
-    url(r'^exam/', include( 'exam.urls', namespace="exam")),
-    url(r'^prod_model/', include( 'prod_model.urls', namespace="prod_model")),
+    #url(r'^exam/', include( 'exam.urls', namespace="exam")),
+    #url(r'^prod_model/', include( 'prod_model.urls', namespace="prod_model")),
     url(r'^cart/', include( 'cart.urls', namespace="cart")),
     url(r'^carts/', include( 'carts.urls', namespace="carts")),
     url(r'^modelquote/', include( 'modelquote.urls', namespace="modelquote")),

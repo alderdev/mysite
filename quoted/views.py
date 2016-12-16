@@ -395,9 +395,11 @@ def _generate_pdf(course, output):
 
     #from cStringIO import StringIO
 
-    doc = SimpleDocTemplate(output,pagesize=A4,
-    rightMargin=.5*inch,leftMargin=.5*inch,
-    topMargin=inch,bottomMargin=.6*inch)
+    doc = SimpleDocTemplate(
+        output,pagesize=A4,
+        rightMargin=.5*inch,leftMargin=.5*inch,
+        topMargin=inch,bottomMargin=.6*inch
+    )
 
 
     Story = [Spacer(1, 3.5*inch)]
@@ -423,7 +425,8 @@ def _generate_pdf(course, output):
                             ('FONTNAME', (2,0),(2,-1), 'Arialuni'),
                             ('SPAN',(1,-1),(1,-1)),
                             ('VALIGN',(0,0),(0,-1),'TOP'),
-                        ])
+                        ]
+                )
 
     Story.append(h)
 
@@ -462,7 +465,9 @@ def _generate_pdf(course, output):
 
 
     element = []
-    tableheader = ['No.','Image', 'Product / Description /  Dimming Option / Model Name                             ', 'Quantity' ,'Price']
+    tableheader = ['No.','Image', 'Product  Description', 'Quantity' ,'Price']
+    #tableheader = ['No.','Image', 'Product      Description                                                            ', 'Quantity' ,'Price']
+
     element.append(tableheader)
     loopcounter = 1
     grund_total = 0
@@ -487,16 +492,11 @@ def _generate_pdf(course, output):
             line_remark = "%s %s" %("Remark: ", item.line_remark)
 
 
-
-
         desctiption = "Watt: "+ str(item.product.watt) + " , Option1:" + item.product.option1 + " , Beam Angle:" + item.product.beam_angle + ' , CRI: ' + str(item.product.cri) + ' , CCT: ' +item.product.cct
         myitem.append( productname + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No: '+ item.product.modelname + '\n' + line_remark )
 
         qty_group = [  item.quantity, item.quantity1, item.quantity2, item.quantity3]
         price_group = [item.price, item.price1, item.price2, item.price3]
-        # qty_group = [ item.quantity, item.quantity1, item.quantity2, item.quantity3]
-        # price_group = [item.price, item.price1, item.price2, item.price3]
-
 
         str_qty = ''
         str_price = ''
@@ -519,7 +519,7 @@ def _generate_pdf(course, output):
         loopcounter += 1
 
     #repeatRows=1 是指第一行(表頭) 換頁時會重複
-    t = Table(element, repeatRows=1)
+    t = Table(element, colWidths=[0.3*inch, 1.0*inch, 4.6*inch,  0.8*inch, 1.0*inch] , repeatRows=1)
 
     t.setStyle(
         TableStyle(
@@ -618,7 +618,7 @@ def _generate_pdfv2(course, output):
     normalStyle = stylesheet['Normal']
 
     #頁首的資訊
-    header = [['Quotation No',':', course.order_number],
+    headerface = [['Quotation No',':', course.order_number],
               ['Customer',':', course.customer.title],
               ['Contact Person',':', course.contact.name],
               ['Contact Email',':', course.contact.email],
@@ -626,7 +626,7 @@ def _generate_pdfv2(course, output):
               ['Expired Date',':', course.effective_date],
               ]
 
-    h = Table(header,style=[
+    h = Table(headerface,style=[
                             ('ALIGN',(0,0),(0,-1), 'LEFT'),
                             ('FONTNAME', (2,0),(2,-1), 'Arialuni'),
                             ('SPAN',(1,-1),(1,-1)),
@@ -653,7 +653,7 @@ def _generate_pdfv2(course, output):
               ['Price Term',':', course.priceterm,''],
               ]
 
-    h = Table(header, colWidths=[0.8*inch, 0.1*inch, 2.8*inch, 0.3*inch, 0.9*inch, 0.1*inch, 2.0*inch] ,style=[
+    h = Table(header, colWidths=[1.0*inch, 0.1*inch, 2.8*inch, 0.3*inch, 0.9*inch, 0.1*inch, 2.0*inch] ,style=[
                         #('ALIGN',(0,0),(0,-1), 'LEFT'),
                         ('SPAN',(2,0),(3,0)),
                         ('FONTNAME', (2,0),(2,-1), 'Arialuni'),
@@ -667,7 +667,7 @@ def _generate_pdfv2(course, output):
 
     element = []
     #tableheader = ['No.','Image', 'Product / Description /  Dimming Option / Model Name                             ', 'Quantity' ,'Price', 'Amount']
-    tableheader = ['No.', 'Product / Description /  Dimming Option / Model Name                             ', 'Quantity' ,'Price', 'Sub-Total']
+    tableheader = ['No.', 'Product Description', 'Quantity' ,'Price', 'Sub-Total']
 
     element.append(tableheader)
     loopcounter = 1
@@ -728,7 +728,7 @@ def _generate_pdfv2(course, output):
         loopcounter += 1
 
     #repeatRows=1 是指第一行(表頭) 換頁時會重複
-    t = Table(element, colWidths=[0.4*inch, 4.9*inch, 0.5*inch, 0.7*inch,  1.0*inch], repeatRows=1)
+    t = Table(element, colWidths=[0.4*inch, 4.9*inch, 0.5*inch, 0.8*inch,  1.1*inch], repeatRows=1)
 
     t.setStyle(
         TableStyle(

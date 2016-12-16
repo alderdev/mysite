@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Order, OrderItem, PaymentTerm, PriceTerm, DimmingOption, ProductPrice
+from .models import Category, Product, Order, OrderItem, PaymentTerm, PriceTerm, DimmingOption, ProductPrice, Currency
 
 
 
@@ -61,3 +61,6 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
 
 admin.site.register(Order, OrderAdmin)
+
+
+admin.site.register(Currency)

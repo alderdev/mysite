@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'workorders',
     'customers',
     'quotations',
-    'exam',
+    #'exam',
     'prod_model',
     'modelquote',
     'cart',

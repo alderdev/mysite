@@ -8,6 +8,15 @@ from smart_selects.db_fields import ChainedForeignKey
 from django.contrib.auth.models import User
 
 
+#幣別
+class Currency(models.Model):
+    code = models.CharField(primary_key=True, max_length=3, )
+    description = models.CharField(max_length=36, null=False, blank=False)
+
+    def __str__(self):
+        return self.code
+
+
 class PaymentTerm(models.Model):
     description = models.CharField(max_length=200, blank=False, null=False)
 
@@ -35,7 +44,7 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('quoted:product_list_by_category',args=[self.slug])
+        return reverse('quoted:product_list_by_category',args=[ self.slug ] )
 
 
 
@@ -182,9 +191,6 @@ class OrderItem(models.Model):
     price3 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     quantity3 = models.PositiveIntegerField( null=True, blank=True)
     line_remark = models.CharField(max_length=60, null=True, blank=True)
-
-
-
 
 
     class Meta:

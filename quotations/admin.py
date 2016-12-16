@@ -15,5 +15,9 @@ class QuoteAdmin(admin.ModelAdmin):
     list_filter =  ('request_user',)
     inlines = [QuoteDetailInline,]
 
-admin.site.register(models.Currency)
+
+class CurrencyAdmin(admin.ModelAdmin):
+    list_display = ( 'code', 'description',)
+    list_per_page = 10
+admin.site.register(models.Currency, CurrencyAdmin)
 admin.site.register(models.QuoteHead, QuoteAdmin)
