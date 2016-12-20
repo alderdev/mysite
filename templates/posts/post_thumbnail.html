@@ -1,0 +1,7 @@
+<div class="thumbnail">
+    <p>{{ forloop.counter }}. <a href="{{ item.get_absolute_url }}">{{ item.subject }}</a></p>
+    <p>發佈時間:{{ item.timestemp | date:"Y-m-d H:i:s"  }}</p>
+    <p>{{ item.content  | linebreaks  | truncatechars:120 }}
+        <a href='{{ item.get_absolute_url }}' class="btn btn-primary" role="button">View</a>
+    </p>
+</div>

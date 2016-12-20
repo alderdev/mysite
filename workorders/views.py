@@ -16,7 +16,7 @@ from django.db.models import Q
 
 class WorkOrderList(ListView):
     model = WorkOrder
-    paginate_by = 10
+    paginate_by = 5
     ordering = 'deliverly'
 
     def get_queryset(self):
@@ -30,7 +30,6 @@ class WorkOrderList(ListView):
             return query_list
 
         return WorkOrder.objects.all()
-
 
 
 class WorkOrderDetail(DetailView):
@@ -54,7 +53,7 @@ class WorkOrderCreate(CreateView):
 class WorkOrderUpdate(UpdateView):
     model = WorkOrder
     form_class = WorkOrderUpdateForm
-    
+
 
 
 class WorkOrderDelete(DeleteView):

@@ -1,16 +1,50 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from . import models
+from django.db.models import Q
 from .forms import  PostForm
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+class PostList(ListView):
+    model = models.Post
+    paginate_by = 5
+
+    def get_queryset(self, *args, **kwargs):
+        query = self.request.GET.get('q')
+        if query:
+            query_list = models.Post.objects.filter(
+                Q(subject__icontains=query)|
+                Q(content__icontains=query)
+            ).distinct()
+            return query_list
+
+        return models.Post.objects.all()
+
+
+class PostDetail(DetailView):
+    model = models.Post
+
+
+class PostCreate(CreateView):
+    model = models.Post
+    form_class = PostForm
+
+
+class PostUpdate(UpdateView):
+    model = models.Post
+    form_class = PostForm
+
+
+
 @login_required
 def post_list(request):
     title="公告事項"
     object_list = models.Post.objects.all()
-    return render(request, "post_list.html", locals())
+    return render(request, "posts/post_list.html", locals())
 
 
 @login_required
@@ -31,14 +65,14 @@ def post_create(request):
         return HttpResponseRedirect( instance.get_absolute_url() )
 
 
-    return render(request, "post_form.html", locals())
+    return render(request, "posts/post_form.html", locals())
 
 
 @login_required
 def post_detail(request, id):
     title="Posts Detail"
     instance = get_object_or_404(models.Post, id=id)
-    return render(request, "post_detail.html", locals())
+    return render(request, "posts/post_detail.html", locals())
 
 
 def post_update(request, id):
@@ -51,7 +85,7 @@ def post_update(request, id):
         instance.save()
         return HttpResponseRedirect( instance.get_absolute_url() )
 
-    return render(request, "post_form.html", locals())
+    return render(request, "posts/post_form.html", locals())
 
 
 @login_required

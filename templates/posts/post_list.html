@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content%}
+{% if perms.posts.can_add_post %}
+<style>
+.messagebox{
+    width: auto;
+    height: 250;
+    border: 0px solid;
+
+    box-sizing: border-box;
+}
+</style>
+
+
+<div class="form-inline">
+    <form action="" method="GET">
+            <input type="text" class="form-control" name='q'/>
+            <input type="submit" class="btn btn-success" value="Search Post "/>
+            <a href="/posts/create" class="btn btn-warning" role="button" >Create New</a>
+    </form>
+
+      <div class="pagination">
+          <span>{{ title }}</span>
+          <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+            {% endif %}
+          </span>
+      </div>
+</div>
+    {% endif %}
+<div class="row" >
+  {% for item in object_list %}
+      <div class="col-xs-4 ">
+         {% include "posts/post_thumbnail.html" with item=item  %}
+      </div>
+
+      {% cycle '' '' '</div><div  class="row">' %}
+  {% endfor %}
+</div>
+
+{% endblock content %}
