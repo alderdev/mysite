@@ -9,12 +9,14 @@ from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+
 class PostList(ListView):
     model = models.Post
-    paginate_by = 5
+    paginate_by = 10
 
     def get_queryset(self, *args, **kwargs):
         query = self.request.GET.get('q')
+
         if query:
             query_list = models.Post.objects.filter(
                 Q(subject__icontains=query)|
@@ -24,6 +26,12 @@ class PostList(ListView):
 
         return models.Post.objects.all()
 
+    def get_context_data(self, *args, **kwargs):
+
+        context = super( PostList, self).get_context_data(*args, **kwargs )
+        context['categories'] = models.Category.objects.all()
+        #print(context)
+        return context
 
 class PostDetail(DetailView):
     model = models.Post
@@ -45,6 +53,25 @@ def post_list(request):
     title="公告事項"
     object_list = models.Post.objects.all()
     return render(request, "posts/post_list.html", locals())
+
+
+
+@login_required
+def posts_list(request, category_slug=None):
+
+    category = None
+    categories = models.Category.objects.all()
+    object_list = models.Post.objects.filter(available=True)
+
+
+    if category_slug:
+        category = get_object_or_404(models.Category, slug=category_slug)
+        object_list = object_list.filter(categories_id=category.id)
+
+
+    return render(request,'posts/post_list.html',locals() )
+
+
 
 
 @login_required

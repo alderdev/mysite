@@ -9,27 +9,22 @@ return confirm("Are you sure Delete it?");
 </script>
 
 <div class="col-sm-8 col-md-10 col-sm-offset-1 col-md-offset-1" >
-  <h2 class="title"><p>{{ post.subject }}<small>  Last Modify: {{ post.modify | date:"Y-m-d H:i:s"  }}</small></p></h2>
+  <h2 class="title"><p>{{ post.subject }}<small>  發佈日期: {{ post.timestemp | date:"Y-m-d H:i:s"  }}</small></p></h2>
 
-  <p>
-    {% if post.image %}
-      <img src='{{ instance.image.url }}' class="img-responsive" />
-    {% endif %}
-  </p>
-
+  <span>Category:  {{ post.categories }} </span>
   <p>{{ post.content | linebreaks  }}</p>
-
+  <br>修訂日期:{{ post.modify | date:"Y-m-d H:i:s"  }}
   <div>
       <strong>附件：</strong>
       <form enctype="multipart/form-data">
         {% for attach in post.attachment_set.all %}
             {% if attach.filename.url %}
-            <p><a href='{{ attach.filename.url }}' target="_blank">{{ attach.remark }}</a></p>
+            <span><a href='{{ attach.filename.url }}' target="_blank">{{ attach.remark }}</a> &nbsp&nbsp&nbsp   </span>
             {% endif %}
         {% endfor %}
       </form>
   </div>
-  
+
   <h3>
     <div class="form-inline">
     <a href="/posts" class="btn btn-success" role="button" >Return</a>
@@ -37,7 +32,7 @@ return confirm("Are you sure Delete it?");
     <a href="{{ post.get_absolute_url }}delete" class="btn btn-danger" role="button" onclick="return confirm_click()" >Delete</a>
     {% endif %}
     {% if perms.posts.can_change_post %}
-    <a href="{{ post.get_absolute_url }}update" class="btn btn-warning" role="button">Edit</a>
+    <a href="{{ post.get_absolute_url }}update" class="btn btn-warning" role="button" >Edit</a>
     {% endif %}
   </div>
   </p>

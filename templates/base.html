@@ -38,7 +38,7 @@
                         <span>My Profile  /  </span>
                         <span><a href="/logout">Logout</a></span>
                         {% else %}
-                        <a href="/accounts/login">Login</a>
+                        
                       {% endif %}
 
                   </span>
@@ -62,7 +62,7 @@
                   <!-- menu bar -->
                   <div class="collapse navbar-collapse">
                       <ul class="nav navbar-nav">
-
+{% if request.user.is_authenticated %}
                         <li  class="">
                             <a href="#">
                               <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; 亞德園地</span>
@@ -137,8 +137,9 @@
                             </a>
                         </li>
                         {% endif %}
-
+            {% endif %}
                       </ul>
+
                   </div>
                   <!-- Collect the nav links, forms, and other content for toggling -->
 
