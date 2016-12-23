@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.admin.widgets import ForeignKeyRawIdWidget
-from .models import Order, Product
+from .models import Order, Product, OrderItem
 from customers.models import Customer
 from smart_selects.db_fields import ChainedForeignKey
 from django.contrib import admin
@@ -54,4 +54,23 @@ class OrderItemForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['name', 'price']
+        fields = ['name']
+
+
+class OrderItemUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = OrderItem
+        fields = ['orderitem_name','orderitem_modelname']
+        #exclude = ( 'orderitem_height_field','orderitem_width_field')
+        widgets = {
+            'customer': forms.TextInput(attrs={ 'class':'form-control', 'readonly':'readonly'}),
+            #'email': forms.EmailInput(attrs={ 'class':'form-control'}),
+            'currency': forms.Select(attrs={ 'class':'form-control'}),
+            'paymentterm': forms.Select(attrs={ 'class':'form-control'}),
+            'priceterm': forms.Select(attrs={ 'class':'form-control'}),
+            'quote_sales': forms.TextInput(attrs={ 'class':'form-control'}),
+            'ord_date': forms.DateInput(attrs={ 'class':'form-control'}),
+            'effective_date': forms.DateInput(attrs={ 'class':'form-control'}),
+            'comment': forms.Textarea(attrs={ 'class':'form-control'}),
+        }

@@ -9,6 +9,9 @@ urlpatterns = [
     url(r'^order/(?P<id>\d+)/$', views.order_detail, name="order_detail" ),
     url(r'^order/(?P<pk>\d+)/$', views.OrderDetail.as_view( template_name = 'quoted/order_detail.html'), name="order_detail" ),
 
+    url(r'^order/itemedit/(?P<pk>\d+)/$', views.OrderItemDetail.as_view( template_name = 'quoted/orderitem_detail.html'), name="orderitem_detail" ),
+
+
     url(r'^order/(?P<pk>\d+)/update/$', views.OrderUpdate.as_view( template_name = 'quoted/order_updateform.html'), name="order_update" ),
     url(r'^order/(?P<id>\d+)/gen_quote/$', views.gen_quote , name="gen_quote" ),
     url(r'^order/(?P<id>\d+)/gen_pdfv2/$', views.gen_pdfv2 , name="gen_pdfv2" ),

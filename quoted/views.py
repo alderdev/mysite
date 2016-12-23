@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Category, Product, OrderItem, Order
-from .forms import OrderCreateForm,OrderUpdateForm, OrderItemForm
+from .forms import OrderCreateForm,OrderUpdateForm, OrderItemForm, OrderItemUpdateForm
 from cart.cart import Cart
 from cart.forms import CartAddProductForm
 from django.views.generic.detail import  DetailView
@@ -142,7 +142,43 @@ def order_detail(request, id):
 class OrderDetail(DetailView):
     model = Order
 
-    
+
+
+#Quote Items DetailView
+class OrderItemDetail(UpdateView):
+    model = OrderItem
+    form_clss = OrderItemUpdateForm
+    fields = [
+                'is_special',
+                'orderitem_name',
+                'orderitem_modelname',
+                'orderitem_option1',
+                'orderitem_beam_angle',
+                'orderitem_cct',
+                'orderitem_dimming',
+                'orderitem_cri',
+                'orderitem_watt',
+                'orderitem_lm',
+                'orderitem_image',
+                'quantity',
+                'price',
+                'quantity1',
+                'price1',
+                'quantity2',
+                'price2',
+                'quantity3',
+                'price3',
+                'line_remark'
+             ]
+    #success_url = reverse_lazy("quoted:detail",args=[self.id])
+
+
+
+
+
+
+
+
 
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -206,6 +242,8 @@ def order_item_insert(request):
         #因為單價有可能不一樣,所以不考慮將相同品項的數量加總
         #print("OrderID: %s, ProductId: %s"  %(order_id,product_id))
         instance = OrderItem.objects.filter(order_id= order_id, product_id__in= product_id, price=price)
+
+
         if instance:
             pass
             #print("Exists True")
@@ -213,7 +251,8 @@ def order_item_insert(request):
             pass
             #print("Not Exists")
 
-        #print("OrderItem.objects.create")
+        product_obj = get_object_or_404(Product, id=product_id)
+
         OrderItem.objects.create(
                 order_id = order_id,
                 product_id = product_id,
@@ -225,7 +264,18 @@ def order_item_insert(request):
                 price2 = price2,
                 quantity2 = quantity2,
                 price3 = price3,
-                quantity3 = quantity3
+                quantity3 = quantity3,
+
+
+                orderitem_name = product_obj.name,
+                orderitem_modelname = product_obj.modelname,
+                orderitem_option1 = product_obj.option1,
+                orderitem_beam_angle = product_obj.beam_angle,
+                orderitem_cri = product_obj.cri,
+                orderitem_cct = product_obj.cct,
+                orderitem_watt = product_obj.watt,
+                orderitem_lm = product_obj.lm,
+                orderitem_image = product_obj.image
                 )
 
     return HttpResponse()
@@ -469,6 +519,8 @@ def _generate_pdf(course, output):
     tableheader = ['No.','Image', 'Product  Description', 'Quantity' ,'Price']
     #tableheader = ['No.','Image', 'Product      Description                                                            ', 'Quantity' ,'Price']
 
+
+
     element.append(tableheader)
     loopcounter = 1
     grund_total = 0
@@ -482,19 +534,19 @@ def _generate_pdf(course, output):
         I.drawWidth = 0.85*inch
 
         myitem.append( I )
-        productname = item.product.name
+        productname = item.orderitem_name
 
         line_remark =""
         if item.is_special:
-            special = "★ Spacial Product"
-            productname = "%s      %s" %(item.product.name, special)
+            special = "★ Customized Product"
+            productname = "%s      %s" %(item.orderitem_name, special)
 
         if item.line_remark is not None:
             line_remark = "%s %s" %("Remark: ", item.line_remark)
 
 
-        desctiption = "Watt: "+ str(item.product.watt) + " , Option1:" + item.product.option1 + " , Beam Angle:" + item.product.beam_angle + ' , CRI: ' + str(item.product.cri) + ' , CCT: ' +item.product.cct
-        myitem.append( productname + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No: '+ item.product.modelname + '\n' + line_remark )
+        desctiption = "Watt: "+ str(item.orderitem_watt) + " , Option1:" + item.orderitem_option1 + " , Beam Angle:" + item.orderitem_beam_angle + ' , CRI: ' + str(item.orderitem_cri) + ' , CCT: ' +item.orderitem_cct
+        myitem.append( productname + '\n' +desctiption + '\nDimming Option:'+ str(item.orderitem_dimming) + '\nModel No: '+ item.orderitem_modelname + '\n' + line_remark )
 
         qty_group = [  item.quantity, item.quantity1, item.quantity2, item.quantity3]
         price_group = [item.price, item.price1, item.price2, item.price3]
@@ -678,25 +730,25 @@ def _generate_pdfv2(course, output):
 
         myitem = []
         myitem.append( loopcounter )
-        img = settings.MEDIA_ROOT+"/" +str(item.product.image.url).split("/")[2]
-        I = Image(img)
-        I.drawHeight = 0.85*inch
-        I.drawWidth = 0.85*inch
+        # img = settings.MEDIA_ROOT+"/" +str(item.orderitem_image.url).split("/")[2]
+        # I = Image(img)
+        # I.drawHeight = 0.85*inch
+        # I.drawWidth = 0.85*inch
 
-        productname = item.product.name
+        productname = item.orderitem_name
 
         line_remark =""
         if item.is_special:
-            special = "★ Spacial Product"
-            productname = "%s      %s" %(item.product.name, special)
+            special = "★ Customized Product"
+            productname = "%s      %s" %(item.orderitem_name, special)
 
         if item.line_remark is not None:
             line_remark = "%s %s" %("Remark: ", item.line_remark)
 
 
         #myitem.append( I )
-        desctiption = "Watt: "+ str(item.product.watt) + " , Option1:" + item.product.option1 + " , Beam Angle:" + item.product.beam_angle + ' , CRI: ' + str(item.product.cri) + ' , CCT: ' +item.product.cct
-        myitem.append( productname + '\n' +desctiption + '\nDimming Option:'+ str(item.product.dimming) + '\nModel No: '+ item.product.modelname + '\n' + line_remark )
+        desctiption = "Watt: "+ str(item.orderitem_watt) + " , Option1:" + item.orderitem_option1 + " , Beam Angle:" + item.orderitem_beam_angle + ' , CRI: ' + str(item.orderitem_cri) + ' , CCT: ' +item.orderitem_cct
+        myitem.append( productname + '\n' +desctiption + '\nDimming Option:'+ str(item.orderitem_dimming) + '\nModel No: '+ item.orderitem_modelname + '\n' + line_remark )
 
         qty_group = [item.quantity]
         price_group = [item.price]
@@ -774,7 +826,7 @@ def _generate_pdfv2(course, output):
 @login_required
 def gen_pdfv2(request,id):
     response = HttpResponse(content_type='application/pdf')
-    filename = '-outline.pdf'
+    filename = 'Quotation.pdf'
     response['Content-Disposition'] = 'filename=' + filename
     course = get_object_or_404(Order,id=id)
     _generate_pdfv2(course, response)

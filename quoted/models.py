@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.core.urlresolvers import reverse
 from customers.models import Customer, Contact
-from quotations.models import Currency
+#from quotations.models import Currency
 from django.utils import timezone
 from smart_selects.db_fields import ChainedForeignKey
 from django.contrib.auth.models import User
@@ -60,7 +60,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category,related_name='products')
     family = models.CharField(max_length=30, null=False, blank=False)
     name = models.CharField(max_length=60)
-    modelname = models.TextField(blank=True)
+    modelname = models.CharField(max_length=100, blank=True)
     slug = models.SlugField(max_length=200)
     option1 = models.CharField(max_length=60, null=False, blank=False)
     beam_angle = models.CharField(max_length=60, null=False, blank=False)
@@ -73,7 +73,7 @@ class Product(models.Model):
     height_field = models.IntegerField( null=True, blank=True, default=0)
     width_field = models.IntegerField( null=True, blank=True, default=0)
 
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    #price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     #stock = models.PositiveIntegerField(null=True, blank=True, default=0)
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -137,7 +137,7 @@ class OrderNumberManager(models.Manager):
         return order_number
 
 
-from django.contrib.auth.models import User
+
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     contact = ChainedForeignKey( Contact,
@@ -181,7 +181,7 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order)
     product = models.ForeignKey(Product,  related_name='order_items')
-    is_special = models.BooleanField(default=False)
+    is_special = models.BooleanField('Customized Product',default=False)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=1)
     price1 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -190,14 +190,32 @@ class OrderItem(models.Model):
     quantity2 = models.PositiveIntegerField( null=True, blank=True)
     price3 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     quantity3 = models.PositiveIntegerField( null=True, blank=True)
-    line_remark = models.CharField(max_length=60, null=True, blank=True)
+    line_remark = models.CharField("Remark",max_length=60, null=True, blank=True)
+    #為了解決大量客製化產品的問題,所以將產品規格的欄位一起複製過來, 以便有需求時可以直接編輯
+    orderitem_name = models.CharField("product name",max_length=60, null=False, blank=False)
+    orderitem_modelname = models.CharField("Model Name",max_length=60, null=False, blank=False)
+    orderitem_option1 = models.CharField("Option",max_length=60, null=False, blank=False)#
+    orderitem_beam_angle = models.CharField("Beam angle",max_length=60, null=False, blank=False)#
+    orderitem_cct = models.CharField("CCT",max_length=60, null=False, blank=False)#
+    orderitem_cri = models.CharField("CRI",max_length=60, null=False, blank=False)#
+    orderitem_watt = models.CharField("WATT",max_length=60, null=False, blank=False)#
+    orderitem_dimming = models.ForeignKey( DimmingOption,default= 1,verbose_name="Dimming")#
+    orderitem_lm = models.CharField( "LM", max_length=60, null=False, blank=False)#
+    orderitem_image = models.ImageField( "Image", null=True, blank=True, height_field="orderitem_height_field", width_field="orderitem_width_field")
+    orderitem_height_field = models.IntegerField( null=True, blank=True, default=0)
+    orderitem_width_field = models.IntegerField( null=True, blank=True, default=0)
 
 
     class Meta:
         ordering = ( 'product', )
+
 
     def __str__(self):
         return '{}'.format(self.id)
 
     def get_cost(self):
         return self.price * self.quantity
+
+
+    def get_absolute_url(self):
+        return reverse('quoted:orderitem_detail',args=[self.id])

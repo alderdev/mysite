@@ -19,6 +19,8 @@ class DimmingOptionAdmin(admin.ModelAdmin):
 
 admin.site.register(DimmingOption, DimmingOptionAdmin)
 
+
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug']
     prepopulated_fields = {'slug': ('name',)}
@@ -38,12 +40,15 @@ class ProductAdmin(admin.ModelAdmin):
 
     list_display = ['name', 'modelname', 'slug', 'available', 'created', 'updated']
 
+
     list_filter = ['available', 'category', 'family', 'watt']
     list_editable = ['available']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [PriceInline]
 
 admin.site.register(Product, ProductAdmin)
+
+
 
 
 class OrderItemInline(admin.TabularInline):

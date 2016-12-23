@@ -279,64 +279,81 @@ $("button").click(function(e){
       <a href="{{ order.get_absolute_url }}print" class="btn btn-primary" target="_blank">to PDF</a>
       <a href="{{ order.get_absolute_url }}gen_pdf" class="btn btn-primary" target="_blank">Generate PDF</a>
   -->
-		<a id="product_a_id" href="#"  class="btn btn-primary" >See Product List</a>
-
-		<form id="delform" action="" method="POST" onsubmit="return deleteOnSubmit( {{ order.id }} )" >{% csrf_token %}
-		  <input type='hidden' name='order_id' value="{{ order.id }}"/>
-		  <tr>
-		    <th width="6%"><button type="submit" class="btn btn-danger" >Delete Item</button></th>
-		    <th width="4%">No.</th>
-				<th width="15%">Model Name</th>
-		    <th width="8%">Product</th>
-				<th width="6%">Watt</th>
-				<th width="6%">CCT</th>
-		    <th width="6%">CRI</th>
-		    <th width="6%">Beam angle</th>
-				<th width="6%">Quantity</th>
-		    <th width="5%">Price</th>
-		  </tr>
-
+    <a id="product_a_id" href="#"  class="btn btn-primary" >See Product List</a>
+    <form id="delform" action="" method="POST" onsubmit="return deleteOnSubmit( {{ order.id }} )" >{% csrf_token %}
+        <input type='hidden' name='order_id' value="{{ order.id }}"/>
+        <tr>
+            <th width="6%"><button type="submit" class="btn btn-danger" >Delete Item</button></th>
+            <th width="2%">No.</th>
+            <th width="15%">Product</th>
+            <th width="25%">Spac</th>
+            <th width="6%" align="right">Quantity</th>
+            <th width="5%" align="right">Price</th>
+            <th width="2%"></th>
+        </tr>
       <style>
-      div.numb {
-          width:100px;
-          margin: auto;
-          border: 0px solid #73AD21;
-      }
+          div.numb {
+              width:100px;
+              margin: auto;
+              border: 0px solid #73AD21;
+          }
       </style>
-		  {% for row in order.orderitem_set.all %}
-		  <tr>
-		    <td>
-		        <input type="checkbox" name="rows" id='row_{{ row.id }}' value="{{ row.id }}">
-		            {% if row.product.image %}
-		             <img src="{{ row.product.image.url }}" class="img-rectangle" height="80" width="80"/>
-		           {% endif %}
-		    </td>
-		    <td>{{ forloop.counter }}</td>
-				<td>{{ row.product.modelname }}</td>
-		    <td>{{ row.product.name }}</td>
-				<td>{{ row.product.watt }}</td>
-				<td>{{ row.product.cct }}</td>
-		    <td>{{ row.product.cri }}</td>
-		    <td>{{ row.product.beam_angle }}</td>
-				<td align="right" >
-          <div class='numb'>
-              <div class='numb'>{% if row.quantity  != None %}{{ row.quantity  }}{% endif %}</div>
-              <div class='numb'>{% if row.quantity1 != None %}{{ row.quantity1 }}{% endif %}</div>
-              <div class='numb'>{% if row.quantity2 != None %}{{ row.quantity2 }}{% endif %}</div>
-              <div class='numb'>{% if row.quantity3 != None %}{{ row.quantity3 }}{% endif %}</div>
-          </div>
+    {% for row in order.orderitem_set.all %}
+    <tr>
+    <td>
+    <input type="checkbox" name="rows" id='row_{{ row.id }}' value="{{ row.id }}">
+    {% if row.orderitem_image %}
+     <img src="{{ row.orderitem_image.url }}" class="img-rectangle" height="80" width="80"/>
+    {% endif %}
+    </td>
+    <td>{{ forloop.counter }}</td>
+<!-- <td>{{ row.product.modelname }}</td>
+<td>{{ row.product.name }}</td> -->
+<!-- <td>{{ row.product.watt }}</td>
+<td>{{ row.product.cct }}</td>
+<td>{{ row.product.cri }}</td>
+<td>{{ row.product.beam_angle }}</td> -->
+        <td>
+            <div>
+                <div>{{ row.orderitem_modelname }}</div>
+                <div>{{ row.orderitem_name }}</div>
+                <div style="font-color:blue">{% if row.is_special %} ★ Customized Product{% endif %}</div>
+                <div><strong>Dimming:</strong> {{ row.orderitem_dimming }}</div>
+            </div>
         </td>
-		    <td align="right" >
-          <div class='numb'>
-              <div class='numb'>{% if row.price  != None %}{{ row.price   }}{% endif %}</div>
-              <div class='numb'>{% if row.price1 != None %}{{ row.price1 }}{% endif %}</div>
-              <div class='numb'>{% if row.price2 != None %}{{ row.price2 }}{% endif %}</div>
-              <div class='numb'>{% if row.price3 != None %}{{ row.price3  }}{% endif %}</div>
-          </div>
+        <td>
+            <div>
+                <div><strong>WATT:</strong> {{ row.orderitem_watt }}</div>
+                <div><strong>CCT:</strong>  {{ row.orderitem_cct }}</div>
+                <div><strong>CRI:</strong>  {{ row.orderitem_cri }}</div>
+                <div><strong>Option:</strong>  {{ row.orderitem_option1 }}</div>
+                <div><strong>Beam Angle:</strong>  {{ row.orderitem_beam_angle }}</div>
+            </div>
         </td>
-		  </tr>
-		  {% endfor%}
-		</form>
+        <td align="right" >
+            <div class='numb'>
+                <div class='numb'>{% if row.quantity  != None %}{{ row.quantity  }}{% endif %}</div>
+                <div class='numb'>{% if row.quantity1 != None %}{{ row.quantity1 }}{% endif %}</div>
+                <div class='numb'>{% if row.quantity2 != None %}{{ row.quantity2 }}{% endif %}</div>
+                <div class='numb'>{% if row.quantity3 != None %}{{ row.quantity3 }}{% endif %}</div>
+            </div>
+        </td>
+        <td align="right" >
+            <div class='numb'>
+                <div class='numb'>{% if row.price  != None %}{{ row.price   }}{% endif %}</div>
+                <div class='numb'>{% if row.price1 != None %}{{ row.price1 }}{% endif %}</div>
+                <div class='numb'>{% if row.price2 != None %}{{ row.price2 }}{% endif %}</div>
+                <div class='numb'>{% if row.price3 != None %}{{ row.price3  }}{% endif %}</div>
+            </div>
+        </td>
+        <td>
+            <div>
+                <a href='{{ row.get_absolute_url }}'>Edit</a>
+            </div>
+        </td>
+    </tr>
+    {% endfor%}
+    </form>
 </table>
 
 {% endblock content %}
