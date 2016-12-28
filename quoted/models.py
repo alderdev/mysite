@@ -67,7 +67,7 @@ class Product(models.Model):
     cct = models.CharField("CCT",max_length=60, null=False, blank=False)
     cri = models.CharField("CRI",max_length=60, null=False, blank=False)
     watt = models.CharField(max_length=60, null=False, blank=False)
-    dimming = models.ForeignKey(DimmingOption,default= 1)
+    dimming = models.ForeignKey(DimmingOption)
     lm = models.CharField(max_length=60, null=False, blank=False)
     image = models.ImageField( null=True, blank=True, height_field="height_field", width_field="width_field")
     height_field = models.IntegerField( null=True, blank=True, default=0)
@@ -192,14 +192,14 @@ class OrderItem(models.Model):
     quantity3 = models.PositiveIntegerField( null=True, blank=True)
     line_remark = models.CharField("Remark",max_length=60, null=True, blank=True)
     #為了解決大量客製化產品的問題,所以將產品規格的欄位一起複製過來, 以便有需求時可以直接編輯
-    orderitem_name = models.CharField("product name",max_length=60, null=False, blank=False)
+    orderitem_name = models.CharField("Product Name",max_length=60, null=False, blank=False)
     orderitem_modelname = models.CharField("Model Name",max_length=60, null=False, blank=False)
     orderitem_option1 = models.CharField("Option",max_length=60, null=False, blank=False)#
     orderitem_beam_angle = models.CharField("Beam angle",max_length=60, null=False, blank=False)#
     orderitem_cct = models.CharField("CCT",max_length=60, null=False, blank=False)#
     orderitem_cri = models.CharField("CRI",max_length=60, null=False, blank=False)#
     orderitem_watt = models.CharField("WATT",max_length=60, null=False, blank=False)#
-    orderitem_dimming = models.ForeignKey( DimmingOption,default= 1,verbose_name="Dimming")#
+    orderitem_dimming = models.ForeignKey( DimmingOption,verbose_name="Dimming")#
     orderitem_lm = models.CharField( "LM", max_length=60, null=False, blank=False)#
     orderitem_image = models.ImageField( "Image", null=True, blank=True, height_field="orderitem_height_field", width_field="orderitem_width_field")
     orderitem_height_field = models.IntegerField( null=True, blank=True, default=0)

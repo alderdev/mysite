@@ -7,7 +7,7 @@ from cart.forms import CartAddProductForm
 from django.views.generic.detail import  DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.db.models import Q
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
@@ -170,7 +170,7 @@ class OrderItemDetail(UpdateView):
                 'price3',
                 'line_remark'
              ]
-    #success_url = reverse_lazy("quoted:detail",args=[self.id])
+    #success_url = reverse_lazy("quoted:detail",args=[self.order_id])
 
 
 

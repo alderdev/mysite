@@ -103,7 +103,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     },
-    'ald-mysql':{
+    'mysql':{
         'ENGINE': 'django.db.backends.mysql',
         'NAME':'django',
         'HOST':'172.27.21.38',
