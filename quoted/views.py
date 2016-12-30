@@ -89,14 +89,34 @@ def order_create(request):
             form.instance.quote_sales = request.user.username
             form.instance.quote_user = request.user
 
-
             order = form.save()
             for item in cart:
-                OrderItem.objects.create(order=order,product=item['product']
-                                        ,price=item['price'],quantity=item['quantity']
-                                        ,price1=item['price1'],quantity1=item['quantity1']
-                                        ,price2=item['price2'],quantity2=item['quantity2']
-                                        ,price3=item['price3'],quantity3=item['quantity3'])
+
+                OrderItem.objects.create(
+                        order_id = order.id,
+                        product_id = item['product'].id,
+                        price = item['price'],
+                        quantity = item['quantity'],
+
+                        price1 = item['price1'],
+                        quantity1 = item['quantity1'],
+                        price2 = item['price2'],
+                        quantity2 = item['quantity2'],
+                        price3 = item['price3'],
+                        quantity3 =item['quantity3'],
+
+                        orderitem_name = item['product'].name,
+                        orderitem_modelname = item['product'].modelname,
+                        orderitem_option1 = item['product'].option1,
+                        orderitem_beam_angle = item['product'].beam_angle,
+                        orderitem_cri = item['product'].cri,
+                        orderitem_cct = item['product'].cct,
+                        orderitem_watt = item['product'].watt,
+                        orderitem_lm = item['product'].lm,
+                        orderitem_image = item['product'].image,
+                        orderitem_dimming_id = item['product'].dimming.id
+                        )
+
             cart.clear()
             return HttpResponseRedirect( '../' )
 
@@ -253,6 +273,8 @@ def order_item_insert(request):
 
         product_obj = get_object_or_404(Product, id=product_id)
 
+        print(product_obj.dimming)
+
         OrderItem.objects.create(
                 order_id = order_id,
                 product_id = product_id,
@@ -275,7 +297,8 @@ def order_item_insert(request):
                 orderitem_cct = product_obj.cct,
                 orderitem_watt = product_obj.watt,
                 orderitem_lm = product_obj.lm,
-                orderitem_image = product_obj.image
+                orderitem_image = product_obj.image,
+                orderitem_dimming = 1
                 )
 
     return HttpResponse()

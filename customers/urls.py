@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/delete/$', views.CustomerDelete.as_view(), name="delete" ),
 
 
-    url(r'^ajax/(?P<pk>\d+)/$', views.CustomerDetail.as_view( template_name = 'customers/jquery_customer.html'), name="ajax_detail" ),
+    url(r'^ajax/(?P<pk>\w+)/$', views.CustomerDetail.as_view( template_name = 'customers/jquery_customer.html'), name="ajax_detail" ),
 
     # Function Base View
     #url(r'^create/$', views.employee_create, name="create" ),

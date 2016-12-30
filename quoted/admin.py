@@ -13,6 +13,8 @@ admin.site.register(PriceTerm, PriceTermAdmin)
 class PaymentTermAdmin(admin.ModelAdmin):
     list_display = ['description']
 
+admin.site.register(PaymentTerm, PaymentTermAdmin)
+
 
 class DimmingOptionAdmin(admin.ModelAdmin):
     list_display = ['description']

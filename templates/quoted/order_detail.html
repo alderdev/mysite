@@ -236,37 +236,37 @@ $("button").click(function(e){
 
 <table class="table table-striped" border="0">
   <tr>
-    <td>Quote No.</td>
-    <td>{{ order.order_number }}</td>
-    <td>Quote Date</td>
+    <td align="right" width="10%">Quote No. : </td>
+    <td >{{ order.order_number }}</td>
+    <td align="right">Quote Date : </td>
     <td>{{ order.ord_date | date:"Y-m-d" }}</td>
   </tr>
   <tr>
-    <td>Customer Title</td>
+    <td align="right">Customer Title : </td>
     <td>{{ order.customer.title }}</td>
-    <td>Sales</td>
+    <td align="right">Sales : </td>
     <td>{{ order.quote_sales }}</td>
   </tr>
   <tr>
-    <td>Contact</td>
+    <td align="right">Contact : </td>
     <td>{{ order.contact }}</td>
-    <td>Email</td>
+    <td align="right">Email : </td>
     <td>{{ order.email }}</td>
   </tr>
   <tr>
-    <td>Currency</td>
+    <td align="right">Currency : </td>
     <td>{{ order.currency }}</td>
-    <td>Effective Date</td>
+    <td align="right">Effective Date : </td>
     <td>{{ order.effective_date | date:"Y-m-d" }}</td>
   </tr>
   <tr>
-    <td>Payment Term</td>
+    <td align="right">Payment Term : </td>
     <td>{{ order.paymentterm }}</td>
-    <td>Price Term</td>
+    <td align="right">Price Term : </td>
     <td>{{ order.priceterm }}</td>
   </tr>
   <tr>
-    <td>Comment</td>
+    <td >Comment</td>
     <td colspan="3">{{ order.comment | linebreaks | truncatewords:60 }}</td>
   </tr>
 </table>
