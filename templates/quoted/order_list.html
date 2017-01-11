@@ -42,7 +42,7 @@
     <th width="4%">Sales</th>
     <th width="5%">Effective Date</th>
     <th width="5%">Contact Person</th>
-    <th width="5%">Email Address</th>
+    
   </tr>
 {% for record in object_list %}
   <tr>
@@ -54,7 +54,6 @@
     <td>{{ record.quote_sales }}</td>
     <td>{{ record.effective_date | date:"Y-m-d" }}</td>
     <td>{{ record.contact }}</td>
-    <td>{{ record.customer.email }}</td>
   </tr>
 {% endfor %}
 </table>

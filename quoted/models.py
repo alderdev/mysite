@@ -8,6 +8,17 @@ from smart_selects.db_fields import ChainedForeignKey
 from django.contrib.auth.models import User
 
 
+
+
+class GeneralTerm(models.Model):
+    content = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.content
+
+
 #幣別
 class Currency(models.Model):
     code = models.CharField(primary_key=True, max_length=3, )
@@ -73,7 +84,7 @@ class Product(models.Model):
     height_field = models.IntegerField( null=True, blank=True, default=0)
     width_field = models.IntegerField( null=True, blank=True, default=0)
 
-    #price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    cost_twd = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     #stock = models.PositiveIntegerField(null=True, blank=True, default=0)
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -153,7 +164,7 @@ class Order(models.Model):
     quote_sales = models.CharField(max_length=60, null=True, blank=True) # 取消此欄位, 以quote_user取代
     quote_user = models.ForeignKey( User, null=True, blank=True )
     ord_date = models.DateField(default=timezone.now) #報價日期
-    effective_date = models.DateField( default=timezone.now ) # 報價單有效日期
+    effective_date = models.DateField('Expired Date', default=timezone.now ) # 報價單有效日期
     currency = models.ForeignKey( Currency,  null=False, blank=False )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -162,6 +173,7 @@ class Order(models.Model):
     comment = models.TextField(null=True, blank=True)
     objects = OrderNumberManager()
     is_valid = models.BooleanField(default=True)
+    generalterm = models.ForeignKey(GeneralTerm,default=1)
 
     class Meta:
         ordering = ('-created',)

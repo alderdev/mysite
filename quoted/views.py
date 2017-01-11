@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Category, Product, OrderItem, Order
+from .models import Category, Product, OrderItem, Order, GeneralTerm
 from .forms import OrderCreateForm,OrderUpdateForm, OrderItemForm, OrderItemUpdateForm
 from cart.cart import Cart
 from cart.forms import CartAddProductForm
@@ -264,16 +264,10 @@ def order_item_insert(request):
         instance = OrderItem.objects.filter(order_id= order_id, product_id__in= product_id, price=price)
 
 
-        if instance:
-            pass
-            #print("Exists True")
-        else:
-            pass
-            #print("Not Exists")
 
         product_obj = get_object_or_404(Product, id=product_id)
 
-        print(product_obj.dimming)
+        #print(product_obj.dimming)
 
         OrderItem.objects.create(
                 order_id = order_id,
@@ -298,7 +292,7 @@ def order_item_insert(request):
                 orderitem_watt = product_obj.watt,
                 orderitem_lm = product_obj.lm,
                 orderitem_image = product_obj.image,
-                orderitem_dimming = 1
+                orderitem_dimming_id = 1
                 )
 
     return HttpResponse()
@@ -349,7 +343,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 
 # 正式Quote-A
 
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, KeepTogether
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.rl_config import defaultPageSize
 from reportlab.lib.units import inch
@@ -467,7 +461,6 @@ def _generate_pdf(course, output):
     pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
     pdfmetrics.registerFont(TTFont('Arialuni', 'arialuni.ttf'))
 
-    #from cStringIO import StringIO
 
     doc = SimpleDocTemplate(
         output,pagesize=A4,
@@ -504,15 +497,12 @@ def _generate_pdf(course, output):
 
     Story.append(h)
 
-
     Story.append(PageBreak())
 
     #因為要套用字型Arialuni, 所以將comment改為Paragraph
     comment = Paragraph('''
        <para align=left spaceb=3><font face="Arialuni">'''+ course.comment +'''</font></para>''',
        styles["BodyText"])
-
-
 
     #頁首的資訊
     header = [
@@ -536,13 +526,9 @@ def _generate_pdf(course, output):
 
     Story.append(h)
 
-
-
     element = []
     tableheader = ['No.','Image', 'Product  Description', 'Quantity' ,'Price']
     #tableheader = ['No.','Image', 'Product      Description                                                            ', 'Quantity' ,'Price']
-
-
 
     element.append(tableheader)
     loopcounter = 1
@@ -589,8 +575,6 @@ def _generate_pdf(course, output):
         myitem.append( str_qty )
         myitem.append( str_price )
 
-
-
         element.append(myitem)
         loopcounter += 1
 
@@ -629,19 +613,30 @@ def _generate_pdf(course, output):
     #頁首的資訊
     #因為要套用字型Arialuni, 所以將comment改為Paragraph
     comment = Paragraph('''
-       <para align=left spaceb=3><font face="Arialuni">'''+ str(course.comment).replace('\n','<br/>\n') +'''</font></para>''',
+       <para align=left spaceb=3><font face="Arialuni" >'''+ str(course.comment).replace('\n','<br/>\n') +'''</font></para>''',
        styles["BodyText"])
     footer = [['Remark:'],
                 [ comment ],
 
               ]
 
-    f = Table(footer,style=[
-                            ('ALIGN',(0,0),(0,-1), 'LEFT'),
-                            ('FONTNAME', (0,0),(0,-1), 'Arialuni'),
-                        ])
+    f = Table(footer)
 
     Story.append(f)
+
+
+    style = getSampleStyleSheet()['Normal']
+    style.leading = 8
+    # generalterm.content   通用條款 Start
+    #Story.append(PageBreak())
+    # 因為要套用字型Arialuni, 所以將comment改為Paragraph
+    terms = Paragraph('''
+       <para align=left spaceb=3><fontSize=10 color=skyblue><strong>General Term and Conditions:</strong></fontSize><br/><font size="6">'''+ str(course.generalterm).replace('\n','<br/>\n') +'''</font></para>''',
+       style )
+
+    Story.append( KeepTogether(terms) )
+
+
     doc.build(Story, onFirstPage=myFirstPage, onLaterPages=myLaterPage )
 
 
@@ -842,6 +837,24 @@ def _generate_pdfv2(course, output):
                         ])
 
     Story.append(f)
+
+
+
+
+
+
+
+    style = getSampleStyleSheet()['Normal']
+    style.leading = 8
+    # generalterm.content   通用條款 Start
+    #Story.append(PageBreak())
+    # 因為要套用字型Arialuni, 所以將comment改為Paragraph
+    terms = Paragraph('''
+       <para align=left spaceb=3><fontSize=10 color=skyblue><strong>General Term and Conditions:</strong></fontSize><br/><font size="6">'''+ str(course.generalterm).replace('\n','<br/>\n') +'''</font></para>''',
+       style )
+
+    Story.append( KeepTogether(terms) )
+
     doc.build(Story, onFirstPage=myFirstPage, onLaterPages=myLaterPage )
 
 

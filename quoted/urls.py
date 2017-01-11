@@ -31,8 +31,4 @@ urlpatterns = [
     #url(r'^$', views.ProductList.as_view( template_name='quoted/product/product_list.html' ), name='product_list'),
 
 
-
-
-
-
 ]

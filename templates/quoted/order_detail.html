@@ -128,7 +128,7 @@
         </div>
       </div>
 		-->
-			<div id="d1"></div>
+        <div id="d1"></div>
       <div id='tbody' class="media-body">
       <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
           {% for product in products %}
@@ -204,9 +204,9 @@ $("button").click(function(e){
     e.preventDefault();
 
 	 $.ajax({
-			 type:"POST",
-			 url:'/quoted/insertitem/',
-			 data:{
+        type:"POST",
+        url:'/quoted/insertitem/',
+        data:{
            order_id: order_id,
            product_id: product_id,
 
@@ -251,12 +251,12 @@ $("button").click(function(e){
     <td align="right">Contact : </td>
     <td>{{ order.contact }}</td>
     <td align="right">Email : </td>
-    <td>{{ order.email }}</td>
+    <td>{{ order.contact.email }}</td>
   </tr>
   <tr>
     <td align="right">Currency : </td>
     <td>{{ order.currency }}</td>
-    <td align="right">Effective Date : </td>
+    <td align="right">Expired Date : </td>
     <td>{{ order.effective_date | date:"Y-m-d" }}</td>
   </tr>
   <tr>
@@ -286,7 +286,7 @@ $("button").click(function(e){
             <th width="6%"><button type="submit" class="btn btn-danger" >Delete Item</button></th>
             <th width="2%">No.</th>
             <th width="15%">Product</th>
-            <th width="25%">Spac</th>
+            <th width="25%">Specification</th>
             <th width="6%" align="right">Quantity</th>
             <th width="5%" align="right">Price</th>
             <th width="2%"></th>

@@ -1,6 +1,11 @@
 from django.contrib import admin
-from .models import Category, Product, Order, OrderItem, PaymentTerm, PriceTerm, DimmingOption, ProductPrice, Currency
+from .models import Category, Product, Order, OrderItem, PaymentTerm, PriceTerm, DimmingOption, ProductPrice, Currency, GeneralTerm
 
+
+class GeneralTermAdmin(admin.ModelAdmin):
+    list_display = ['content']
+
+admin.site.register(GeneralTerm, GeneralTermAdmin)
 
 
 class PriceTermAdmin(admin.ModelAdmin):
