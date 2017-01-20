@@ -23,9 +23,10 @@ class GeneralTerm(models.Model):
 class Currency(models.Model):
     code = models.CharField(primary_key=True, max_length=3, )
     description = models.CharField(max_length=36, null=False, blank=False)
+    symbol = models.CharField(max_length=4, null=True, blank=True, default="$")
 
     def __str__(self):
-        return self.code
+        return "%s %s" %(self.code, self.symbol)
 
 
 class PaymentTerm(models.Model):

@@ -505,13 +505,20 @@ def _generate_pdf(course, output):
        styles["BodyText"])
 
     #頁首的資訊
+
+    #要把使用者的名字的第一個字大寫
+    order_person = str(course.quote_user).split('.')
+    str_sales_name = "%s %s" %( str(course.quote_user.first_name).capitalize(), str(course.quote_user.last_name).capitalize()  )
+
+
     header = [
-              ['Quotation No',':', course.order_number,'','Date',':', course.ord_date],
-              ['Customer',':', course.customer.title,'','Expired Date',':', course.effective_date],
-              ['Contact Person',':', course.contact.name, '','Sales Contact',':', course.quote_user],
-              ['Contact Email',':', course.contact.email,'', 'Email',':', course.quote_user.email],
-              ['Payment Term',':', course.paymentterm,'','Currency',':' , course.currency],
-              ['Price Term',':', course.priceterm,''],
+              ['Quotation No',':', course.order_number,'', '', '', ''],
+              ['Customer',':', course.customer.title,'','Date',':', course.ord_date],
+              ['Contact Person',':', course.contact.name, '','Expired Date',':', course.effective_date],
+              ['Contact Email',':', course.contact.email,'','Sales Contact',':', str_sales_name  ],
+              ['Payment Term',':', course.paymentterm,'', 'Email',':', course.quote_user.email],
+              ['Price Term',':', course.priceterm,'','Currency',':' , course.currency],
+              ['','','','','','','']
               ]
 
     h = Table(header, colWidths=[1.0*inch, 0.1*inch, 2.8*inch, 0.3*inch, 0.9*inch, 0.1*inch, 2.0*inch] ,style=[
@@ -525,6 +532,7 @@ def _generate_pdf(course, output):
                     ])
 
     Story.append(h)
+
 
     element = []
     tableheader = ['No.','Image', 'Product  Description', 'Quantity' ,'Price']
@@ -569,7 +577,8 @@ def _generate_pdf(course, output):
 
         for p in price_group:
             if p is not None:
-                str_price += str('${:,.2f}'.format(float(p)))+'\n'
+                #加上貨幣符號
+                str_price += str(course.currency.symbol) + str('{:,.2f}'.format(float(p)))+'\n'
 
 
         myitem.append( str_qty )
@@ -642,10 +651,13 @@ def _generate_pdf(course, output):
 
 
 def gen_quote(request,id):
+
     response = HttpResponse(content_type='application/pdf')
-    filename = '-outline.pdf'
-    response['Content-Disposition'] = 'filename=' + filename
     course = get_object_or_404(Order,id=id)
+    #filename = '-outline.pdf'
+    filename = 'Quotation-A%s.pdf' %( str(course.order_number))
+    response['Content-Disposition'] = 'filename=' + filename
+
     _generate_pdf(course, response)
 
     return response
@@ -671,8 +683,6 @@ def _generate_pdfv2(course, output):
     pdfmetrics.registerFont(TTFont('simhei', 'simhei.ttf'))
     pdfmetrics.registerFont(TTFont('Arialuni', 'arialuni.ttf'))
 
-
-    #from cStringIO import StringIO
 
     doc = SimpleDocTemplate(output,pagesize=A4,
     rightMargin=.5*inch,leftMargin=.5*inch,
@@ -715,13 +725,20 @@ def _generate_pdfv2(course, output):
 
 
     #頁首的資訊
+
+    #要把使用者的名字的第一個字大寫
+    order_person = str(course.quote_user).split('.')
+    str_sales_name = "%s %s" %( str(course.quote_user.first_name).capitalize(), str(course.quote_user.last_name).capitalize()  )
+
+
     header = [
-              ['Quotation No',':', course.order_number,'','Date',':', course.ord_date],
-              ['Customer',':', course.customer.title,'','Expired Date',':', course.effective_date],
-              ['Contact Person',':', course.contact.name, '','Sales Contact',':', course.quote_user],
-              ['Contact Email',':', course.contact.email,'', 'Email',':', course.quote_user.email],
-              ['Payment Term',':', course.paymentterm,'','Currency',':' , course.currency],
-              ['Price Term',':', course.priceterm,''],
+              ['Quotation No',':', course.order_number,'', '', '', ''],
+              ['Customer',':', course.customer.title,'','Date',':', course.ord_date],
+              ['Contact Person',':', course.contact.name, '','Expired Date',':', course.effective_date],
+              ['Contact Email',':', course.contact.email,'','Sales Contact',':', str_sales_name ],
+              ['Payment Term',':', course.paymentterm,'', 'Email',':', course.quote_user.email],
+              ['Price Term',':', course.priceterm,'','Currency',':' , course.currency],
+              ['','','','','','',''],
               ]
 
     h = Table(header, colWidths=[1.0*inch, 0.1*inch, 2.8*inch, 0.3*inch, 0.9*inch, 0.1*inch, 2.0*inch] ,style=[
@@ -788,18 +805,20 @@ def _generate_pdfv2(course, output):
 
         for p in price_group:
             if p is not None:
-                str_price += str( '${:,.2f}'.format(float(p)) )+'\n'
+                #加上貨幣符號
+                str_price += str(course.currency.symbol) + str( '{:,.2f}'.format(float(p)) )+'\n'
 
 
         myitem.append(  str_qty   )
         myitem.append(  str_price  )
-        myitem.append( '${:,.2f}'.format(sub_amount)  )
+        #加上貨幣符號
+        myitem.append( str(course.currency.symbol) + '{:,.2f}'.format(sub_amount)  )
 
         element.append(myitem)
         loopcounter += 1
 
     #repeatRows=1 是指第一行(表頭) 換頁時會重複
-    t = Table(element, colWidths=[0.4*inch, 4.9*inch, 0.5*inch, 0.8*inch,  1.1*inch], repeatRows=1)
+    t = Table(element, colWidths=[0.4*inch, 4.9*inch, 0.5*inch, 0.9*inch,  1.0*inch], repeatRows=1)
 
     t.setStyle(
         TableStyle(
@@ -822,8 +841,10 @@ def _generate_pdfv2(course, output):
     comment = Paragraph('''
        <para align=left spaceb=3><font face="Arialuni">'''+ str(course.comment).replace('\n','<br/>\n') +'''</font></para>''',
        styles["BodyText"])
+
+    #加上貨幣符號
     footer = [  ['', '', '', '', ' ' ,'Quantity Total:', '{:,.0f}'.format(qty_amount) ],
-                ['', '', '', '', ' ' ,'Grand Total:',  '${:,.2f}'.format(grund_total)  ],
+                ['', '', '', '', ' ' ,'Grand Total:',  str(course.currency.symbol) +'{:,.2f}'.format(grund_total)  ],
                 ['','', '', '', '', ' ',''],
                 [ 'Remark:',comment ],
               ]
@@ -837,12 +858,6 @@ def _generate_pdfv2(course, output):
                         ])
 
     Story.append(f)
-
-
-
-
-
-
 
     style = getSampleStyleSheet()['Normal']
     style.leading = 8
@@ -858,13 +873,14 @@ def _generate_pdfv2(course, output):
     doc.build(Story, onFirstPage=myFirstPage, onLaterPages=myLaterPage )
 
 
-# 明確數量的報價單,有金額小計及總金額的
+# 明確數量的報價單,有金額小計及總金額的  Quota-B
 @login_required
 def gen_pdfv2(request,id):
-    response = HttpResponse(content_type='application/pdf')
-    filename = 'Quotation.pdf'
-    response['Content-Disposition'] = 'filename=' + filename
     course = get_object_or_404(Order,id=id)
+    response = HttpResponse(content_type='application/pdf')
+    filename = 'Quotation-B%s.pdf' %( str(course.order_number))
+    response['Content-Disposition'] = 'filename=' + filename
+
     _generate_pdfv2(course, response)
 
     return response
@@ -873,6 +889,7 @@ def gen_pdfv2(request,id):
 
 
 #參考的操作範例, 已不使用
+'''
 def gen_pdf(request,id):
 
     response = HttpResponse(content_type='application/pdf')
@@ -1005,3 +1022,4 @@ def order_print(request, id):
     weasyprint.HTML(string=html, base_url = request.build_absolute_uri() ).write_pdf(response,stylesheets=[weasyprint.CSS( settings.STATIC_ROOT + '/css/pdf.css')])
 
     return response
+'''
