@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'smart_selects',
     'pagedown',
-    'posts',
+    #'posts',
     'products',
     'employees',
     'workorders',
@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     'cart',
     'carts',
     'quoted',
-
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -108,17 +107,16 @@ DATABASES = {
         'HOST':'172.27.21.38',
         'USER':'djangoadm',
         'PASSWORD':'@et288309'
-
     },
 
-    'sapqas':{
-        'NAME': 'QAS_legarcy',
-        #'ENGINE': 'sqlserver_ado',
-        'HOST': '172.27.21.9\QAS',
-        'USER': 'django',
-        'PASSWORD': '85@jaq#s',
-
-    }
+    # 'sapqas':{
+    #     'NAME': 'QAS_legarcy',
+    #     #'ENGINE': 'sqlserver_ado',
+    #     'HOST': '172.27.21.9\QAS',
+    #     'USER': 'django',
+    #     'PASSWORD': '85@jaq#s',
+    #
+    # }
 }
 
 

@@ -21,18 +21,18 @@ from django.contrib import admin
 from django.contrib.auth.views import login, logout
 
 from .views import index, logout
-from posts import views
+#from posts import views
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #url(r'^$', index),
-    url(r'^$', login_required(views.post_list), name="list" ),
+    #url(r'^$', login_required(views.post_list), name="list" ),
     url(r'^accounts/login/$', auth_views.login),
     #url(r'^accounts/logout/$', auth_views.logout),
     url(r'^logout/$', logout),
-    url(r'^posts/', include( 'posts.urls', namespace="posts")),
+    #url(r'^posts/', include( 'posts.urls', namespace="posts")),
     url(r'^products/', include( 'products.urls', namespace="products")),
     url(r'^employees/', include( 'employees.urls', namespace="employees")),
     url(r'^workorders/', include( 'workorders.urls', namespace="workorders")),
