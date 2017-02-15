@@ -38,6 +38,7 @@
                         <span>My Profile  /  </span>
                         <span><a href="/logout">Logout</a></span>
                         {% else %}
+                        <span><a href="/login">Login</a></span>
 
                       {% endif %}
 
@@ -68,7 +69,7 @@
                               <span class="glyphicon glyphion-cd" aria-hidden="true">&nbsp; 亞德園地</span>
                             </a>
                         </li>
-                    
+
 
                           {% if perms.employees.can_employee %}
                           <li  class="">
